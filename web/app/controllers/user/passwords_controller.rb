@@ -1,3 +1,3 @@
 class User::PasswordsController < Devise::PasswordsController
-  respond_to :json
+  respond_to :json, :html
 end
