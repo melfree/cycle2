@@ -1,11 +1,15 @@
 angular.module('starter.services', [])
 
-.factory('UserSession', function($resource) {
+.factory('Login', function($resource) {
   return $resource("http://localhost:3000/users/sign_in.json");
 })
 
-.factory('BlogEntry', function($resource) {
-  return $resource("http://localhost:3000/blog_entries/:id.json");
+.factory('Register', function($resource) {
+  return $resource("http://localhost:3000/users.json");
+})
+
+.factory('Logout', function ($resource) {
+  return $resource("http://localhost:3000/users/sign_out.json");
 })
 
 .factory('Chats', function() {

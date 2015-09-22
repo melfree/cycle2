@@ -3,16 +3,20 @@
     <div class="list">
       <label class="item item-input item-floating-label">
         <span class="input-label">Email</span>
-        <input type="email" placeholder="Email" ng-model="data.email">
+        <input type="email" placeholder="Email" ng-model="data.user.email">
       </label>
       <label class="item item-input item-floating-label">
         <span class="input-label">Password</span>
-        <input type="password" placeholder="Password" ng-model="data.password">
+        <input type="password" placeholder="Password" ng-model="data.user.password">
       </label>
     </div>
 
     <div class="padding">
       <button class="button button-block button-calm" ng-click="login()">Login</button>
+    </div>
+    
+    <div class="padding">
+      <a class="button button-block" href="#/register">Register Instead</a>
     </div>
   </ion-content>
 </ion-view>
