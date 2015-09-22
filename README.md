@@ -12,7 +12,7 @@
 1. While in `/web`, run `rails server`
 2. Open a new terminal
 3. cd into `/mobile`
-4. run `ionic serve`
+4. run `ionic serve --lab` (`ionic emulate ios` is also available if on a Mac)
 
 Rails (default port 3000) and Ionic (default port 8100) are now both running locally.
 
