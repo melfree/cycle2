@@ -1,0 +1,28 @@
+= form_for(@blog_entry) do |f|
+  - if @blog_entry.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@blog_entry.errors.count, "error")
+        prohibited this blog_entry from being saved:
+      %ul
+        - @blog_entry.errors.full_messages.each do |message|
+          %li= message
+          
+  .field
+    = f.label :title
+    %br
+      = f.text_field :title
+  .field
+    = f.label :content
+    %br
+      = f.text_area :content
+  .field
+    %p
+      = image_tag(@blog_entry.photo_url(:thumb)) if @blog_entry.photo?
+    = f.file_field :photo
+    = f.hidden_field :photo_cache
+  %label
+    = f.check_box :remove_photo
+    Remove photo
+  .actions
+    = f.submit

@@ -34,12 +34,23 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 gem 'rack-cors', :require => 'rack/cors'
+
+# User auth + csrf protection
 gem 'devise'
 gem 'angular_csrf'
+
 # Photo upload
 gem 'carrierwave'
 gem 'carrierwave-base64'
+
+# Change size of pictures
 gem 'mini_magick'
+
+# Rendering JSON
+gem "active_model_serializers"
+
+# Templating
+gem "haml"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

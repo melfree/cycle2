@@ -5,11 +5,19 @@ class BlogEntriesController < ApplicationController
   # GET /blog_entries.json
   def index
     @blog_entries = BlogEntry.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @blog_entries }
+    end
   end
 
   # GET /blog_entries/1
   # GET /blog_entries/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @blog_entry }
+    end
   end
 
   # GET /blog_entries/new
@@ -29,7 +37,7 @@ class BlogEntriesController < ApplicationController
     respond_to do |format|
       if @blog_entry.save
         format.html { redirect_to @blog_entry, notice: 'Blog entry was successfully created.' }
-        format.json { render :show, status: :created, location: @blog_entry }
+        format.json { render json: @blog_entry, status: :created }
       else
         format.html { render :new }
         format.json { render json: @blog_entry.errors, status: :unprocessable_entity }
@@ -45,7 +53,7 @@ class BlogEntriesController < ApplicationController
     respond_to do |format|
       if @blog_entry.update(blog_entry_params)
         format.html { redirect_to @blog_entry, notice: 'Blog entry was successfully updated.' }
-        format.json { render :show, status: :ok, location: @blog_entry }
+        format.json { render json: @blog_entry, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @blog_entry.errors, status: :unprocessable_entity }

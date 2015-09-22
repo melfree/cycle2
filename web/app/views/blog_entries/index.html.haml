@@ -1,0 +1,20 @@
+%p#notice= notice
+
+%h1 Listing Blog Entries
+%table
+  %thead
+    %tr
+      %th Title
+      %th Content
+      %th{:colspan => "3"}
+  %tbody
+    - @blog_entries.each do |blog_entry|
+      %tr
+        %td= blog_entry.title
+        %td= blog_entry.content
+        %td= link_to 'Show', blog_entry
+        %td= link_to 'Edit', edit_blog_entry_path(blog_entry)
+        %td= link_to 'Destroy', blog_entry, method: :delete, data: { confirm: 'Are you sure?' }
+%br
+
+  = link_to 'New Blog entry', new_blog_entry_path
