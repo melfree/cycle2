@@ -3,6 +3,7 @@ class CreateBlogEntries < ActiveRecord::Migration
     create_table :blog_entries do |t|
       t.string :title
       t.text :content
+      t.string :photo
 
       t.timestamps null: false
     end

@@ -40,6 +40,8 @@ class BlogEntriesController < ApplicationController
   # PATCH/PUT /blog_entries/1
   # PATCH/PUT /blog_entries/1.json
   def update
+    encode_photo
+    
     respond_to do |format|
       if @blog_entry.update(blog_entry_params)
         format.html { redirect_to @blog_entry, notice: 'Blog entry was successfully updated.' }
@@ -69,6 +71,22 @@ class BlogEntriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def blog_entry_params
-      params.require(:blog_entry).permit(:title, :content)
+      params.require(:blog_entry).permit(:title, :content, :photo, :remove_photo)
+    end
+    def encode_photo
+      # This is a demonstration of base64 photo encoding.
+      # With this action, the Rails view simulates encoding/decoding base64 images. 
+      
+      # This method only happens if image is of class UploadedFile.
+      
+      # Note that the Carrierwave-Base64 gem will happily accept
+      # both UploadedFile objects and base64 strings within blog_entry.photo.
+      
+      photo = params[:blog_entry][:photo]
+      if photo.kind_of? ActionDispatch::Http::UploadedFile
+        encoded = Base64.encode64(open(photo.path) { |io| io.read } )
+        content_type = photo.content_type #i.e., "image/jpeg"
+        params[:blog_entry][:photo] = "data:#{content_type};base64,#{encoded}"
+      end
     end
 end

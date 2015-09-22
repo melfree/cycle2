@@ -10,5 +10,9 @@
   <%= @blog_entry.content %>
 </p>
 
+<p>
+  <%= image_tag(@blog_entry.photo_url(:thumb)) if @blog_entry.photo? %>
+</p>
+
 <%= link_to 'Edit', edit_blog_entry_path(@blog_entry) %> |
 <%= link_to 'Back', blog_entries_path %>

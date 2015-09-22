@@ -8,6 +8,7 @@
 5. run `bundle`
 6. run `rake db:setup`
 7. run `rake db:migrate`
+8. install imagemagick from a binary distribution, or, if on a Mac, run `sudo brew install imagemagick`
 ## Steps to Run
 1. While in `/web`, run `rails server`
 2. Open a new terminal
@@ -17,6 +18,8 @@
 Rails (default port 3000) and Ionic (default port 8100) are now both running locally.
 
 *__Note__: The starter code for this project was taken from an open source example. The original README text from that example is preserved below.*
+
+*__Note 2__: The starter code included a Blog Entries table. We probably won't use Blog Entries and its resources, but is left in as a reference for development.
 
 ---
 
