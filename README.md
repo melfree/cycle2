@@ -2,7 +2,7 @@
 ## Cycle 2 Project
 ### Steps to Set Up 
 1. Setup Postgres locally
-2. Login using the superuser account and paste this code in to create the development/test user for this app: `create role cycle2 wth createdb login password 'secret';`
+2. Login using the superuser account and paste this code in to create the development/test user for this app: `create role cycle2 with createdb login password 'secret';`
 3. Git clone this project.
 4. CD into `/web`
 5. run `bundle`
