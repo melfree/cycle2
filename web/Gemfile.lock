@@ -70,6 +70,7 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.6.0)
+    exifr (1.2.3.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -174,6 +175,7 @@ DEPENDENCIES
   carrierwave-base64
   coffee-rails (~> 4.1.0)
   devise
+  exifr
   haml
   jbuilder (~> 2.0)
   jquery-rails
