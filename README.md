@@ -6,8 +6,8 @@
 3. Git clone this project.
 4. CD into `/web`
 5. run `bundle`
-6. run `rake db:setup`
-7. run `rake db:migrate`
+6. run `rake db:create` to create the database
+7. run `rake db:migrate` to create the tables
 8. install imagemagick from a binary distribution, or, if on a Mac, run `sudo brew install imagemagick`
 
 ## Steps to Run
