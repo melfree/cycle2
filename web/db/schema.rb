@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20150926164346) do
 
   create_table "uploads", force: :cascade do |t|
     t.string   "photo"
+    t.string   "location"
     t.float    "long"
     t.float    "lat"
     t.text     "tags"

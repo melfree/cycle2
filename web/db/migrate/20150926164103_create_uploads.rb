@@ -2,6 +2,7 @@ class CreateUploads < ActiveRecord::Migration
   def change
     create_table :uploads do |t|
       t.string :photo
+      t.string :location
       t.float :long
       t.float :lat
       t.text :tags
