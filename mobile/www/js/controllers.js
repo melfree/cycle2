@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage['userId'] = data.id;
         $window.localStorage['userName'] = data.name;
-        $location.path('/tab/dash');
+        $location.path('/tab/explore');
       },
       function(err){
         var confirmPopup = $ionicPopup.alert({
@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage['userId'] = data.id;
         $window.localStorage['userName'] = data.name;
-        $location.path('/tab/dash');
+        $location.path('/tab/explore');
       },
       function(err){
         var error = "";
@@ -45,13 +45,13 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('DashCtrl', function($scope, BlogEntry) {
+.controller('ExploreCtrl', function($scope, BlogEntry) {
   BlogEntry.query().$promise.then(function(response){
     $scope.blog_entries = response;
   });
 })
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('FavCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -61,6 +61,7 @@ angular.module('starter.controllers', [])
   //});
 
   $scope.chats = Chats.all();
+  console.log($scope.chats);
   $scope.remove = function(chat) {
     Chats.remove(chat);
   };
