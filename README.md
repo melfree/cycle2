@@ -18,6 +18,13 @@
 
 Rails (default port 3000) and Ionic (default port 8100) are now both running locally.
 
+
+## Database Details
+
+There are 4 tables: User, Upload, Favorite, and Purchase. A User can have many Uploads (each is one of their own photos). A User can have many Favorites (joins User and Upload) and can make many Purchases (also joins User and Upload).
+
+Uploads (photos) are purchased one at a time (i.e., there is no cart).
+
 *__Note__: The starter code for this project was taken from an open source example. The original README text from that example is preserved below.*
 
 *__Note 2__: The starter code included a Blog Entries table. We probably won't use Blog Entries and its resources, but is left in as a reference for development.*
