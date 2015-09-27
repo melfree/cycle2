@@ -27,12 +27,21 @@ Uploads (photos) are purchased one at a time (i.e., there is no cart).
 
 There are currently 4 API endpoints, which respond to the typical RESTful actions: Uploads, Favorites, and Purchases, which respond like:
 
-Show all uploads: `GET localhost:3000/home.json`
-
-Show current users uploads: `GET localhost:3000/uploads.json`
-
-Add upload: `POST localhost:3000/uploads.json`, `data: {upload: {copyright: 0, photos: [BASE_64_ENCODED_JPEG, BASE_64_ENCODED_JPEG, ...], tags: "these are search tags"}}
+Hitting any Upload, Favorite, or Purchase endpoint requires **user_email** and **user_token** for authentication.
 
 
-*__Note__: The starter code for this project was taken from an open source example. You can view the original starter blog post here:
+# API Examples
+
+*Show all uploads*: `GET localhost:3000/home.json`
+
+For user = **testuser@aol.com** and token = **wUdznDo5WJuTMshpJZeo**:
+
+*Show current users uploads from browser, GET request*: `http://localhost:3000/uploads.json?user_email=testuser@aol.com&user_token=wUdznDo5WJuTMshpJZeo`
+
+*Add upload (fill in the empty [] with a list of base64 encoded image strings, or replace it with a single base64 image string) from terminal, POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[],\"copyright\":\"0\"}}"`
+
+
+# Other Notes
+
+The starter code for this project was taken from an open source example. You can view the original starter blog post here:
 http://www.dovetaildigital.io/blog/2015/8/26/rails-and-ionic-make-love-part-two

@@ -1,7 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :created_at, :auth_token
+  attributes :id, :email, :created_at, :user_token
   
-  def auth_token
-    resource.authentication_token
+  def user_token
+    object.authentication_token
   end
 end

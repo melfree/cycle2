@@ -1,5 +1,5 @@
 class User::SessionsController < Devise::SessionsController
-  respond_to :json, :html
+  respond_to :html, :json
 
   def create
     sign_out(:user) if current_user

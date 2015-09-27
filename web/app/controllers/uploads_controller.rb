@@ -1,8 +1,11 @@
 class UploadsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, if: lambda { |c| c.request.format.json? }
+  acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
+  before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
+  
   before_filter :ensure_upload, only: [:create, :update]
   before_action :set_upload, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
-  
+
   ## JSON routes
   ##############
   
@@ -44,17 +47,21 @@ class UploadsController < ApplicationController
   # POST /uploads.json
   # creates a single photo, OR an array of photos
   def create
-    @upload = Upload.new(upload_params)
+    success = true
+    photos = params[:upload].delete(:photos)
     respond_to do |format|
-      if @upload.photos ## Batch photo upload
-        ## Take each photo out of the photo array and place into its own upload object
-        batch = @upload.photos.map do |a|
-          upload_params.merge(photo: a)
+      if photos ## Batch photo upload
+        photos.each do |p|
+          @upload = Upload.new(upload_params)
+          @upload.user = current_user
+          @upload.photo = p
+          success = @upload.save
+          break unless success
         end
-        # Save the collection of objects
-        success = current_user.uploads.create ( batch )
       else # Simple single photo upload
-        success = current_user.uploads.create ( upload_params )
+        @upload = Upload.new(upload_params)
+        @upload.user = current_user
+        success = @upload.save
       end
       if success
         format.html { redirect_to uploads_url, notice: 'Upload was successfully saved.' }
@@ -92,8 +99,9 @@ class UploadsController < ApplicationController
   
  private
    def ensure_upload
-    return unless params[:upload].blank?
-    render :json=>{:success=>false, :message=>"missing 'upload' parameter"}, :status=>422
+    unless params[:upload]
+      render :json=>{:success=>false, :message=>"missing 'upload' parameter"}, :status=>422
+    end
    end
    
    def set_upload
