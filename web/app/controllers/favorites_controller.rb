@@ -1,0 +1,64 @@
+class FavoritesController < ApplicationController
+  before_action :set_favorite, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  
+  ## JSON routes
+  ##############
+  
+  # GET /favorites/1
+  # GET /favorites/1.json
+  def show
+    respond_to do |format|
+      format.html
+      format.json { render json: @favorite }
+    end
+  end
+
+  # GET /favorites.json
+  # GET /favorites
+  def index
+    @favorites = current_user.favorites
+    respond_to do |format|
+      format.html
+      format.json { render json: @favorites }
+    end
+  end
+  
+  # POST /favorites
+  # POST /favorites.json
+  # creates a single photo, OR an array of photos
+  def create
+    @favorite = Favorite.new(favorite_params)
+    @favorite.user = current_user
+    respond_to do |format|
+      if @favorite.save
+        format.html { redirect_to uploads_url, notice: 'Photo was successfully favoritd.' }
+        format.json { render json: @favorite, status: :created }
+      else
+        format.html { render :new }
+        format.json { render json: @favorite.errors, status: :unprocessable_entity }
+      end
+      
+    end
+  end
+  
+  # DELETE /favorites/1
+  # DELETE /favorites/1.json
+  def destroy
+    @favorite.destroy
+    respond_to do |format|
+      format.html { redirect_to uploads_url, notice: 'Photo successfully removed from favorites.' }
+      format.json { head :no_content }
+    end
+  end
+  
+  
+ private
+   def set_favorite
+     @favorite = Favorite.find(params[:id])
+   end
+ 
+   def favorite_params
+      params.require(:favorite).permit(:upload_id)
+   end
+end

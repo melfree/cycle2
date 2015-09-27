@@ -1,5 +1,6 @@
 class UploadsController < ApplicationController
   before_action :set_upload, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
   
   ## JSON routes
   ##############
@@ -12,11 +13,11 @@ class UploadsController < ApplicationController
       format.json { render json: @upload }
     end
   end
-  
+
   # GET /uploads.json
   # GET /uploads
   def index
-    @uploads = Upload.all
+    @uploads = current_user.uploads
     respond_to do |format|
       format.html
       format.json { render json: @uploads }
