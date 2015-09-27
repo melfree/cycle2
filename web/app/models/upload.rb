@@ -3,18 +3,23 @@ class Upload < ActiveRecord::Base
   has_many :purchases
   has_many :favorites
   
+  # Create a dummy 'photos' attribute for bulk uploads
+  attr_accessor :photos
+  
+  before_save :set_metadata
+  
+  validates_presence_of :photo
+  
   # photo logic from `Carrierwave` uploader
   mount_base64_uploader :photo, PhotoUploader
   
-  before_create :set_metadata
-  
   # Extract metadata from photo when first uploaded
   def set_metadata
-    exifr = EXIFR::JPEG.new(self.photo_url)
+    exifr = EXIFR::JPEG.new(photo.file.path)
+    self.width = exifr.width #t.integer "width"
+    self.height = exifr.height #t.integer "height"
+    self.time = exifr.date_time #t.datetime "time"
     if exifr.exif?
-      self.width = exifr.width #t.integer "width"
-      self.height = exifr.height #t.integer "height"
-      self.time = exifr.date_time #t.datetime "time"
       self.lat = exifr.gps.latitude #t.float "lat"
       self.long = exifr.gps.longitude #t.float "long"
     end

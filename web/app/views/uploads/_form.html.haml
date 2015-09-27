@@ -1,0 +1,26 @@
+= form_for @upload, html: {multipart: true} do |f|
+  - if @upload.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@upload.errors.count, "error")
+        prohibited this upload from being saved:
+      %ul
+        - @upload.errors.full_messages.each do |message|
+          %li= message
+  
+  - if controller.action_name == "new"
+    = f.file_field :photos, type: :file, multiple: true
+  
+  
+  .field
+    = f.label :location
+    = f.text_field :location
+  .field
+    = f.label :tags
+    = f.text_field :tags
+  .field
+    = f.label :copyright
+    = f.check_box :copyright
+    
+  .actions
+    = f.submit
