@@ -27,21 +27,12 @@ Uploads (photos) are purchased one at a time (i.e., there is no cart).
 
 There are currently 4 API endpoints, which respond to the typical RESTful actions: Uploads, Favorites, and Purchases, which respond like:
 
-Show all uploads: `localhost:3000/home.json`
+Show all uploads: `GET localhost:3000/home.json`
 
-Show current users uploads: `localhost:3000/uploads.json`
+Show current users uploads: `GET localhost:3000/uploads.json`
 
-Add upload: `localhost:3000/uploads.json`
-
-``
-
-*__Note__: The starter code for this project was taken from an open source example. The original README text from that example is preserved below.*
+Add upload: `POST localhost:3000/uploads.json`, `data: {upload: {copyright: 0, photos: [BASE_64_ENCODED_JPEG, BASE_64_ENCODED_JPEG, ...], tags: "these are search tags"}}
 
 
-
----
-
-
-
-You can view the original starter blog post here:
+*__Note__: The starter code for this project was taken from an open source example. You can view the original starter blog post here:
 http://www.dovetaildigital.io/blog/2015/8/26/rails-and-ionic-make-love-part-two

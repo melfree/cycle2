@@ -1,4 +1,5 @@
 class FavoritesController < ApplicationController
+  before_filter :ensure_purchase, only: [:create]
   before_action :set_purchase, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   
@@ -43,6 +44,11 @@ class FavoritesController < ApplicationController
   end
   
  private
+   def ensure_purchase
+    return unless params[:purchase].blank?
+    render :json=>{:success=>false, :message=>"missing 'purchase' parameter"}, :status=>422
+   end
+ 
    def set_purchase
       @purchase = Purchase.find(params[:id])
    end

@@ -1,4 +1,5 @@
 class UploadsController < ApplicationController
+  before_filter :ensure_upload, only: [:create, :update]
   before_action :set_upload, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   
@@ -90,6 +91,11 @@ class UploadsController < ApplicationController
   end
   
  private
+   def ensure_upload
+    return unless params[:upload].blank?
+    render :json=>{:success=>false, :message=>"missing 'upload' parameter"}, :status=>422
+   end
+   
    def set_upload
      @upload = Upload.find(params[:id])
    end

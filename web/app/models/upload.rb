@@ -24,7 +24,7 @@ class Upload < ActiveRecord::Base
       self.long = exifr.gps.longitude #t.float "long"
     end
     # default t.integer "copyright" to 0
-    self.copyright = 0 unless self.copyright
+    self.copyright = 0 unless self.copyright == 1
     # t.text "tags" should also be created at this time.
     # t.string "location" should also be created at this time.
   end

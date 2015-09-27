@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   # Can upload many uploads (photos) at once
   accepts_nested_attributes_for :uploads
   
+  # JSON auth_token
+  acts_as_token_authenticatable
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
