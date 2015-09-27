@@ -22,6 +22,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   });
 })
+.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.platform.android.tabs.position("bottom");
+ })
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
@@ -73,10 +76,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+
+    .state('tab.myPhoto', {
+      url: '/myPhoto',
       views: {
-        'tab-chats': {
+        'tab-myPhoto': {
+          templateUrl: 'templates/tab-myPhoto.html',
+          controller: 'PurchaseCtrl'
+        }
+      }
+    })
+
+    .state('tab.purchase', {
+      url: '/purchase',
+      views: {
+        'tab-purchase': {
+          templateUrl: 'templates/tab-purchase.html',
+          controller: 'PurchaseCtrl'
+        }
+      }
+    })
+    .state('tab.detail', {
+      url: '/detail/:chatId',
+      views: {
+        'tab-fav': {
           templateUrl: 'templates/chat-detail.html',
           controller: 'ChatDetailCtrl'
         }

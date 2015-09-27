@@ -45,10 +45,16 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope, BlogEntry) {
-  BlogEntry.query().$promise.then(function(response){
+.controller('ExploreCtrl', function($scope,Chats) {
+    $scope.title=' ';
+
+/*  BlogEntry.query().$promise.then(function(response){
     $scope.blog_entries = response;
-  });
+  });*/
+})
+
+.controller('PurchaseCtrl', function($scope) {
+  $scope.title=' ';
 })
 
 .controller('FavCtrl', function($scope, Chats) {
@@ -61,7 +67,6 @@ angular.module('starter.controllers', [])
   //});
 
   $scope.chats = Chats.all();
-  console.log($scope.chats);
   $scope.remove = function(chat) {
     Chats.remove(chat);
   };
@@ -69,6 +74,8 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
+    console.log($scope.chat);
+
 })
 
 .controller('AccountCtrl', function($scope, Logout, $location, $ionicPopup, $rootScope ) {
