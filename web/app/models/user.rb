@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   has_many :purchases
   has_many :favorites
   
+  # Can upload many uploads (photos) at once
+  accepts_nested_attributes_for :uploads
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

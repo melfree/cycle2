@@ -52,6 +52,9 @@ gem "active_model_serializers"
 # Templating
 gem "haml"
 
+# Getting data from photos
+gem 'exifr'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 #  gem 'byebug'
