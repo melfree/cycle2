@@ -30,15 +30,15 @@ There are currently 4 API endpoints, which respond to the typical RESTful action
 Hitting any Upload, Favorite, or Purchase endpoint requires **user_email** and **user_token** for figuring out who the current_user is. An error is thrown if the given email/token do not match.
 
 
-# API Examples
+## API Examples
 
 *Show all uploads*: `GET localhost:3000/home.json`
 
-For user_email = **testuser@aol.com** with user_token = **wUdznDo5WJuTMshpJZeo**:
+The following examples use a created user_email = **testuser@aol.com** that was given a user_token = **wUdznDo5WJuTMshpJZeo**:
 
-*Show the current user's uploads (from terminal), which is a GET request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/uploads?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
+*To show the current user's uploads (from terminal), which is a GET request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/uploads?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-*Add upload (fill in the empty [] with a list of base64 encoded image strings, or replace it with a single base64 image string) from terminal, POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[],\"copyright\":\"0\"}}"`
+*To upload photo from terminal, which is a POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAKGyMeGBohmJyb...\"],\"tags\":\"\",\"location\":\"\", \"copyright\":\"0\"}}"`
 
 
 # Other Notes
