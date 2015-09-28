@@ -45,7 +45,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
-    byebug (6.0.2)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -174,7 +173,6 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   angular_csrf
-  byebug
   carrierwave
   carrierwave-base64
   coffee-rails (~> 4.1.0)
@@ -194,3 +192,6 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+
+BUNDLED WITH
+   1.10.6
