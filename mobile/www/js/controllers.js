@@ -6,8 +6,8 @@ angular.module('starter.controllers', [])
   $scope.login = function() {
     Login.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userId'] = data.id;
-        $window.localStorage['userName'] = data.name;
+        $window.localStorage['userEmail'] = data.email;
+        $window.localStorage['userToken'] = data.user_token;
         $location.path('/tab/explore');
       },
       function(err){
@@ -26,8 +26,8 @@ angular.module('starter.controllers', [])
   $scope.register = function() {
     Register.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userId'] = data.id;
-        $window.localStorage['userName'] = data.name;
+        $window.localStorage['userEmail'] = data.email;
+        $window.localStorage['userToken'] = data.user_token;
         $location.path('/tab/explore');
       },
       function(err){
@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Chats) {
+.controller('ExploreCtrl', function($scope) {
     $scope.title=' ';
 
 /*  BlogEntry.query().$promise.then(function(response){
@@ -87,8 +87,8 @@ angular.module('starter.controllers', [])
     // This database call might not be necessary, if all that's needed is to removeItems...
     Logout.delete(
       function(data){
-        window.localStorage.removeItem('userId');
-        window.localStorage.removeItem('userName');
+        window.localStorage.removeItem('userEmail');
+        window.localStorage.removeItem('userToken');
         $location.path('/login');
       },
       function(err){
