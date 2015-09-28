@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :uploads
   resources :favorites, except: [:update, :edit, :new]
   resources :purchases, except: [:update, :edit, :new, :destroy]
+  resources :four_square, only: [:index]
   
   get 'home' => 'home#index', as: :home
   
