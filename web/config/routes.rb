@@ -5,8 +5,11 @@ Rails.application.routes.draw do
 
   # Uploads routes
   resources :uploads
-  resources :favorites, except: [:update, :edit, :new]
-  resources :purchases, except: [:update, :edit, :new, :destroy]
+  resources :favorites, except: [:update, :edit, :new, :create]
+  resources :purchases, except: [:update, :edit, :new, :destroy, :create]
+  get 'myphotos' => 'uploads#myphotos'
+  post 'favorites/:id' => 'favorites#create'
+  post 'purchases/:id' => 'purchases#create'
   
   get 'home' => 'home#index', as: :home
   

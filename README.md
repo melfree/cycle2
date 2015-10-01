@@ -32,16 +32,52 @@ Hitting any Upload, Favorite, or Purchase endpoint requires **user_email** and *
 
 ## API Examples
 
-*Show all uploads*: `GET localhost:3000/home.json`
+The following examples use a created user_email = **testuser@aol.com** that was given a user_token = **wUdznDo5WJuTMshpJZeo**. Authorization uses data: `{user_email: STRING, user_token: STRING}`
 
-The following examples use a created user_email = **testuser@aol.com** that was given a user_token = **wUdznDo5WJuTMshpJZeo**:
+For example: 
 
-*To show the current user's uploads (from terminal), which is a GET request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/uploads?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
+*To show the current user's uploads, which is a GET request, from terminal*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/uploads?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-*To upload photo from terminal, which is a POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAKGyMeGBohmJyb...\"],\"tags\":\"\",\"location\":\"\", \"copyright\":\"0\"}}"`
+*To upload photo, which is a POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAKGyMeGBohmJyb...\"],\"tags\":\"\",\"location\":\"\", \"copyright\":\"0\"}}"`
 
+*Get favorites*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-# Other Notes
+*Favorite upload with id of 8*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/favorites/8' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"`
+
+The rest of the endpoints are described briefly below.
+
+#### HOME
+
+1. Get foursquare locations: `Not yet ready`
+
+#### Uploads
+
+1. (Auth needed) Get all of the logged-in user's uploads: `GET /myphotos`
+2. (Auth needed) Create: `POST /uploads`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER, photo: PHOTO, photos: [PHOTOS_ARRAY])}`
+3. (Auth needed) Update: `PATCH /uploads/:id`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER)}`
+4. Get any one upload: `GET /uploads/:id`
+5. (Auth needed) Delete: `DELETE /uploads/:id`
+6. Get all uploads `GET /uploads`
+
+`:id` is the id of an upload object.
+*Note*: There is a `photos` attribute to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
+
+#### Favorites
+
+1. (Auth needed) Get all of logged-in user's favorites: `GET /favorites`
+2. (Auth needed) Add a favorite for the logged-in user: `POST /favorites/:id`
+3. (Auth needed) Unfavorite: `DELETE /favorites/:id`
+
+Again, `:id` is the id of an upload object.
+
+#### Purchases
+
+1. (Auth needed) Get all of logged-in user's purchases: `get /purchases`
+2. (Auth needed) Add a purchase for the logged-in user: `POST /purchases/:id`
+
+Again, `:id` is the id of an upload object.
+
+## Other Notes
 
 The starter code for this project was taken from an open source example. You can view the original starter blog post here:
 http://www.dovetaildigital.io/blog/2015/8/26/rails-and-ionic-make-love-part-two

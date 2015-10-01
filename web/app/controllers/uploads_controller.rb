@@ -1,7 +1,7 @@
 class UploadsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, if: lambda { |c| c.request.format.json? }
-  acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
-  before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
+  skip_before_filter :verify_authenticity_token, except: [:index, :show], if: lambda { |c| c.request.format.json? }
+  acts_as_token_authentication_handler_for User, except: [:index, :show], if: lambda { |c| c.request.format.json? }, fallback: :exception
+  before_filter :authenticate_user!, except: [:index, :show], unless: lambda { |c| c.request.format.json? }
   
   before_filter :ensure_upload, only: [:create, :update]
   before_action :set_upload, only: [:show, :edit, :update, :destroy]
@@ -14,17 +14,27 @@ class UploadsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: @upload }
+      format.json { render json: {upload: @upload} }
+    end
+  end
+
+  # GET /myphotos.json
+  # GET /myphotos
+  def myphotos
+    @uploads = current_user.uploads
+    respond_to do |format|
+      format.html
+      format.json { render json: {uploads: @uploads} }
     end
   end
 
   # GET /uploads.json
   # GET /uploads
   def index
-    @uploads = current_user.uploads
+    @uploads = Upload.all
     respond_to do |format|
       format.html
-      format.json { render json: @uploads }
+      format.json { render json: {uploads: @uploads} }
     end
   end
   
@@ -34,8 +44,9 @@ class UploadsController < ApplicationController
   def update
     respond_to do |format|
       if @upload.update(upload_params)
-        format.html { redirect_to @upload, notice: 'Upload was successfully saved.' }
-        format.json { render json: @upload, status: :ok }
+        notice ='Upload was successfully saved.'
+        format.html { redirect_to @upload, notice: notice }
+        format.json { render json: {notice: notice, upload: @upload}, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @upload.errors, status: :unprocessable_entity }
@@ -64,8 +75,9 @@ class UploadsController < ApplicationController
         success = @upload.save
       end
       if success
-        format.html { redirect_to uploads_url, notice: 'Upload was successfully saved.' }
-        format.json { render json: current_user.uploads, status: :created }
+        notice = 'Upload was successfully saved.'
+        format.html { redirect_to uploads_url, notice: notice }
+        format.json { render json: {notice: notice, uploads: current_user.uploads}, status: :created }
       else
         format.html { render :new }
         format.json { render json: @upload.errors, status: :unprocessable_entity }
@@ -79,8 +91,9 @@ class UploadsController < ApplicationController
   def destroy
     @upload.destroy
     respond_to do |format|
-      format.html { redirect_to uploads_url, notice: 'Photo was successfully deleted.' }
-      format.json { head :no_content }
+      notice = 'Photo was successfully deleted.'
+      format.html { redirect_to uploads_url, notice: notice }
+      format.json { render json: {notice: notice} }
     end
   end
 

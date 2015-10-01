@@ -3,8 +3,7 @@ class FavoritesController < ApplicationController
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
   
-  before_filter :ensure_purchase, only: [:create]
-  before_action :set_purchase, only: [:show, :edit, :update, :destroy]
+  before_action :set_purchase, only: [:show]
   
   ## JSON routes
   ##############
@@ -14,17 +13,17 @@ class FavoritesController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: @purchase }
+      format.json { render json: {purchase: @purchase.upload} }
     end
   end
 
   # GET /purchases.json
   # GET /purchases
   def index
-    @purchases = current_user.purchases
+    @purchases = current_user.purchases.map{|o| o.upload}
     respond_to do |format|
       format.html
-      format.json { render json: @purchases }
+      format.json { render json: {purchases: @purchases} }
     end
   end
   
@@ -32,12 +31,14 @@ class FavoritesController < ApplicationController
   # POST /purchases.json
   # creates a single photo, OR an array of photos
   def create
-    @purchase = Purchase.new(purchase_params)
+    @purchase = Purchase.new
+    @purchase.upload = Upload.find_by_id params[:id]
     @purchase.user = current_user
     respond_to do |format|
       if @purchase.save
-        format.html { redirect_to uploads_url, notice: 'Photo was successfully purchased.' }
-        format.json { render json: @purchase, status: :created }
+        notice = 'Photo was successfully purchased.' 
+        format.html { redirect_to uploads_url, notice: notice}
+        format.json { render json: {notice: notice, purchase: @purchase.upload}, status: :created }
       else
         format.html { render :new }
         format.json { render json: @purchase.errors, status: :unprocessable_entity }
@@ -47,16 +48,8 @@ class FavoritesController < ApplicationController
   end
   
  private
-   def ensure_purchase
-    return unless params[:purchase].blank?
-    render :json=>{:success=>false, :message=>"missing 'purchase' parameter"}, :status=>422
-   end
- 
    def set_purchase
-      @purchase = Purchase.find(params[:id])
-   end
- 
-   def purchase_params
-      params.require(:purchase).permit(:upload_id)
+      @purchase = Purchase.find_by upload_id: params[:id]
+      @purchase = @purchase.upload if @purchase
    end
 end
