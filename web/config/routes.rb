@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   get 'myphotos' => 'uploads#myphotos'
   post 'favorites/:id' => 'favorites#create'
   post 'purchases/:id' => 'purchases#create'
-  resources :four_square, only: [:index]
+  
+  get 'foursquare' => 'four_square#index'
+  get 'foursquare/:id' => 'four_square#show'
   
   get 'home' => 'home#index', as: :home
   

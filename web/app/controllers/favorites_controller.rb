@@ -41,7 +41,7 @@ class FavoritesController < ApplicationController
         format.json { render json: {notice: notice, favorite: @favorite.upload}, status: :created }
       else
         format.html { render :new }
-        format.json { render json: @favorite.errors, status: :unprocessable_entity }
+        format.json { render json: {errors: @favorite.errors}, status: :unprocessable_entity }
       end
       
     end

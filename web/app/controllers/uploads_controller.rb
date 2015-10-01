@@ -49,7 +49,7 @@ class UploadsController < ApplicationController
         format.json { render json: {notice: notice, upload: @upload}, status: :ok }
       else
         format.html { render :edit }
-        format.json { render json: @upload.errors, status: :unprocessable_entity }
+        format.json { render json: {errors: @upload.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class UploadsController < ApplicationController
         format.json { render json: {notice: notice, uploads: current_user.uploads}, status: :created }
       else
         format.html { render :new }
-        format.json { render json: @upload.errors, status: :unprocessable_entity }
+        format.json { render json: {errors: @upload.errors}, status: :unprocessable_entity }
       end
       
     end
@@ -113,7 +113,7 @@ class UploadsController < ApplicationController
  private
    def ensure_upload
     unless params[:upload]
-      render :json=>{:success=>false, :message=>"missing 'upload' parameter"}, :status=>422
+      render :json=>{:error=>"missing required 'upload' parameter"}, :status=>422
     end
    end
    

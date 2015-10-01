@@ -32,7 +32,7 @@ Hitting any Upload, Favorite, or Purchase endpoint requires **user_email** and *
 
 ## API Examples
 
-The following examples use a created user_email = **testuser@aol.com** that was given a user_token = **wUdznDo5WJuTMshpJZeo**. Authorization uses data: `{user_email: STRING, user_token: STRING}`
+All endpoints should be working. The following examples use a created user_email = **testuser@aol.com** that was given a user_token = **wUdznDo5WJuTMshpJZeo**. Authorization uses data: `{user_email: STRING, user_token: STRING}`
 
 For example: 
 
@@ -46,9 +46,13 @@ For example:
 
 The rest of the endpoints are described briefly below.
 
-#### HOME
+#### Foursquare
 
-1. Get foursquare locations: `Not yet ready`
+1. Get foursquare locations manually, by LAT and LONG: `GET /four_square`, data: `{four_square: {query: STRING, lat: FLOAT, long, FLOAT}}`
+2. Get foursquare locations for a saved upload: `GET /four_square/:id`, (optional) data: `{four_square: {query}}`
+
+`:id` is the id of a saved upload object.
+*query* is a string to be matched against nearby results.
 
 #### Uploads
 
@@ -59,8 +63,8 @@ The rest of the endpoints are described briefly below.
 5. (Auth needed) Delete: `DELETE /uploads/:id`
 6. Get all uploads `GET /uploads`
 
-`:id` is the id of an upload object.
-*Note*: There is a `photos` attribute to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
+Again, `:id` is the id of a saved upload object.
+*Note*: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
 
 #### Favorites
 
