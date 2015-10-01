@@ -16,6 +16,10 @@ Rails.application.routes.draw do
   
   get 'home' => 'home#index', as: :home
   
+  get 'explore' => 'uploads#explore'
+  get 'locations' =>  'uploads#locations'
+  get 'events' => 'uploads#events'
+  
   # You can have the root of your site routed with "root"
   root 'uploads#index'
   

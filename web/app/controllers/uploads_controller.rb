@@ -1,13 +1,40 @@
 class UploadsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, except: [:index, :show], if: lambda { |c| c.request.format.json? }
-  acts_as_token_authentication_handler_for User, except: [:index, :show], if: lambda { |c| c.request.format.json? }, fallback: :exception
-  before_filter :authenticate_user!, except: [:index, :show], unless: lambda { |c| c.request.format.json? }
+  guest_array = [:locations,:events,:index,:show,:explore]
+  
+  skip_before_filter :verify_authenticity_token, except: guest_array, if: lambda { |c| c.request.format.json? }
+  acts_as_token_authentication_handler_for User, except: guest_array, if: lambda { |c| c.request.format.json? }, fallback: :exception
+  before_filter :authenticate_user!, except: guest_array, unless: lambda { |c| c.request.format.json? }
   
   before_filter :ensure_upload, only: [:create, :update]
   before_action :set_upload, only: [:show, :edit, :update, :destroy]
 
   ## JSON routes
   ##############
+  
+  def explore
+    events = Upload.pluck(:tags).uniq
+    data = Hash.new
+    events.each do |o|
+      @uploads = Upload.where(tags: o)
+      filter_uploads
+      data[o] = @uploads
+    end
+    respond_to do |format|
+      format.json { render json: {num_of_events: events.size, events: data} }
+    end
+  end
+  def events
+    events = Upload.pluck(:tags).uniq
+    respond_to do |format|
+      format.json { render json: {num_of_events: events.size, events: events} }
+    end
+  end
+  def locations
+    locations = Upload.pluck(:location).uniq
+    respond_to do |format|
+      format.json { render json: {num_of_locations: locations.size, locations: locations} }
+    end
+  end
   
   # GET /uploads/1
   # GET /uploads/1.json
@@ -124,6 +151,6 @@ class UploadsController < ApplicationController
    end
  
    def upload_params
-      params.require(:upload).permit(:location, :photo, :tags, :copyright, :photos => [])
+      params.require(:upload).permit(:location, :photo, :event, :copyright, :photos => [])
    end
 end

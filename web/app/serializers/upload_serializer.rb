@@ -1,10 +1,15 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :message, :id, :user_id, :photo_url, :height, :width, :location, :tags, :lat, :long, :time, :current_user_purchased, :current_user_favorited, :thumb_width, :thumb_height, :thumb_photo_url
+  attributes :message, :id, :user_id, :photo_url, :height, :width, :location, :event, :lat, :long, :time, :num_purchases, :current_user_purchased, :num_favorites, :current_user_favorited, :thumb_width, :thumb_height, :thumb_photo_url
   has_one :user
   
   BASE_URL = 'http://localhost:3000'
   MISSING = "MISSING PHOTO URL"
   MISSING_THUMB = "MISSING THUMB PHOTO URL"
+  
+  # 'event' is overwritten so that 'event' = 'tags'
+  def event
+    object.tags
+  end
   
   def current_user_purchased
     if scope
@@ -12,6 +17,13 @@ class UploadSerializer < ActiveModel::Serializer
       return o.created_at if o
     end
     nil
+  end
+  
+  def num_purchases
+    object.purchases.size
+  end
+  def num_favorites
+    object.favorites.size
   end
   
   def current_user_favorited

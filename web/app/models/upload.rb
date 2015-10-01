@@ -5,21 +5,33 @@ class Upload < ActiveRecord::Base
   
   # Create a dummy 'photos' attribute for bulk uploads
   attr_accessor :photos
+  # 'tags' is now 'event', but will remain 'tags' within the database.
+  # Therefore, 'event' is a fake instance variable that is filled into 'tags'. 
+  attr_accessor :event
   
   before_save :set_metadata
   
   validates_presence_of :photo
   
-  scope :match_copyright, ->(copyright) do
-    where(copyright: copyright)
-  end
-  # These attributes (tags and location) should have text searching, but that would require database changes.
-  # To make things simpler for the team this cycle, text matching is simulated here.
-  scope :match_tags, ->(tags) do
-      tags_as_sql ="%(#{tags.split.join('|')})%"
-      where("? SIMILAR TO tags", tags_as_sql)
-  end
+  scope :match_copyright, ->(copyright) { where(copyright: copyright) }
+  scope :match_tags, ->(tags) { where("? ILIKE tags", "%#{tags}%") }
   scope :match_location, ->(location) { where("? ILIKE location", "%#{location}%") }
+  
+  scope :after, ->(date) { where("time > ?", date) }
+  scope :before, ->(date) { where("time < ?", date) }
+  def self.sort_by(opt)
+    opt = opt.downcase.strip
+    opt = "tags" if opt == "event"
+    if opt == "most_favorited"
+      joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id)")
+    elsif opt == "most_purchased"
+      joins("LEFT JOIN purchases ON upload_id = uploads.id").group("uploads.id").order("count(purchases.id)")
+    elsif self.column_names.include?(opt)
+      order("#{opt} desc")
+    else # opt == "created_at"
+      order("time desc")
+    end
+  end
   
   # photo logic from `Carrierwave` uploader
   mount_base64_uploader :photo, PhotoUploader
@@ -37,6 +49,7 @@ class Upload < ActiveRecord::Base
     # default t.integer "copyright" to 0
     self.copyright = 0 unless self.copyright == 1
     # t.text "tags" should also be created at this time.
+    self.tags = self.event
     # t.string "location" should also be created at this time.
   end
   

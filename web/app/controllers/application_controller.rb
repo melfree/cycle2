@@ -12,10 +12,17 @@ class ApplicationController < ActionController::Base
     if search and @uploads
       l = search[:location]
       @uploads = @uploads.match_location(l) if l and !l.blank?
-      t = search[:tags]
+      t = search[:event]
       @uploads = @uploads.match_tags(t) if t and !t.blank?
       c = search[:copyright]
       @uploads = @uploads.match_copyright(c) if c and !c.blank?
+      
+      s = search[:sort]
+      @uploads = @uploads.sort_by(s) if s and !s.blank?
+      b = search[:before]
+      @uploads = @uploads.before(b) if b and !b.blank?
+      a = search[:after]
+      @uploads = @uploads.after(a) if a and !a.blank?
     end
   end
 end

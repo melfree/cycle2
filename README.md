@@ -38,15 +38,26 @@ For example:
 
 *To show the current user's uploads, which is a GET request, from terminal*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/uploads?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-*To upload photo, which is a POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAKGyMeGBohmJyb...\"],\"tags\":\"\",\"location\":\"\", \"copyright\":\"0\"}}"`
+*To upload photo, which is a POST request*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/uploads' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\",\"upload\":{\"photos\":[\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAKGyMeGBohmJyb...\"],\"event\":\"\",\"location\":\"\", \"copyright\":\"0\"}}"`
 
 *Get favorites*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-*Get only favorites with copyright = 0*: curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites' -d "{\"search\":{\"copyright\":\"0\", \"tags\":\"\", \"location\": \"\"}, \"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"
+*Get only favorites with copyright = 0*: curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites' -d "{\"search\":{\"copyright\":\"0\", \"event\":\"\", \"location\": \"\"}, \"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"
 
 *Create favorite for an upload with id of 8*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/favorites/8' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"`
 
 All endpoints are summarized briefly below.
+
+#### Explore
+
+1. (**Searchable**) Get event-grouped uploads: `GET /explore`
+2. Get list of all unique locations in use: `GET /locations`
+3. Get list of all unique events in use: `GET /events`
+
+**Searchable**: This means that this route can also take optional data:
+`{search: {location: 'SOME VALUE', copyright: '0', event: 'SOME VALUE', before: '2015-09-30', after: '2015-09-29', sort: 'time'}}` to filter output.
+`sort` takes as input `most_favorited`, `most_purchased`, or any attribute name of Upload (like `time` or `created_at`).
+For `/explore`, `sort` is a secondary sort within the event grouping. 
 
 #### Foursquare
 
@@ -59,16 +70,14 @@ All endpoints are summarized briefly below.
 #### Uploads
 
 1. (Auth needed, **Searchable**) Get all of the logged-in user's uploads: `GET /myphotos`
-2. (Auth needed) Create: `POST /uploads`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER, photo: PHOTO, photos: [PHOTOS_ARRAY])}`
-3. (Auth needed) Update: `PATCH /uploads/:id`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER)}`
+2. (Auth needed) Create: `POST /uploads`, data: `{upload: {location: STRING, event: STRING, copyright: INTEGER, photo: PHOTO, photos: [PHOTOS_ARRAY])}`
+3. (Auth needed) Update: `PATCH /uploads/:id`, data: `{upload: {location: STRING, event: STRING, copyright: INTEGER)}`
 4. Get any one upload: `GET /uploads/:id`
 5. (Auth needed) Delete: `DELETE /uploads/:id`
 6. (**Searchable**) Get all uploads `GET /uploads`
 
-Again, `:id` is the id of a saved upload object. `copyright` of 0 means 'free-to-use', while a copyright of 1 means 'proprietary'. `location` is optional and, theoretically, the name of a FourSquare location that was selected from a dropdown by the user. `tags` is an optional space-separated text to be used for searching.
-**Note**: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
-
-**Searchable**: This means that this route can also take optional data: `{search: {location: VAL, copyright: VAL, tags: VAL}}` to filter output. An upload must have the matching `copyright` or `location` but only needs one matching tag (`tags` is a basic space-separated search string).
+Again, `:id` is the id of a saved upload object. `copyright` of 0 means 'free-to-use', while a copyright of 1 means 'proprietary'. `location` is optional and, theoretically, the name of a FourSquare location that was selected from a dropdown by the user. `event` is required.
+**Note**: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, event, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
 
 #### Favorites
 
