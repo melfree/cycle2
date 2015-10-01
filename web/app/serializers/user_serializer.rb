@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :created_at, :user_token
+  attributes :user_email, :user_token, :last_sign_in_at, :created_at
   
   def user_token
     if scope and scope.id == object.id
@@ -8,4 +8,5 @@ class UserSerializer < ActiveModel::Serializer
       "FILTERED"
     end
   end
+  
 end

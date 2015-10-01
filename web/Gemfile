@@ -33,6 +33,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'foursquare2'
 gem 'simple_token_authentication', '~> 1.0' # see semver.org
 gem 'rack-cors', :require => 'rack/cors'
 
