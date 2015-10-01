@@ -10,6 +10,17 @@ class Upload < ActiveRecord::Base
   
   validates_presence_of :photo
   
+  scope :match_copyright, ->(copyright) do
+    where(copyright: copyright)
+  end
+  # These attributes (tags and location) should have text searching, but that would require database changes.
+  # To make things simpler for the team this cycle, text matching is simulated here.
+  scope :match_tags, ->(tags) do
+      tags_as_sql ="%(#{tags.split.join('|')})%"
+      where("? SIMILAR TO tags", tags_as_sql)
+  end
+  scope :match_location, ->(location) { where("? ILIKE location", "%#{location}%") }
+  
   # photo logic from `Carrierwave` uploader
   mount_base64_uploader :photo, PhotoUploader
   

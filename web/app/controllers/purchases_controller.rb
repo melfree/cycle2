@@ -20,10 +20,11 @@ class FavoritesController < ApplicationController
   # GET /purchases.json
   # GET /purchases
   def index
-    @purchases = current_user.purchases.map{|o| o.upload}
+    @uploads = current_user.purchase_uploads
+    filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {purchases: @purchases} }
+      format.json { render json: {purchases: @uploads} }
     end
   end
   

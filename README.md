@@ -42,9 +42,11 @@ For example:
 
 *Get favorites*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites?user_email=test@aol.com&user_token=wUdznDo5WJuTMshpJZeo'`
 
-*Favorite upload with id of 8*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/favorites/8' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"`
+*Get only favorites with copyright = 0*: curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X GET 'http://localhost:3000/favorites' -d "{\"search\":{\"copyright\":\"0\", \"tags\":\"\", \"location\": \"\"}, \"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"
 
-The rest of the endpoints are described briefly below.
+*Create favorite for an upload with id of 8*: `curl -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST 'http://localhost:3000/favorites/8' -d "{\"user_email\":\"test@aol.com\",\"user_token\":\"wUdznDo5WJuTMshpJZeo\"}"`
+
+All endpoints are summarized briefly below.
 
 #### Foursquare
 
@@ -56,19 +58,21 @@ The rest of the endpoints are described briefly below.
 
 #### Uploads
 
-1. (Auth needed) Get all of the logged-in user's uploads: `GET /myphotos`
+1. (Auth needed, **Searchable**) Get all of the logged-in user's uploads: `GET /myphotos`
 2. (Auth needed) Create: `POST /uploads`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER, photo: PHOTO, photos: [PHOTOS_ARRAY])}`
 3. (Auth needed) Update: `PATCH /uploads/:id`, data: `{upload: {location: STRING, tags: STRING, copyright: INTEGER)}`
 4. Get any one upload: `GET /uploads/:id`
 5. (Auth needed) Delete: `DELETE /uploads/:id`
-6. Get all uploads `GET /uploads`
+6. (**Searchable**) Get all uploads `GET /uploads`
 
-Again, `:id` is the id of a saved upload object. `copyright` of 0 means 'free-to-use', while a copyright of 1 means 'proprietary'. `location` is optional and, theoretically, the name of a foursquare location that was selected from a dropdown by the user. `tags` is just an optional comma-separated text to be used for searching.
+Again, `:id` is the id of a saved upload object. `copyright` of 0 means 'free-to-use', while a copyright of 1 means 'proprietary'. `location` is optional and, theoretically, the name of a FourSquare location that was selected from a dropdown by the user. `tags` is an optional space-separated text to be used for searching.
 **Note**: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
+
+**Searchable**: This means that this route can also take optional data: `{search: {location: VAL, copyright: VAL, tags: VAL}}` to filter output. An upload must have the matching `copyright` or `location` but only needs one matching tag (`tags` is a basic space-separated search string).
 
 #### Favorites
 
-1. (Auth needed) Get all of logged-in user's favorites: `GET /favorites`
+1. (Auth needed, **Searchable**) Get all of logged-in user's favorites: `GET /favorites`
 2. (Auth needed) Add a favorite for the logged-in user: `POST /favorites/:id`
 3. (Auth needed) Unfavorite: `DELETE /favorites/:id`
 
@@ -76,7 +80,7 @@ Again, `:id` is the id of an upload object.
 
 #### Purchases
 
-1. (Auth needed) Get all of logged-in user's purchases: `get /purchases`
+1. (Auth needed, **Searchable**) Get all of logged-in user's purchases: `get /purchases`
 2. (Auth needed) Add a purchase for the logged-in user: `POST /purchases/:id`
 
 Again, `:id` is the id of an upload object.

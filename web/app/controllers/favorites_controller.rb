@@ -20,10 +20,11 @@ class FavoritesController < ApplicationController
   # GET /favorites.json
   # GET /favorites
   def index
-    @favorites = current_user.favorites.map{|o| o.upload}
+    @uploads = current_user.favorite_uploads
+    filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {favorites: @favorites} }
+      format.json { render json: {favorites: @uploads} }
     end
   end
   
@@ -56,8 +57,7 @@ class FavoritesController < ApplicationController
       format.html { redirect_to uploads_url, notice: notice }
       format.json { render json: {notice: notice} }
     end
-  end
-  
+  end 
   
  private
    def set_favorite

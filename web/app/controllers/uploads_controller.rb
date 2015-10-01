@@ -22,6 +22,7 @@ class UploadsController < ApplicationController
   # GET /myphotos
   def myphotos
     @uploads = current_user.uploads
+    filter_uploads
     respond_to do |format|
       format.html
       format.json { render json: {uploads: @uploads} }
@@ -31,7 +32,8 @@ class UploadsController < ApplicationController
   # GET /uploads.json
   # GET /uploads
   def index
-    @uploads = Upload.all
+    @uploads = Upload.where(nil)
+    filter_uploads
     respond_to do |format|
       format.html
       format.json { render json: {uploads: @uploads} }
