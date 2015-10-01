@@ -63,8 +63,8 @@ The rest of the endpoints are described briefly below.
 5. (Auth needed) Delete: `DELETE /uploads/:id`
 6. Get all uploads `GET /uploads`
 
-Again, `:id` is the id of a saved upload object.
-*Note*: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
+Again, `:id` is the id of a saved upload object. `copyright` of 0 means 'free-to-use', while a copyright of 1 means 'proprietary'. `location` is optional and, theoretically, the name of a foursquare location that was selected from a dropdown by the user. `tags` is just an optional comma-separated text to be used for searching.
+**Note**: There is a `photos` attribute for `uploads` to allow for simultaneous multiple upload of photos. When uploading photos, if `photos` exists and is an array of multiple photos, each photo will became its own Upload object, but all the Uploads will share the same location, tags, and copyright values. For simple single upload, an array of 1 value in `photos` works, or `photo` works.
 
 #### Favorites
 
