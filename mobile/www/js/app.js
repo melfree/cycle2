@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngResource'])
+var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'starter.services', 'ngResource'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -36,6 +36,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // Each state's controller can be found in controllers.js
   $stateProvider
 
+  .state('redirect', {
+    url: '/redirect',
+    templateUrl: 'templates/login.html',
+    controller: 'RedirectCtrl'
+  })
+  
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
@@ -82,7 +88,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       views: {
         'tab-myPhoto': {
           templateUrl: 'templates/tab-myPhoto.html',
-          controller: 'PurchaseCtrl'
+          controller: 'MyPhotoCtrl'
         }
       }
     })
@@ -117,6 +123,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/redirect');
 
 });

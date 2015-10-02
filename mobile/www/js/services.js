@@ -12,6 +12,16 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/users/sign_out.json");
 })
 
+.factory('Upload', function ($resource) {
+  return $resource("http://localhost:3000/uploads/:id.json", {id: '@id'}, {
+      // All other CRUD operations are available to factories by default
+      update: {
+          method: 'PUT'
+        } 
+    }
+  );
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

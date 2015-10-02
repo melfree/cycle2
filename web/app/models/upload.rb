@@ -42,7 +42,7 @@ class Upload < ActiveRecord::Base
     self.width = exifr.width #t.integer "width"
     self.height = exifr.height #t.integer "height"
     self.time = exifr.date_time #t.datetime "time"
-    if exifr.exif?
+    if exifr.exif? and exifr.gps
       self.lat = exifr.gps.latitude #t.float "lat"
       self.long = exifr.gps.longitude #t.float "long"
     end

@@ -1,13 +1,24 @@
 angular.module('starter.controllers', [])
 
+.controller('RedirectCtrl', function($scope, $location, $window) {
+    var email = $window.localStorage['userEmail'];
+    if (email) {
+        console.log("already logged in as " + email);
+        $location.path('/tab/explore');
+    } else {
+      console.log("please login");
+      $location.path('/login');
+    }
+})
+
 .controller('LoginCtrl', function($scope, $location, $window, Login, $ionicPopup, $rootScope) {
   $scope.data = {};
 
   $scope.login = function() {
     Login.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userId'] = data.id;
-        $window.localStorage['userName'] = data.name;
+        $window.localStorage['userToken'] = data.user_token;
+        $window.localStorage['userEmail'] = data.user_email;
         $location.path('/tab/explore');
       },
       function(err){
@@ -53,6 +64,36 @@ angular.module('starter.controllers', [])
   });*/
 })
 
+.controller('MyPhotoCtrl', function($scope,Upload,$window) {
+  $scope.upload = new Upload();
+  $scope.upload.photos = [];
+  
+  $scope.processFiles = function(files){
+    angular.forEach(files, function(flowFile, i){
+       var fileReader = new FileReader();
+          fileReader.onload = function (event) {
+            var uri = event.target.result;
+              $scope.upload.photos[i] = uri;     
+          };
+          fileReader.readAsDataURL(flowFile.file);
+    });
+  };
+  
+  $scope.saveUpload = function () {
+    
+    
+    
+    $scope.upload.event = "Test Event";
+    $scope.upload.location = "Test Location";
+    Upload.save({upload: $scope.upload,
+                 user_token: $window.localStorage['userToken'],
+                 user_email: $window.localStorage['userEmail']}, function(data) {
+      console.log(data);
+    });
+  }
+})
+
+
 .controller('PurchaseCtrl', function($scope) {
   $scope.title=' ';
 })
@@ -78,7 +119,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AccountCtrl', function($scope, Logout, $location, $ionicPopup, $rootScope ) {
+.controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {
   $scope.settings = {
     enableFriends: true
   };
@@ -87,8 +128,8 @@ angular.module('starter.controllers', [])
     // This database call might not be necessary, if all that's needed is to removeItems...
     Logout.delete(
       function(data){
-        window.localStorage.removeItem('userId');
-        window.localStorage.removeItem('userName');
+        $window.localStorage.removeItem('userToken');
+        $window.localStorage.removeItem('userEmail');
         $location.path('/login');
       },
       function(err){

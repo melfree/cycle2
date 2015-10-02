@@ -40,10 +40,27 @@
   <div class="col"><img src="img/1.jpg" width="150" height="150"></div>
   <div class="col"><img src="img/2.jpg" width="150" height="150"></div>
 </div>
-<div class="row">
-   <div class="col text-center">
-      <button class="button button-calm">Upload Photo</button>
-   </div>
+<div class="row"> 
+  <div class="col text-center">
+    
+      <div flow-init flow-image-resize flow-files-added="processFiles($files)">
+        <input type="file" flow-btn />
+        
+        OR
+        
+        <div flow-btn flow-drop class="alert">Drag and drop photos here</div>
+        <button class="button-calm button" ng-click="saveUpload()">Upload Photos</button>
+  <table>
+    <tr ng-repeat="file in $flow.files">
+        <td>{{$index+1}}</td>
+        <td><img my-flow-img="file"/></td>
+        <td>{{file.size}}</td>
+        <td>{{file.msg}}</td>
+    </tr>
+  </table>
+</div>
+      
+  </div>
 </div>
   </ion-content>
 </ion-view>
