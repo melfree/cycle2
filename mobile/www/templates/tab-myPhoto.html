@@ -35,7 +35,7 @@
 
 </div>
   <div ng-repeat="myPhoto in myPhotos">
-    <div>Thumb url: {{myPhoto.photo_thumb_url}}</div>
+    <div>Thumb url: {{myPhoto.thumb_url}}</div>
     <img ng-src="{{myPhoto.thumb_url}}"/>
     <div>Time derived from EXIF: {{myPhoto.time}}</div>
     <div>Posted at: {{myPhoto.created_at}}</div>
@@ -51,22 +51,40 @@
 </div>-->
 <hr/>
 
-<div class="row"> 
+<div class="row">
+  
   <div class="col text-center">
-    
       <div flow-init flow-image-resize flow-files-added="processFiles($files)">
-        <div style="border: dashed; margin: 10px; padding: 20px 10px;" flow-btn flow-drop class="alert">
-          <b>Drag and drop photos here OR click to choose files</b>
-        </div>
-        <button class="button-calm button" ng-click="saveUpload()">Upload Photos</button>
-  <table>
-    <tr ng-repeat="file in $flow.files">
-        <td>{{$index+1}}</td>
-        <td><img my-flow-img="file"/></td>
-        <td>{{file.size}}</td>
-        <td>{{file.msg}}</td>
-    </tr>
-  </table>
+        {{$flow.files.length}} photo(s) selected
+        <div>
+        <ul style="list-style-type: none;" ng-repeat="file in $flow.files">
+          <li><img my-flow-img="file"/></li><!-- <li>{{file.size}}</li>-->
+        </ul>
+        </div>    
+        <span class="button" flow-btn>Select photos to upload</span>
+      </div>
+  
+  <div class="row">
+  <div class="col">
+    <label class="item item-input">
+    <div class="input-label">
+      Event
+    </div>
+    <input ng-model="upload.event">
+  </label>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col">
+    <label class="item item-input item-select">
+    <div class="input-label">
+      Location
+    </div>
+    <input ng-model="upload.location">
+  </label>
+  </div>
+  </div>
+  <button class="button-calm button" ng-click="saveUpload()">Upload</button>
 </div>
       
   </div>

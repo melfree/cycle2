@@ -1,5 +1,5 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :id, :user_id,  :thumb_url, :photo_url, :height, :width, :location, :event, :lat, :long, :time, :num_purchases, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
+  attributes :id, :user_id,  :thumb_url, :photo_url, :height, :width, :location, :copyright, :event, :lat, :long, :time, :num_purchases, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
   has_one :user
   
   BASE_URL = 'http://localhost:3000'
