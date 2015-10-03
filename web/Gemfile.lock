@@ -80,6 +80,9 @@ GEM
       hashie (>= 1.0, < 4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    goldiloader (0.0.9)
+      activerecord (>= 3.2, < 4.3)
+      activesupport (>= 3.2, < 4.3)
     haml (4.0.7)
       tilt
     hashie (3.4.2)
@@ -189,6 +192,7 @@ DEPENDENCIES
   devise
   exifr
   foursquare2
+  goldiloader
   haml
   jbuilder (~> 2.0)
   jquery-rails

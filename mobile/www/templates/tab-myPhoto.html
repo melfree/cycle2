@@ -34,21 +34,30 @@
   </div>
 
 </div>
-</div>
+  <div ng-repeat="myPhoto in myPhotos">
+    <div>Thumb url: {{myPhoto.photo_thumb_url}}</div>
+    <img ng-src="{{myPhoto.thumb_url}}"/>
+    <div>Time derived from EXIF: {{myPhoto.time}}</div>
+    <div>Posted at: {{myPhoto.created_at}}</div>
+    <div>Copyright status: {{myPhoto.copyright}}</div>
+    <div>Location:  {{myPhoto.location}}</div>
+    <div>Event:  {{myPhoto.event}}</div>
+  </div>
+<!--</div>
     <h5>Septembre, 2015</h5>
         <div class="row">
   <div class="col"><img src="img/1.jpg" width="150" height="150"></div>
   <div class="col"><img src="img/2.jpg" width="150" height="150"></div>
-</div>
+</div>-->
+<hr/>
+
 <div class="row"> 
   <div class="col text-center">
     
       <div flow-init flow-image-resize flow-files-added="processFiles($files)">
-        <input type="file" flow-btn />
-        
-        OR
-        
-        <div flow-btn flow-drop class="alert">Drag and drop photos here</div>
+        <div style="border: dashed; margin: 10px; padding: 20px 10px;" flow-btn flow-drop class="alert">
+          <b>Drag and drop photos here OR click to choose files</b>
+        </div>
         <button class="button-calm button" ng-click="saveUpload()">Upload Photos</button>
   <table>
     <tr ng-repeat="file in $flow.files">

@@ -12,6 +12,10 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/users/sign_out.json");
 })
 
+.factory('myPhoto', function ($resource) {
+  return $resource("http://localhost:3000/myphotos.json");
+})
+
 .factory('Upload', function ($resource) {
   return $resource("http://localhost:3000/uploads/:id.json", {id: '@id'}, {
       // All other CRUD operations are available to factories by default

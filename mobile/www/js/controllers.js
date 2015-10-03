@@ -64,10 +64,17 @@ angular.module('starter.controllers', [])
   });*/
 })
 
-.controller('MyPhotoCtrl', function($scope,Upload,$window) {
-  $scope.upload = new Upload();
+.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,$window) {
+  $scope.upload = {};
+  $scope.myPhotos = {};
   $scope.upload.photos = [];
   
+  //initialize myPhotos
+  myPhoto.query({user_token: $window.localStorage['userToken'],
+               user_email: $window.localStorage['userEmail']}, function(data) {
+                  $scope.myPhotos = data;
+                });
+  // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
     angular.forEach(files, function(flowFile, i){
        var fileReader = new FileReader();
@@ -79,15 +86,15 @@ angular.module('starter.controllers', [])
     });
   };
   
+  // Upload the batch, including the photos array.
   $scope.saveUpload = function () {
-    
-    
-    
     $scope.upload.event = "Test Event";
     $scope.upload.location = "Test Location";
     Upload.save({upload: $scope.upload,
                  user_token: $window.localStorage['userToken'],
                  user_email: $window.localStorage['userEmail']}, function(data) {
+      // There will be some feedback to the user here.
+      $scope.myPhotos = data;
       console.log(data);
     });
   }
