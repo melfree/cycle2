@@ -13,7 +13,7 @@ class FavoritesController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: {purchase: @purchase.upload} }
+      format.json { render json: @purchase.upload }
     end
   end
 
@@ -24,7 +24,7 @@ class FavoritesController < ApplicationController
     filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {purchases: @uploads} }
+      format.json { render json: @uploads }
     end
   end
   
@@ -39,7 +39,7 @@ class FavoritesController < ApplicationController
       if @purchase.save
         notice = 'Photo was successfully purchased.' 
         format.html { redirect_to uploads_url, notice: notice}
-        format.json { render json: {notice: notice, purchase: @purchase.upload}, status: :created }
+        format.json { render json: @purchase.upload, status: :created }
       else
         format.html { render :new }
         format.json { render json: {errors: @purchase.errors}, status: :unprocessable_entity }

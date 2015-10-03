@@ -41,7 +41,7 @@ class UploadsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: {upload: @upload} }
+      format.json { render json: @upload }
     end
   end
 
@@ -52,7 +52,7 @@ class UploadsController < ApplicationController
     filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {uploads: @uploads} }
+      format.json { render json: @uploads }
     end
   end
 
@@ -63,7 +63,7 @@ class UploadsController < ApplicationController
     filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {uploads: @uploads} }
+      format.json { render json: @uploads }
     end
   end
   
@@ -75,7 +75,7 @@ class UploadsController < ApplicationController
       if @upload.update(upload_params)
         notice ='Upload was successfully saved.'
         format.html { redirect_to @upload, notice: notice }
-        format.json { render json: {notice: notice, upload: @upload}, status: :ok }
+        format.json { render json: @upload, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: {errors: @upload.errors}, status: :unprocessable_entity }
@@ -106,7 +106,7 @@ class UploadsController < ApplicationController
       if success
         notice = 'Upload was successfully saved.'
         format.html { redirect_to uploads_url, notice: notice }
-        format.json { render json: {notice: notice, uploads: current_user.uploads}, status: :created }
+        format.json { render json: current_user.uploads, status: :created }
       else
         format.html { render :new }
         format.json { render json: {errors: @upload.errors}, status: :unprocessable_entity }
