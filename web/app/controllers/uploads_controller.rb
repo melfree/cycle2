@@ -62,7 +62,12 @@ class UploadsController < ApplicationController
     @uploads = Upload.where(nil)
     filter_uploads
     respond_to do |format|
-      format.html
+      format.html {
+        if current_user
+          @favorites = current_user.favorite_uploads
+          @purchases = current_user.purchase_uploads
+        end
+      }
       format.json { render json: @uploads }
     end
   end

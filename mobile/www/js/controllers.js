@@ -126,7 +126,7 @@ angular.module('starter.controllers', [])
                  user_email: $window.localStorage['userEmail']}, function(data) {
       // There will be some feedback to the user here.
       $scope.myPhotos = data;
-      $flow.files = [];
+      $flow.cancel();
       $scope.upload.photos = [];
     });
   }
@@ -152,10 +152,22 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('ChatDetailCtrl', function($scope,$stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
     console.log($scope.chat);
+})
 
+.controller('MyPhotoDetailCtrl', function($scope, $window,  $stateParams, myPhoto) {
+    console.log('hahaa');
+    $scope.photo={};
+    myPhoto.query({user_token: $window.localStorage['userToken'],
+               user_email: $window.localStorage['userEmail']}, function(data) {
+                  for(var i =0;i<data.length;i++){
+                    if(data[i].id==$stateParams.photoId){
+                      $scope.photo=data[i];
+                    }
+                  }
+                });
 })
 
 .controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {

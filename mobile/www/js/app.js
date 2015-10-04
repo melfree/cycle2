@@ -93,6 +93,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
 
+    .state('tab.photo-detail', {
+      url: '/myPhoto/:photoId',
+      views: {
+        'tab-myPhoto': {
+          templateUrl: 'templates/photo-detail.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
+
     .state('tab.purchase', {
       url: '/purchase',
       views: {
