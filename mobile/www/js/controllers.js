@@ -3,7 +3,6 @@ angular.module('starter.controllers', [])
 .controller('RedirectCtrl', function($scope, $location, $window) {
     var email = $window.localStorage['userEmail'];
     if (email) {
-        console.log("already logged in as " + email);
         $location.path('/tab/explore');
     } else {
       console.log("please login");
@@ -64,38 +63,71 @@ angular.module('starter.controllers', [])
   });*/
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,$window) {
+.controller('MyPhotoCtrl', function($scope,$filter,myPhoto,Upload,Foursquare,$window) {
   $scope.upload = {};
   $scope.myPhotos = {};
   $scope.upload.photos = [];
+
+  $scope.locations = [];
+  
+  $scope.foursquare = {};
+  
+  // Converter function for GPS coordinates
+  var toDecimal = function (n) {
+       if (n) { return n[0].numerator + n[1].numerator /
+           (60 * n[1].denominator) + n[2].numerator / (3600 * n[2].denominator);
+       } else { return null; }
+   };
   
   //initialize myPhotos
   myPhoto.query({user_token: $window.localStorage['userToken'],
-               user_email: $window.localStorage['userEmail']}, function(data) {
-                  $scope.myPhotos = data;
+                 user_email: $window.localStorage['userEmail']}, function(data) {
+                $scope.myPhotos = data;
                 });
+  
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
     angular.forEach(files, function(flowFile, i){
-       var fileReader = new FileReader();
-          fileReader.onload = function (event) {
-            var uri = event.target.result;
-              $scope.upload.photos[i] = uri;     
-          };
-          fileReader.readAsDataURL(flowFile.file);
+      // Convert file to json
+        var fileReader = new FileReader();
+        fileReader.onload = function (event) {
+          var uri = event.target.result;
+          $scope.upload.photos[i] = uri;
+        };
+        fileReader.readAsDataURL(flowFile.file);
+          
+        //All EXIF processing happens here.
+        EXIF.getData(flowFile.file, function(){
+            var lat = toDecimal(EXIF.getTag(this, 'GPSLatitude'));
+            var long = toDecimal(EXIF.getTag(this, 'GPSLongitude'));
+            if (lat) {
+              console.log("EXIF coordinates found.");
+              $scope.foursquare.lat = lat;
+              $scope.foursquare.long = long;
+              // Get the locations that match the EXIF GPS coordinates.
+              Foursquare.get({'foursquare[lat]': $scope.foursquare.lat,
+                              'foursquare[long]': $scope.foursquare.long}, function(e) {
+                  console.log(e);
+                  // Add new locations to our list
+                  $scope.locations = e.results;
+                });
+            } else {
+              console.log("EXIF coordinates NOT found.");
+            }
+        });
+          
     });
   };
   
-  // Upload the batch, including the photos array.
+  // Upload the batch (the photos array).
   $scope.saveUpload = function () {
-    $scope.upload.event = "Test Event";
-    $scope.upload.location = "Test Location";
     Upload.save({upload: $scope.upload,
                  user_token: $window.localStorage['userToken'],
                  user_email: $window.localStorage['userEmail']}, function(data) {
       // There will be some feedback to the user here.
       $scope.myPhotos = data;
-      console.log(data);
+      $flow.files = [];
+      $scope.upload.photos = [];
     });
   }
 })

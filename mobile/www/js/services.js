@@ -16,6 +16,11 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/myphotos.json");
 })
 
+.factory('Foursquare', function ($resource) {
+  return $resource("http://localhost:3000/foursquare.json");
+})
+
+
 .factory('Upload', function ($resource) {
   return $resource("http://localhost:3000/uploads/:id.json", {id: '@id'}, {
       // All other CRUD operations are available to factories by default

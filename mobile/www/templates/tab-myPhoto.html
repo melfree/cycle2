@@ -56,7 +56,10 @@
   <div class="col text-center">
       <div flow-init flow-image-resize flow-files-added="processFiles($files)">
         {{$flow.files.length}} photo(s) selected
-        <div>
+      <div>
+  </div>
+      
+      <div style="padding: 10px;">
         <ul style="list-style-type: none;" ng-repeat="file in $flow.files">
           <li><img my-flow-img="file"/></li><!-- <li>{{file.size}}</li>-->
         </ul>
@@ -80,7 +83,9 @@
     <div class="input-label">
       Location
     </div>
-    <input ng-model="upload.location">
+    <select ng-model="upload.location">
+      <option ng-repeat="location in locations track by $index" value="{{location}}">{{location}}</option>
+    </select>
   </label>
   </div>
   </div>
