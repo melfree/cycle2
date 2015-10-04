@@ -41,7 +41,7 @@ class FavoritesController < ApplicationController
         format.html { redirect_to uploads_url, notice: notice }
         format.json { render json: @favorite.upload, status: :created }
       else
-        format.html { render :new }
+        format.html { redirect_to uploads_url, notice: 'That photo is already favorited' }
         format.json { render json: {errors: @favorite.errors}, status: :unprocessable_entity }
       end
       
