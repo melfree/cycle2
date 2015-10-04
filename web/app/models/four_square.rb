@@ -20,9 +20,7 @@ class FourSquare
   def search
     if lat and long
       results = client.search_venues(ll: "#{lat},#{long}", query: @query, limit: 20)
-      results.venues.map{|o| {name: o.name, lat: o.location.lat,
-                              long: o.location.lng, zip: o.location.postalCode,
-                              category: o.categories.map{|oo| oo.name}.join(", ")} }
+      {results: results.venues.map{|o| o.name}}
     elsif upload
       {error: "This upload does not have lat/long values"}
     elsif upload_id

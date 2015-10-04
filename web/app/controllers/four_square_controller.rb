@@ -7,13 +7,13 @@ class FourSquareController < ApplicationController
     @results = FourSquare.new(foursquare_params).search
     respond_to do |format|
       format.html
-      format.json { render json: {foursquare: @results} }
+      format.json { render json: @results }
     end
   end
     
   def show
     fs = if params[:foursquare]
-      FourSquare.new(four_square_params)
+      FourSquare.new(foursquare_params)
     else
       FourSquare.new
     end
@@ -22,7 +22,7 @@ class FourSquareController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.json { render json: {foursquare: @results} }
+      format.json { render json: @results }
     end
   end
     

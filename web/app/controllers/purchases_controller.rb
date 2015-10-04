@@ -1,4 +1,4 @@
-class FavoritesController < ApplicationController
+class PurchasesController < ApplicationController
   skip_before_filter :verify_authenticity_token, if: lambda { |c| c.request.format.json? }
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }

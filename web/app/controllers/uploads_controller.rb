@@ -89,17 +89,18 @@ class UploadsController < ApplicationController
   def create
     success = true
     photos = params[:upload].delete(:photos)
+    u = upload_params
     respond_to do |format|
       if photos ## Batch photo upload
         photos.each do |p|
-          @upload = Upload.new(upload_params)
+          @upload = Upload.new(u)
           @upload.user = current_user
           @upload.photo = p
           success = @upload.save
           break unless success
         end
       else # Simple single photo upload
-        @upload = Upload.new(upload_params)
+        @upload = Upload.new(u)
         @upload.user = current_user
         success = @upload.save
       end
