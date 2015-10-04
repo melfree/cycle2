@@ -36,7 +36,7 @@
 </div>
   <div ng-repeat="myPhoto in myPhotos">
     <div>Thumb url: {{myPhoto.thumb_url}}</div>
-    <img ng-src="{{myPhoto.thumb_url}}"/>
+    <a ng-href="#/tab/myPhoto/{{myPhoto.id}}"><img ng-src="{{myPhoto.thumb_url}}"/></a>
     <div>Time derived from EXIF: {{myPhoto.time}}</div>
     <div>Posted at: {{myPhoto.created_at}}</div>
     <div>Copyright status: {{myPhoto.copyright}}</div>
