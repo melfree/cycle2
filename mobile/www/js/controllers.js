@@ -68,6 +68,7 @@ angular.module('starter.controllers', [])
   $scope.upload.photos = [];
   $scope.flow = {};
   $scope.locations = [];
+  $scope.loading = false;
   
   // Initialize myPhotos.
   myPhoto.query(Auth, function(data) {
@@ -109,7 +110,8 @@ angular.module('starter.controllers', [])
   };
   
   // Upload the photos array.
-  $scope.saveUpload = function () {
+  $scope.saveUpload = function () { 
+    $scope.loading = true;
     Upload.save({upload: $scope.upload,
                  user_token: $window.localStorage['userToken'],
                  user_email: $window.localStorage['userEmail']}, function(data) {
@@ -119,7 +121,8 @@ angular.module('starter.controllers', [])
       $scope.upload = {};
       $scope.upload.photos = []; 
       $scope.locations = [];
-      $scope.flow.flow.cancel();
+      $scope.flow.flow.cancel();   
+      $scope.loading = false;
     });
   }
 })

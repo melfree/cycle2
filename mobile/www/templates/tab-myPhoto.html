@@ -89,7 +89,17 @@
       </label>
       </div>
     </div>
-    <button class="button-calm button" ng-click="saveUpload()">Upload</button>
+    
+    <button class="button-calm button" ng-click="saveUpload()">
+        <span data-ng-hide="loading">
+        Upload 
+        </span>
+        
+        <span data-ng-show="loading">
+        Uploading
+        <i class="fa fa-spinner fa-spin"></i>
+        </span>
+    </button>
 
   </form>
   
