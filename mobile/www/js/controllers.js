@@ -5,7 +5,6 @@ angular.module('starter.controllers', [])
     if (email) {
         $location.path('/tab/explore');
     } else {
-      console.log("please login");
       $location.path('/login');
     }
 })
@@ -67,10 +66,10 @@ angular.module('starter.controllers', [])
   $scope.upload = {};
   $scope.myPhotos = {};
   $scope.upload.photos = [];
+  
+  $scope.flow = {};
 
   $scope.locations = [];
-  
-  $scope.foursquare = {};
   
   // Converter function for GPS coordinates
   var toDecimal = function (n) {
@@ -94,22 +93,18 @@ angular.module('starter.controllers', [])
           var uri = event.target.result;
           $scope.upload.photos[i] = uri;
         };
-        fileReader.readAsDataURL(flowFile.file);
-          
+        fileReader.readAsDataURL(flowFile.file);        
         //All EXIF processing happens here.
         EXIF.getData(flowFile.file, function(){
             var lat = toDecimal(EXIF.getTag(this, 'GPSLatitude'));
             var long = toDecimal(EXIF.getTag(this, 'GPSLongitude'));
             if (lat) {
               console.log("EXIF coordinates found.");
-              $scope.foursquare.lat = lat;
-              $scope.foursquare.long = long;
               // Get the locations that match the EXIF GPS coordinates.
-              Foursquare.get({'foursquare[lat]': $scope.foursquare.lat,
-                              'foursquare[long]': $scope.foursquare.long}, function(e) {
-                  console.log(e);
-                  // Add new locations to our list
-                  $scope.locations = e.results;
+              Foursquare.get({'foursquare[lat]': lat,
+                              'foursquare[long]': long}, function(e) {
+                  // Any uniqueness filter should be applied here...
+                  $scope.locations = $scope.locations.concat( e.results );
                 });
             } else {
               console.log("EXIF coordinates NOT found.");
@@ -124,10 +119,13 @@ angular.module('starter.controllers', [])
     Upload.save({upload: $scope.upload,
                  user_token: $window.localStorage['userToken'],
                  user_email: $window.localStorage['userEmail']}, function(data) {
-      // There will be some feedback to the user here.
+      // Repopulate "my photos" to be up to date
       $scope.myPhotos = data;
-      $flow.cancel();
-      $scope.upload.photos = [];
+      // Reset form data
+      $scope.upload = {};
+      $scope.upload.photos = []; 
+      $scope.locations = [];
+      $scope.flow.flow.cancel();
     });
   }
 })

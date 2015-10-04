@@ -26,7 +26,10 @@ angular.module('starter.services', [])
       // All other CRUD operations are available to factories by default
       update: {
           method: 'PUT'
-        } 
+        },
+      save: {
+          method:'POST', isArray: true
+      }
     }
   );
 })
