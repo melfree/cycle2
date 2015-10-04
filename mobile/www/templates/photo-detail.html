@@ -1,5 +1,11 @@
 <ion-view view-title="tab-detail">
   <ion-content class="padding">
     <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
+    
+    <div>Time derived from EXIF: {{photo.time}}</div>
+    <div>Posted at: {{photo.created_at}}</div>
+    <div>Copyright status: {{photo.copyright}}</div>
+    <div>Location:  {{photo.location}}</div>
+    <div>Event:  {{photo.event}}</div>
   </ion-content>
 </ion-view>

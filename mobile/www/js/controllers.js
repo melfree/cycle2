@@ -63,9 +63,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,$window,Auth) {
-  $scope.upload = {};
+  $scope.upload = {photos: [], copyright: true};
   $scope.myPhotos = {};
-  $scope.upload.photos = [];
   $scope.flow = {};
   $scope.locations = [];
   $scope.loading = false;
@@ -118,8 +117,8 @@ angular.module('starter.controllers', [])
       // Repopulate "my photos" to be up to date
       $scope.myPhotos = data;
       // Reset form data
-      $scope.upload = {};
-      $scope.upload.photos = []; 
+      $scope.upload = {photos: [], copyright: true};
+      $scope.myPhotos = {};
       $scope.locations = [];
       $scope.flow.flow.cancel();   
       $scope.loading = false;

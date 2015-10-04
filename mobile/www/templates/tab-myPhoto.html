@@ -35,13 +35,7 @@
 
 </div>
   <div ng-repeat="myPhoto in myPhotos">
-    <div>Thumb url: {{myPhoto.thumb_url}}</div>
     <a ng-href="#/tab/myPhoto/{{myPhoto.id}}"><img ng-src="{{myPhoto.thumb_url}}"/></a>
-    <div>Time derived from EXIF: {{myPhoto.time}}</div>
-    <div>Posted at: {{myPhoto.created_at}}</div>
-    <div>Copyright status: {{myPhoto.copyright}}</div>
-    <div>Location:  {{myPhoto.location}}</div>
-    <div>Event:  {{myPhoto.event}}</div>
   </div>
 <!--</div>
     <h5>Septembre, 2015</h5>
@@ -87,6 +81,13 @@
           <option ng-repeat="location in locations track by $index" value="{{location}}">{{location}}</option>
         </select>
       </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ion-toggle ng-model="upload.copyright" toggle-class="toggle-calm">
+          Retain Copyright
+        </ion-toggle>
       </div>
     </div>
     
