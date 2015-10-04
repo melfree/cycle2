@@ -68,7 +68,6 @@ angular.module('starter.controllers', [])
   $scope.upload = {};
   $scope.myPhotos = {};
   $scope.upload.photos = [];
-  console.log(Auth);
   //initialize myPhotos
   myPhoto.query(Auth, function(data) {
                   $scope.myPhotos = data;
@@ -99,8 +98,13 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PurchaseCtrl', function($scope) {
-  $scope.title=' ';
+.controller('PurchaseCtrl', function($scope,Purchase,Auth) {
+    $scope.purchase={}
+    Purchase.query(Auth, function(data) {
+      console.log(data);
+        $scope.purchase = data;
+    });
+
 })
 
 .controller('FavCtrl', function($scope, Chats) {
@@ -129,9 +133,9 @@ angular.module('starter.controllers', [])
                   for(var i =0;i<data.length;i++){
                     if(data[i].id==$stateParams.photoId){
                       $scope.photo=data[i];
-                    }
-                  }
-                });
+                }
+            }
+     });
 })
 
 .controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {
