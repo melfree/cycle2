@@ -13,7 +13,7 @@ class FavoritesController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: {favorite: serialize(@favorite)} }
+      format.json { render json: @favorite }
     end
   end
 
@@ -24,7 +24,7 @@ class FavoritesController < ApplicationController
     filter_uploads
     respond_to do |format|
       format.html
-      format.json { render json: {favorites: serialize(@uploads)} }
+      format.json { render json: @uploads }
     end
   end
   
@@ -39,7 +39,7 @@ class FavoritesController < ApplicationController
       if @favorite.save
         notice = 'Photo was successfully favorited.'
         format.html { redirect_to uploads_url, notice: notice }
-        format.json { render json: serialize(@favorite.upload), status: :created }
+        format.json { render json: @favorite.upload, status: :created }
       else
         format.html { render :new }
         format.json { render json: {errors: @favorite.errors}, status: :unprocessable_entity }
