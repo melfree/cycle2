@@ -64,14 +64,13 @@ angular.module('starter.controllers', [])
   });*/
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,$window) {
+.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,$window,Auth) {
   $scope.upload = {};
   $scope.myPhotos = {};
   $scope.upload.photos = [];
-  
+  console.log(Auth);
   //initialize myPhotos
-  myPhoto.query({user_token: $window.localStorage['userToken'],
-               user_email: $window.localStorage['userEmail']}, function(data) {
+  myPhoto.query(Auth, function(data) {
                   $scope.myPhotos = data;
                 });
   // Automagically convert each photo to Base64 representation for use in JSON.
@@ -125,10 +124,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyPhotoDetailCtrl', function($scope, $window,  $stateParams, myPhoto) {
-    console.log('hahaa');
     $scope.photo={};
-    myPhoto.query({user_token: $window.localStorage['userToken'],
-               user_email: $window.localStorage['userEmail']}, function(data) {
+    myPhoto.query(Auth, function(data) {
                   for(var i =0;i<data.length;i++){
                     if(data[i].id==$stateParams.photoId){
                       $scope.photo=data[i];

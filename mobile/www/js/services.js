@@ -4,6 +4,13 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/users/sign_in.json");
 })
 
+.factory('Auth',function($window){
+  var auth={};
+  auth.user_token=$window.localStorage['userToken'];
+  auth.user_email=$window.localStorage['userEmail'];
+      return auth;
+})
+
 .factory('Register', function($resource) {
   return $resource("http://localhost:3000/users.json");
 })
@@ -15,6 +22,7 @@ angular.module('starter.services', [])
 .factory('myPhoto', function ($resource) {
   return $resource("http://localhost:3000/myphotos.json");
 })
+
 
 .factory('Upload', function ($resource) {
   return $resource("http://localhost:3000/uploads/:id.json", {id: '@id'}, {
