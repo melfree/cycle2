@@ -112,6 +112,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
+
+    .state('tab.purchase-detail', {
+      url: '/purchase/:photoId',
+      views: {
+        'tab-purchase': {
+          templateUrl: 'templates/purchase-detail.html',
+          controller: 'PurchaseDetailCtrl'
+        }
+      }
+    })
     .state('tab.detail', {
       url: '/detail/:chatId',
       views: {

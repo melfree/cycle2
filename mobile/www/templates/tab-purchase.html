@@ -1,30 +1,13 @@
 <ion-view view-title="Purchase">
 <ion-content class="has-header">
 
-    <div class="list card">
-      <div class="item item-divider">Donut Dash</div>
-      <div class="item item-body">
-        <div class="row">
-  <div class="col"><img src="img/1.jpg" width="150" height="150"></div>
-  <div class="col"><img src="img/2.jpg" width="150" height="150"></div>
-</div>
-        <div class="row">
-  <div class="col"><img src="img/3.jpg" width="150" height="150"></div>
-  <div class="col"><img src="img/4.jpg" width="150" height="150"></div>
-</div>
+      <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
+        <span ng-repeat="purchase in purchases">
+            <a ng-href="#/tab/purchase/{{purchase.id}}">
+              <img width="180px" ng-src="{{purchase.thumb_url}}"/>
+            </a>
+        </span>
       </div>
-      <div class="row">
-      <a href="#" class="subdued">Yesterday</a>
-      <a href="#" class="subdued">@ Carnegie Mellon University</a>
-</div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Upcoming</div>
-      <div class="item item-body">
-        <div>
-          You have <b>29</b> meetings on your calendar tomorrow.
-        </div>
-      </div>
-    </div>
+
   </ion-content>
 </ion-view>
