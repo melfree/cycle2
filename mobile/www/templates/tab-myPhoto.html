@@ -29,22 +29,22 @@
               <option selected>Oldest</option>
             </select>
           </label>
-          </div>
         </div>
-      
+      </div>
+    
       <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
         <span ng-repeat="myPhoto in myPhotos">
-          <a ng-href="#/tab/myPhoto/{{myPhoto.id}}"  style="margin: 0px 2px;">
+          <a ng-href="#/tab/myPhoto/{{myPhoto.id}}">
             <img width="110px" ng-src="{{myPhoto.thumb_url}}"/>
           </a>
         </span>
       </div>
-              
+            
       <hr/>
       
       <div class="col text-center">
         <div flow-init flow-image-resize flow-name="flow.flow" flow-files-added="processFiles($files)">
-          {{$flow.files.length}} photo(s) selected
+          {{$flow.files.length}} photo(s) selected to upload
           
           <div style="padding: 10px;">
             <span ng-repeat="file in $flow.files">
