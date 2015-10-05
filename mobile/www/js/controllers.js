@@ -145,9 +145,10 @@ angular.module('starter.controllers', [])
   // Upload the photos array.
   $scope.saveUpload = function () { 
     $scope.loading = true;
-    Upload.save({upload: $scope.upload,
-                 user_token: $window.localStorage['userToken'],
-                 user_email: $window.localStorage['userEmail']}, function(data) {
+    
+    var mergedObject = angular.extend({upload: $scope.upload}, Auth);
+    
+    Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date
       groupPhotosByEvent(data);
       // Reset form data
@@ -189,14 +190,13 @@ angular.module('starter.controllers', [])
     console.log($scope.chat);
 })
 
-.controller('MyPhotoDetailCtrl', function($scope, $window,  $stateParams, myPhoto, Auth) {
+.controller('MyPhotoDetailCtrl', function($scope, $window, $stateParams, Upload, Auth) {
     $scope.photo={};
-    myPhoto.query(Auth, function(data) {
-                  for(var i =0;i<data.length;i++){
-                    if(data[i].id==$stateParams.photoId){
-                      $scope.photo=data[i];
-                }
-            }
+    
+    var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+    
+    Upload.get(mergedObject, function(data) {
+                  $scope.photo=data;
      });
 })
 
