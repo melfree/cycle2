@@ -7,7 +7,10 @@
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
+      
+    <!-- Fontawesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -20,13 +23,21 @@
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
-    <script src="js/ng-flow-standalone.min.js"></script>
+    <!--Requirement for previewing photos-->
+    <script src="js/helpers/ng-flow-standalone.min.js"></script>
+    
+    
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
-    <script src="js/load-image.all.min.js"></script>
-    <script src="js/canvas-to-blob.js"></script>
-    <script src="js/resizer.js"></script>
+    
+    <!--Requirements for previewing photos-->
+    <script src="js/helpers/load-image.all.min.js"></script>
+    <script src="js/helpers/canvas-to-blob.js"></script>
+    <script src="js/helpers/resizer.js"></script>
+    
+    <!--Exif-->
+    <script src="js/helpers/exif.js"></script>
   </head>
   <body ng-app="starter">
     <!--
