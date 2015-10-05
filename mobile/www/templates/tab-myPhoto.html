@@ -33,11 +33,14 @@
       </div>
     
       <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
-        <span ng-repeat="myPhoto in myPhotos">
-          <a ng-href="#/tab/myPhoto/{{myPhoto.id}}">
-            <img width="110px" ng-src="{{myPhoto.thumb_url}}"/>
-          </a>
-        </span>
+        <div ng-repeat="event in event_keys">
+          <h5 ng-model="event">{{event}}</h5>
+          <span ng-repeat="photo in events[event]">
+            <a ng-href="#/tab/myPhoto/{{photo.id}}">
+              <img width="110px" ng-src="{{photo.thumb_url}}"/>
+            </a>
+          </span>
+        </div>
       </div>
             
       <hr/>
@@ -60,7 +63,7 @@
               <div class="input-label">
                 Event
               </div>
-              <input required ng-model="upload.event">
+              <input required="required" ng-model="upload.event">
             </label>
             </div>
           </div>

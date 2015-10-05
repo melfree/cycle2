@@ -64,16 +64,41 @@ angular.module('starter.controllers', [])
 
 .controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,$window,Auth) {
   $scope.upload = {photos: [], copyright: true};
-  $scope.myPhotos = {};
   $scope.flow = {};
   $scope.locations = [];
   $scope.loading = false;
+  $scope.event_keys = [];
+  $scope.events = {};
   
-  // Initialize myPhotos.
-  myPhoto.query(Auth, function(data) {
-                  $scope.myPhotos = data;
-                });
-  
+  //Helper Function to get unique values from an array.
+  var arrayUnique = function(a) {
+    return a.reduce(function(p, c) {
+        if (p.indexOf(c) < 0) p.push(c);
+        return p;
+    }, []);
+  };
+  //Helper function to group photos by a common event.
+  var groupPhotosByEvent = function (data) {
+    $scope.event_keys = [];
+    $scope.events = {};
+    for (var i in data) {
+      var p = data[i];
+      if (p.event) {
+        // Add the event to the list of event keys.
+        $scope.event_keys.push(p.event);
+        var a;
+        // Add the photo object to the event hash.
+        if ($scope.events[p.event]) {
+          a = $scope.events[p.event].concat([p]);
+        } else {
+          a = [p];
+        }
+        $scope.events[p.event] = a;
+      }
+    }
+    // Remove duplicates from the event keys array.
+    $scope.event_keys = arrayUnique($scope.event_keys);
+  }
   // Helper converter function for GPS coordinates, which are stored as arrays
   // and must be converted to decimals.
   var toDecimal = function (n) {
@@ -81,6 +106,11 @@ angular.module('starter.controllers', [])
            (60 * n[1].denominator) + n[2].numerator / (3600 * n[2].denominator);
        } else { return null; }
    };
+  
+  // Initialize myPhotos in 'events,' where each event has many photos.
+  myPhoto.query(Auth, function(data) {
+                  groupPhotosByEvent(data);         
+                });
   
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
@@ -100,7 +130,11 @@ angular.module('starter.controllers', [])
               Foursquare.get({'foursquare[lat]': lat,
                               'foursquare[long]': long}, function(e) {
                   // Any uniqueness filter should be applied here...
-                  $scope.locations = $scope.locations.concat( e.results );
+                  $scope.locations = arrayUnique($scope.locations.concat( e.results ));
+                  // Set default location.
+                  if (!$scope.upload.location) {
+                    $scope.upload.location = $scope.locations[0]
+                  };
                 });
             } else { console.log("EXIF coordinates NOT found."); }
         });
@@ -115,10 +149,9 @@ angular.module('starter.controllers', [])
                  user_token: $window.localStorage['userToken'],
                  user_email: $window.localStorage['userEmail']}, function(data) {
       // Repopulate "my photos" to be up to date
-      $scope.myPhotos = data;
+      groupPhotosByEvent(data);
       // Reset form data
       $scope.upload = {photos: [], copyright: true};
-      $scope.myPhotos = {};
       $scope.locations = [];
       $scope.flow.flow.cancel();   
       $scope.loading = false;
