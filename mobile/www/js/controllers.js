@@ -101,7 +101,6 @@ angular.module('starter.controllers', [])
 .controller('PurchaseCtrl', function($scope,Purchase,Auth) {
     $scope.purchase={}
     Purchase.query(Auth, function(data) {
-      console.log(data);
         $scope.purchase = data;
     });
 
