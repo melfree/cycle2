@@ -1,66 +1,62 @@
 <ion-view view-title="My Photo">
   <ion-content class="has-header">
 
-  <div class="list list-inset">
-  <label class="item item-input">
-    <i class="icon ion-search placeholder-icon"></i>
-    <input type="text" placeholder="Search">
-  </label>
+    <div class="list list-inset">
+    <label class="item item-input">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="text" placeholder="Search">
+    </label>
 
-  <div class="row">
-  <div class="col">
-    <label class="item item-input item-select">
-    <div class="input-label">
-      Time
+    <div class="row">
+      <div class="col">
+        <label class="item item-input item-select">
+        <div class="input-label">
+          Time
+        </div>
+        <select>
+          <option>Today</option>
+          <option selected>This Week</option>
+          <option>This Month</option>
+        </select>
+      </label>
+      </div>
+      <div class="col">
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Sort
+          </div>
+          <select>
+            <option>Newst</option>
+            <option selected>Oldest</option>
+          </select>
+        </label>
+        </div>
+      </div>
+    
+    <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
+      <span ng-repeat="myPhoto in myPhotos">
+        <a ng-href="#/tab/myPhoto/{{myPhoto.id}}"  style="margin: 0px 2px;">
+          <img width="110px" ng-src="{{myPhoto.thumb_url}}"/>
+        </a>
+      </span>
     </div>
-    <select>
-      <option>Today</option>
-      <option selected>This Week</option>
-      <option>This Month</option>
-    </select>
-  </label>
-</div>
-  <div class="col">
-
-    <label class="item item-input item-select">
-    <div class="input-label">
-      Sort
-    </div>
-    <select>
-      <option>Newst</option>
-      <option selected>Oldest</option>
-    </select>
-  </label>
-  </div>
-
-</div>
-  <div ng-repeat="myPhoto in myPhotos">
-    <a ng-href="#/tab/myPhoto/{{myPhoto.id}}"><img ng-src="{{myPhoto.thumb_url}}"/></a>
-  </div>
-<!--</div>
-    <h5>Septembre, 2015</h5>
-        <div class="row">
-  <div class="col"><img src="img/1.jpg" width="150" height="150"></div>
-  <div class="col"><img src="img/2.jpg" width="150" height="150"></div>
-</div>-->
-<hr/>
-
-  <form name="form.uploadForm">
+    
+    <hr/>
     
     <div class="col text-center">
-        <div flow-init flow-image-resize flow-name="flow.flow" flow-files-added="processFiles($files)">
-          {{$flow.files.length}} photo(s) selected
-        <div>
+      <div flow-init flow-image-resize flow-name="flow.flow" flow-files-added="processFiles($files)">
+        {{$flow.files.length}} photo(s) selected
+      <div>
     </div>
         
-        <div style="padding: 10px;">
-          <ul style="list-style-type: none;" ng-repeat="file in $flow.files">
-            <li><img my-flow-img="file"/></li><!-- <li>{{file.size}}</li>-->
-          </ul>
-          </div>    
-          <span class="button" flow-btn>Select photos to upload</span>
-        </div>
-    
+    <div style="padding: 10px;">
+      <span ng-repeat="file in $flow.files">
+        <img my-flow-img="file"/><!-- <li>{{file.size}}</li>-->
+      </span>
+      </div>    
+      <span class="button" flow-btn>Select photos to upload</span>
+    </div>
+
     <div class="row">
       <div class="col">
         <label class="item item-input">
@@ -101,8 +97,6 @@
         <i class="fa fa-spinner fa-spin"></i>
         </span>
     </button>
-
-  </form>
   
   </ion-content>
 </ion-view>
