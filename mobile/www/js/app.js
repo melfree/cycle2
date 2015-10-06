@@ -83,6 +83,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
 
+      .state('tab.fav-detail', {
+      url: '/fav/:photoId',
+      views: {
+        'tab-fav': {
+          templateUrl: 'templates/fav-detail.html',
+          controller: 'FavoriteDetailCtrl'
+        }
+      }
+    })
+
     .state('tab.myPhoto', {
       url: '/myPhoto',
       views: {
@@ -122,15 +132,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
-    .state('tab.detail', {
-      url: '/detail/:chatId',
-      views: {
-        'tab-fav': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
+
 
   .state('tab.account', {
     url: '/account',

@@ -179,24 +179,21 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('FavCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+.controller('FavCtrl', function($scope, Favorites,Auth) {
+    Favorites.query(Auth, function(data) {
+        $scope.favs = data;
+    });
 })
 
-.controller('ChatDetailCtrl', function($scope,$stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-    console.log($scope.chat);
+.controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
+    $scope.photo={};
+    Favorites.query(Auth, function(data) {
+        for(var i=0;i<data.length;i++){
+          if(data[i].id==$stateParams.photoId){
+                       $scope.photo=data[i];
+            }
+        }
+    });
 })
 
 .controller('MyPhotoDetailCtrl', function($scope, $window, $stateParams, Upload, Auth) {
