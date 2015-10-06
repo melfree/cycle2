@@ -42,8 +42,8 @@ angular.module('starter.controllers', [])
   $scope.register = function() {
     Register.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userId'] = data.id;
-        $window.localStorage['userName'] = data.name;
+        $window.localStorage['userToken'] = data.user_token;
+        $window.localStorage['userEmail'] = data.user_email;
         $location.path('/tab/explore');
       },
       function(err){
@@ -68,7 +68,8 @@ angular.module('starter.controllers', [])
   // Initialize myPhotos in 'events,' where each event has many photos.
   Upload.query(Auth, function(data) {
     var groupEvent = Helper.groupPhotosByEvent(data);
-    $scope.events = groupEvent.events;
+    //limit events to 5 or so
+    $scope.events = groupEvent.events.slice(0,5);
     $scope.event_keys = groupEvent.event_keys;
                 });
 })
@@ -81,6 +82,23 @@ angular.module('starter.controllers', [])
   $scope.event_keys = [];
   $scope.events = {};
   
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position){
+      $scope.$apply(function(){
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+                Foursquare.get({'foursquare[lat]': lat,
+                              'foursquare[long]': long}, function(e) {
+                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
+                  // Set default location.
+                  if (!$scope.upload.location) {
+                    $scope.upload.location = $scope.locations[0]
+                  };
+                });
+      });
+    });
+  }
+
   // Initialize myPhotos in 'events,' where each event has many photos.
   myPhoto.query(Auth, function(data) {
                   var groupEvent = Helper.groupPhotosByEvent(data);
@@ -104,12 +122,14 @@ angular.module('starter.controllers', [])
               console.log("EXIF coordinates found.");
               Foursquare.get({'foursquare[lat]': lat,
                               'foursquare[long]': long}, function(e) {
-                  // Any uniqueness filter should be applied here...
-                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
-                  // Set default location.
-                  if (!$scope.upload.location) {
-                    $scope.upload.location = $scope.locations[0]
-                  };
+                  // Limit the locations list to size 30
+                  if ($scope.locations.length > 30) {
+                    $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
+                    // Set default location.
+                    if (!$scope.upload.location) {
+                      $scope.upload.location = $scope.locations[0]
+                    };
+                  }
                 });
             }
         });
