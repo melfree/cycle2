@@ -1,12 +1,7 @@
 <ion-view view-title="Favorite">
-<ion-content class="has-header">
-      <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
-        <span ng-repeat="fav in favs">
-            <a ng-href="#/tab/fav/{{fav.id}}">
-              <img width="180px" ng-src="{{fav.thumb_url}}"/>
-            </a>
-        </span>
-      </div>
-
+  <ion-content class="has-header">
+    <div class="list list-inset">
+      <photos-list></photos-list>
+    </div>
   </ion-content>
 </ion-view>

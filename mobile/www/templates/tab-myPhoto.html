@@ -1,47 +1,7 @@
 <ion-view view-title="My Photo">
   <ion-content class="has-header">
     <div class="list list-inset">
-      <label class="item item-input">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input type="text" placeholder="Search">
-      </label>
-  
-      <div class="row">
-        <div class="col">
-          <label class="item item-input item-select">
-          <div class="input-label">
-            Time
-          </div>
-          <select>
-            <option>Today</option>
-            <option selected>This Week</option>
-            <option>This Month</option>
-          </select>
-        </label>
-        </div>
-        <div class="col">
-          <label class="item item-input item-select">
-            <div class="input-label">
-              Sort
-            </div>
-            <select>
-              <option>Newst</option>
-              <option selected>Oldest</option>
-            </select>
-          </label>
-        </div>
-      </div>
-    
-      <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
-        <div ng-repeat="event in event_keys">
-          <h5 ng-model="event">{{event}}</h5>
-          <span ng-repeat="photo in events[event]">
-            <a ng-href="#/tab/myPhoto/{{photo.id}}">
-              <img width="110px" ng-src="{{photo.thumb_url}}"/>
-            </a>
-          </span>
-        </div>
-      </div>
+      <photos-list></photos-list>
             
       <hr/>
       

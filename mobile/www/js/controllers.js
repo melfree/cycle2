@@ -1,5 +1,12 @@
 angular.module('starter.controllers', [])
 
+.directive('photosList', function() {
+  return {
+    templateUrl: 'templates/photos-list.html',
+    restrict : 'E'
+  };
+})
+
 .controller('RedirectCtrl', function($scope, $location, $window) {
     var email = $window.localStorage['userEmail'];
     if (email) {
@@ -54,15 +61,19 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Chats) {
-    $scope.title=' ';
-
-/*  BlogEntry.query().$promise.then(function(response){
-    $scope.blog_entries = response;
-  });*/
+.controller('ExploreCtrl', function($scope,Upload,Auth,Helper) {
+  $scope.event_keys = [];
+  $scope.events = {};
+  
+  // Initialize myPhotos in 'events,' where each event has many photos.
+  Upload.query(Auth, function(data) {
+    var groupEvent = Helper.groupPhotosByEvent(data);
+    $scope.events = groupEvent.events;
+    $scope.event_keys = groupEvent.event_keys;
+                });
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,$window,Auth) {
+.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth) {
   $scope.upload = {photos: [], copyright: true};
   $scope.flow = {};
   $scope.locations = [];
@@ -70,52 +81,16 @@ angular.module('starter.controllers', [])
   $scope.event_keys = [];
   $scope.events = {};
   
-  //Helper Function to get unique values from an array.
-  var arrayUnique = function(a) {
-    return a.reduce(function(p, c) {
-        if (p.indexOf(c) < 0) p.push(c);
-        return p;
-    }, []);
-  };
-  //Helper function to group photos by a common event.
-  var groupPhotosByEvent = function (data) {
-    $scope.event_keys = [];
-    $scope.events = {};
-    for (var i in data) {
-      var p = data[i];
-      if (p.event) {
-        // Add the event to the list of event keys.
-        $scope.event_keys.push(p.event);
-        var a;
-        // Add the photo object to the event hash.
-        if ($scope.events[p.event]) {
-          a = $scope.events[p.event].concat([p]);
-        } else {
-          a = [p];
-        }
-        $scope.events[p.event] = a;
-      }
-    }
-    // Remove duplicates from the event keys array.
-    $scope.event_keys = arrayUnique($scope.event_keys);
-  }
-  // Helper converter function for GPS coordinates, which are stored as arrays
-  // and must be converted to decimals.
-  var toDecimal = function (n) {
-       if (n) { return n[0].numerator + n[1].numerator /
-           (60 * n[1].denominator) + n[2].numerator / (3600 * n[2].denominator);
-       } else { return null; }
-   };
-  
   // Initialize myPhotos in 'events,' where each event has many photos.
   myPhoto.query(Auth, function(data) {
-                  groupPhotosByEvent(data);         
+                  var groupEvent = Helper.groupPhotosByEvent(data);
+                  $scope.events = groupEvent.events;
+                  $scope.event_keys = groupEvent.event_keys;        
                 });
   
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
     angular.forEach(files, function(flowFile, i){
-        // Convert images file to json.
         var fileReader = new FileReader();
         fileReader.onload = function (event) {
           $scope.upload.photos[i] = event.target.result;
@@ -123,20 +98,20 @@ angular.module('starter.controllers', [])
         fileReader.readAsDataURL(flowFile.file);        
         // Get Location data from EXIF GPS points. All EXIF processing happens here.
         EXIF.getData(flowFile.file, function(){
-            var lat = toDecimal(EXIF.getTag(this, 'GPSLatitude'));
-            var long = toDecimal(EXIF.getTag(this, 'GPSLongitude'));
+            var lat = Helper.toDecimal(EXIF.getTag(this, 'GPSLatitude'));
+            var long = Helper.toDecimal(EXIF.getTag(this, 'GPSLongitude'));
             if (lat) {// Get the locations that match the EXIF GPS coordinates.
               console.log("EXIF coordinates found.");
               Foursquare.get({'foursquare[lat]': lat,
                               'foursquare[long]': long}, function(e) {
                   // Any uniqueness filter should be applied here...
-                  $scope.locations = arrayUnique($scope.locations.concat( e.results ));
+                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
                   // Set default location.
                   if (!$scope.upload.location) {
                     $scope.upload.location = $scope.locations[0]
                   };
                 });
-            } else { console.log("EXIF coordinates NOT found."); }
+            }
         });
           
     });
@@ -145,12 +120,13 @@ angular.module('starter.controllers', [])
   // Upload the photos array.
   $scope.saveUpload = function () { 
     $scope.loading = true;
-    
     var mergedObject = angular.extend({upload: $scope.upload}, Auth);
     
     Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date
-      groupPhotosByEvent(data);
+      var groupEvent = Helper.groupPhotosByEvent(data);
+      $scope.events = groupEvent.events;
+      $scope.event_keys = groupEvent.event_keys;    
       // Reset form data
       $scope.upload = {photos: [], copyright: true};
       $scope.locations = [];
@@ -179,10 +155,16 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('FavCtrl', function($scope, Favorites,Auth) {
-    Favorites.query(Auth, function(data) {
-        $scope.favs = data;
-    });
+.controller('FavCtrl', function($scope,Helper,Favorites,Auth) {
+  $scope.event_keys = [];
+  $scope.events = {};
+  
+  // Initialize myPhotos in 'events,' where each event has many photos.
+  Favorites.query(Auth, function(data) {
+    var groupEvent = Helper.groupPhotosByEvent(data);
+    $scope.events = groupEvent.events;
+    $scope.event_keys = groupEvent.event_keys;
+                });
 })
 
 .controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
