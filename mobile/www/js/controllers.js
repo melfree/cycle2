@@ -68,8 +68,7 @@ angular.module('starter.controllers', [])
   // Initialize myPhotos in 'events,' where each event has many photos.
   Upload.query(Auth, function(data) {
     var groupEvent = Helper.groupPhotosByEvent(data);
-    //limit events to 5 or so
-    $scope.events = groupEvent.events.slice(0,5);
+    $scope.events = groupEvent.events;
     $scope.event_keys = groupEvent.event_keys;
                 });
 })
@@ -78,6 +77,7 @@ angular.module('starter.controllers', [])
   $scope.upload = {photos: [], copyright: true};
   $scope.flow = {};
   $scope.locations = [];
+  $scope.current_locations = [];
   $scope.loading = false;
   $scope.event_keys = [];
   $scope.events = {};
@@ -89,11 +89,9 @@ angular.module('starter.controllers', [])
         long = position.coords.longitude;
                 Foursquare.get({'foursquare[lat]': lat,
                               'foursquare[long]': long}, function(e) {
-                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
-                  // Set default location.
-                  if (!$scope.upload.location) {
-                    $scope.upload.location = $scope.locations[0]
-                  };
+                  $scope.current_locations = e.results;
+                  $scope.locations = e.results;
+                  $scope.upload.location = $scope.locations[0]
                 });
       });
     });
@@ -149,7 +147,7 @@ angular.module('starter.controllers', [])
       $scope.event_keys = groupEvent.event_keys;    
       // Reset form data
       $scope.upload = {photos: [], copyright: true};
-      $scope.locations = [];
+      $scope.locations = $scope.current_locations;
       $scope.flow.flow.cancel();   
       $scope.loading = false;
     });
@@ -157,11 +155,16 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PurchaseCtrl', function($scope,Purchase,Auth) {
-    //$scope.purchases=;
-    Purchase.query(Auth, function(data) {
-        $scope.purchases = data;
-    });
+.controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth) {
+  $scope.events = {};
+  $scope.event_keys = [];
+  
+  // Initialize myPhotos in 'events,' where each event has many photos.
+  Purchase.query(Auth, function(data) {
+    var groupEvent = Helper.groupPhotosByEvent(data);
+    $scope.events = groupEvent.events;
+    $scope.event_keys = groupEvent.event_keys;
+                });
 })
 
 .controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {

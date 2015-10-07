@@ -49,7 +49,7 @@ class Upload < ActiveRecord::Base
     # default t.integer "copyright" to 0
     self.copyright = 0 unless self.copyright == 1
     # t.text "tags" should also be created at this time.
-    self.tags = self.event
+    self.tags = self.event if self.event
     # t.string "location" should also be created at this time.
   end
   
