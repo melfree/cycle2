@@ -62,6 +62,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ExploreCtrl', function($scope,Upload,Auth,Helper) {
+  $scope.title = 'explore';
+ 
   $scope.event_keys = [];
   $scope.events = {};
   
@@ -74,6 +76,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth) {
+  $scope.title = 'myPhoto';
+  
   $scope.upload = {photos: [], copyright: true};
   $scope.flow = {};
   $scope.locations = [];
@@ -156,6 +160,8 @@ angular.module('starter.controllers', [])
 
 
 .controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth) {
+  $scope.title = 'purchase';
+  
   $scope.events = {};
   $scope.event_keys = [];
   
@@ -179,6 +185,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('FavCtrl', function($scope,Helper,Favorites,Auth) {
+  $scope.title = 'fav';
+ 
   $scope.event_keys = [];
   $scope.events = {};
   

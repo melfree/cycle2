@@ -34,7 +34,7 @@
     <h5 class="item item-divider" ng-model="event">{{event}}</h5>
     <div class="item item-body">
       <span ng-repeat="photo in events[event]">
-        <a ng-href="#/tab/myPhoto/{{photo.id}}">
+        <a ng-href="#/tab/{{title}}/{{photo.id}}">
           <img width="97px" ng-src="{{photo.thumb_url}}"/>
         </a>
       </span>

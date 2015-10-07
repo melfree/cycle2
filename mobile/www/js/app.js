@@ -72,6 +72,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     }
   })
+  
+  .state('tab.explore-detail', {
+    url: '/explore/:photoId',
+    views: {
+      'tab-explore': {
+        templateUrl: 'templates/photo-detail.html',
+        controller: 'MyPhotoDetailCtrl'
+      }
+    }
+  })
 
   .state('tab.fav', {
       url: '/fav',
