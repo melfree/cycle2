@@ -1,11 +1,12 @@
 <ion-view view-title="Photo Detail">
   <ion-content class="padding">
     <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
-    
     <div>Time derived from EXIF: {{photo.time}}</div>
     <div>Posted at: {{photo.created_at}}</div>
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
+    <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
+    <button class="button button-assertive" ng-show="deleting" ng-click="deletePhoto()">Deleting</button>
   </ion-content>
 </ion-view>

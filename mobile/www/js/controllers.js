@@ -12,6 +12,8 @@ angular.module('starter.controllers', [])
     if (email) {
         $location.path('/tab/explore');
     } else {
+      //Reload all controllers
+      $window.location.reload();
       $location.path('/login');
     }
 })
@@ -24,6 +26,9 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage['userToken'] = data.user_token;
         $window.localStorage['userEmail'] = data.user_email;
+        
+        //Reload all controllers
+        $window.location.reload();
         $location.path('/tab/explore');
       },
       function(err){
@@ -61,7 +66,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Upload,Auth,Helper) {
+.controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window) {
   $scope.title = 'explore';
  
   $scope.event_keys = [];
@@ -72,6 +77,7 @@ angular.module('starter.controllers', [])
     var groupEvent = Helper.groupPhotosByEvent(data);
     $scope.events = groupEvent.events;
     $scope.event_keys = groupEvent.event_keys;
+    
                 });
 })
 
@@ -209,14 +215,23 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('MyPhotoDetailCtrl', function($scope, $window, $stateParams, Upload, Auth) {
+.controller('MyPhotoDetailCtrl', function($scope, $location, $window, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
+    $scope.deleting=false;
     
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-    
     Upload.get(mergedObject, function(data) {
                   $scope.photo=data;
      });
+        
+    $scope.deletePhoto = function () {
+      $scope.deleting=true;
+      Upload.delete(mergedObject, function(data) {
+        $ionicHistory.goBack();
+        $scope.deleting=false;
+        //Reload every list of photos
+      });
+    }
 })
 
 .controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {
