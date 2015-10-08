@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
 .controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window,$ionicScrollDelegate) {
   $scope.title = 'explore';
   
-  $scope.searchParams = {search: '', copyright: '', sort: ''};
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
   
   $scope.change = function () {
@@ -92,7 +92,7 @@ angular.module('starter.controllers', [])
   $scope.current_locations = [];
   $scope.loading = false;
   
-  $scope.searchParams = {search: '', copyright: '', sort: ''};
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
   
   $scope.change = function () {
@@ -173,7 +173,7 @@ angular.module('starter.controllers', [])
 .controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth,$ionicScrollDelegate) {
   $scope.title = 'purchase';
   
-  $scope.searchParams = {search: '', copyright: '', sort: ''};
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
   
   $scope.change = function () {
@@ -201,7 +201,7 @@ angular.module('starter.controllers', [])
 .controller('FavCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
   $scope.title = 'fav';
  
-  $scope.searchParams = {search: '', copyright: '', sort: ''};
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
   
   $scope.change = function () {
@@ -232,8 +232,18 @@ angular.module('starter.controllers', [])
     // The download button leaves the app and thus is only usable for web views.
     
     $scope.backTitle = $ionicHistory.backTitle().toLowerCase(); // i.e., 'explore'
-    if ($scope.backTitle == "myphoto") $scope.backTitle = "myPhoto";
-    
+    // BackTitle is used in the "photos-list" directive html, to generate the url
+    // that goes to the given tab's full-view state.
+    // Explore is named 'explore', Purchase is named 'purchase',
+    // but favorite is named 'fav', and My Photos is named 'myPhoto', thus:
+    switch ($scope.backTitle) {
+      case "favorite":
+        $scope.backTitle = "fav";
+        break;
+      case "my photos":
+        $scope.backTitle = "myPhoto";
+        break;
+    }
     
     // Other views must click and download the high-res image manually.
     

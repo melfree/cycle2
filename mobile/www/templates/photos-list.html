@@ -1,34 +1,38 @@
 <!--search box-->
-<label class="item item-input">
-  <i class="icon ion-search placeholder-icon"></i>
-  <input type="text" ng-model="searchParams.search" ng-change="change()" placeholder="Search">
-</label>
-<div class="row">
-  <div class="col">
-    <label class="item item-input item-select">
-    <div class="input-label">
-      Price
+  <div class="row">
+    <div class="col">
+    <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" ng-model="searchParams.search" ng-change="change()" placeholder="Search">
+    </label>
     </div>
-    <select ng-change="change()" ng-model="searchParams.copyright">
-      <option value="1">Pay-to-own</option>
-      <option value="0">Free-to-own</option>
-    </select>
-  </label>
   </div>
-  <div class="col">
+  <div class="row">
+  
+    <div class="col">
     <label class="item item-input item-select">
-      <div class="input-label">
-        Sort
-      </div>
+      Sort
       <select ng-model="searchParams.sort" ng-change="change()">
-        <option value="created_at">Most Recent</option>
-        <option value="most_purchased">Most Purchased</option>
-        <option value="most_favorited">Most Popular</option>
+        <option value="created_at">Recent</option>
+        <option value="most_purchased">Purchased</option>
+        <option value="most_favorited">Popularity</option>
       </select>
     </label>
+    </div>
+        
+    <div class="col">
+    <label class="item item-input item-select">
+      Price
+      <select ng-change="change()" ng-model="searchParams.copyright">
+        <option value="">--</option>
+        <option value="1">Pay-to-own</option>
+        <option value="0">Free-to-own</option>
+      </select>
+    </label>
+    </div>
   </div>
-</div>
 
+<hr/>
 <!--list of results-->
 <ion-scroll direction="y" style="margin: 8px; height: 500px">
   <div class="list card" style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
