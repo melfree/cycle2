@@ -72,13 +72,14 @@ angular.module('starter.controllers', [])
   $scope.event_keys = [];
   $scope.events = {};
   
-  // Initialize myPhotos in 'events,' where each event has many photos.
-  Upload.query(Auth, function(data) {
-    var groupEvent = Helper.groupPhotosByEvent(data);
-    $scope.events = groupEvent.events;
-    $scope.event_keys = groupEvent.event_keys;
-    
-                });
+  $scope.$on('$ionicView.enter', function() {
+      // Initialize myPhotos in 'events,' where each event has many photos.
+      Upload.query(Auth, function(data) {
+        var groupEvent = Helper.groupPhotosByEvent(data);
+        $scope.events = groupEvent.events;
+        $scope.event_keys = groupEvent.event_keys;
+      });
+  })
 })
 
 .controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth) {
@@ -108,11 +109,13 @@ angular.module('starter.controllers', [])
   }
 
   // Initialize myPhotos in 'events,' where each event has many photos.
-  myPhoto.query(Auth, function(data) {
-                  var groupEvent = Helper.groupPhotosByEvent(data);
-                  $scope.events = groupEvent.events;
-                  $scope.event_keys = groupEvent.event_keys;        
-                });
+  $scope.$on('$ionicView.enter', function() {
+    myPhoto.query(Auth, function(data) {
+                    var groupEvent = Helper.groupPhotosByEvent(data);
+                    $scope.events = groupEvent.events;
+                    $scope.event_keys = groupEvent.event_keys;        
+                  });
+  })
   
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
@@ -151,14 +154,15 @@ angular.module('starter.controllers', [])
     var mergedObject = angular.extend({upload: $scope.upload}, Auth);
     
     Upload.save(mergedObject, function(data) {
-      // Repopulate "my photos" to be up to date
+      // Repopulate "my photos" to be up to date, as if reloading the page.
       var groupEvent = Helper.groupPhotosByEvent(data);
       $scope.events = groupEvent.events;
       $scope.event_keys = groupEvent.event_keys;    
-      // Reset form data
+      // Reset the form data.
       $scope.upload = {photos: [], copyright: true};
       $scope.locations = $scope.current_locations;
-      $scope.flow.flow.cancel();   
+      $scope.flow.flow.cancel();
+      // Reset the spinning icon.
       $scope.loading = false;
     });
   }
@@ -171,12 +175,14 @@ angular.module('starter.controllers', [])
   $scope.events = {};
   $scope.event_keys = [];
   
-  // Initialize myPhotos in 'events,' where each event has many photos.
-  Purchase.query(Auth, function(data) {
-    var groupEvent = Helper.groupPhotosByEvent(data);
-    $scope.events = groupEvent.events;
-    $scope.event_keys = groupEvent.event_keys;
-                });
+  $scope.$on('$ionicView.enter', function() {
+    // Initialize myPhotos in 'events,' where each event has many photos.
+    Purchase.query(Auth, function(data) {
+      var groupEvent = Helper.groupPhotosByEvent(data);
+      $scope.events = groupEvent.events;
+      $scope.event_keys = groupEvent.event_keys;
+                  });
+  })
 })
 
 .controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {
@@ -196,12 +202,14 @@ angular.module('starter.controllers', [])
   $scope.event_keys = [];
   $scope.events = {};
   
+  $scope.$on('$ionicView.enter', function() {
   // Initialize myPhotos in 'events,' where each event has many photos.
   Favorites.query(Auth, function(data) {
     var groupEvent = Helper.groupPhotosByEvent(data);
     $scope.events = groupEvent.events;
     $scope.event_keys = groupEvent.event_keys;
                 });
+   });
 })
 
 .controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
@@ -220,16 +228,17 @@ angular.module('starter.controllers', [])
     $scope.deleting=false;
     
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-    Upload.get(mergedObject, function(data) {
-                  $scope.photo=data;
-     });
+    $scope.$on('$ionicView.enter', function() {
+      Upload.get(mergedObject, function(data) {
+                    $scope.photo=data;
+       });
+    });
         
     $scope.deletePhoto = function () {
       $scope.deleting=true;
       Upload.delete(mergedObject, function(data) {
         $ionicHistory.goBack();
         $scope.deleting=false;
-        //Reload every list of photos
       });
     }
 })
