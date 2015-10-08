@@ -30,14 +30,14 @@
 </div>
 
 <!--list of results-->
-<ion-scroll direction="y">
+<ion-scroll direction="y" style="margin: 8px; height: 500px">
   <div class="list card" style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
     <div ng-repeat="event in events">
       <h5 class="item item-divider" ng-model="event.name">{{event.name}}</h5>
       <div class="item item-body">
         <span ng-repeat="photo in event.photos">
           <a ng-href="#/tab/{{title}}/{{photo.id}}">
-            <img width="97px" ng-src="{{photo.thumb_url}}"/>
+            <img width="140px" ng-src="{{photo.thumb_url}}"/>
           </a>
         </span>
       </div>

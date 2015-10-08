@@ -7,7 +7,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('RedirectCtrl', function($scope, $location, $window) {
+.controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
     var email = $window.localStorage['userEmail'];
     if (email) {
         $location.path('/tab/explore');
@@ -66,7 +66,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window) {
+.controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window,$ionicScrollDelegate) {
   $scope.title = 'explore';
   
   $scope.searchParams = {search: '', copyright: '', sort: ''};
@@ -76,13 +76,14 @@ angular.module('starter.controllers', [])
       Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
       });
+      $ionicScrollDelegate.resize();
   };
   $scope.$on('$ionicView.enter', function () {
       $scope.change();
   })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth) {
+.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth,$ionicScrollDelegate) {
   $scope.title = 'myPhoto';
   
   $scope.upload = {photos: [], copyright: true};
@@ -98,6 +99,7 @@ angular.module('starter.controllers', [])
       myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
       });
+      $ionicScrollDelegate.resize();
   };
   $scope.$on('$ionicView.enter', function () {
       $scope.change();
@@ -168,7 +170,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth) {
+.controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth,$ionicScrollDelegate) {
   $scope.title = 'purchase';
   
   $scope.searchParams = {search: '', copyright: '', sort: ''};
@@ -178,6 +180,7 @@ angular.module('starter.controllers', [])
       Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
       });
+      $ionicScrollDelegate.resize();
   };
   $scope.$on('$ionicView.enter', function () {
       $scope.change();
@@ -195,7 +198,7 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('FavCtrl', function($scope,Helper,Favorites,Auth) {
+.controller('FavCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
   $scope.title = 'fav';
  
   $scope.searchParams = {search: '', copyright: '', sort: ''};
@@ -205,6 +208,7 @@ angular.module('starter.controllers', [])
       Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
       });
+      $ionicScrollDelegate.resize();
   };
   $scope.$on('$ionicView.enter', function () {
       $scope.change();
@@ -225,7 +229,13 @@ angular.module('starter.controllers', [])
 .controller('MyPhotoDetailCtrl', function($scope, $location, $window, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
     $scope.deleting=false;
-    $scope.location
+    // The download button leaves the app and thus is only usable for web views.
+    
+    $scope.backTitle = $ionicHistory.backTitle().toLowerCase(); // i.e., 'explore'
+    if ($scope.backTitle == "myphoto") $scope.backTitle = "myPhoto";
+    
+    
+    // Other views must click and download the high-res image manually.
     
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
     

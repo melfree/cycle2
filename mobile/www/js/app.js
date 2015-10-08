@@ -82,6 +82,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     }
   })
+  
+  .state('tab.explore-full-size', {
+      url: '/explore/:photoId/full-size',
+      views: {
+        'tab-explore': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+  })
 
   .state('tab.fav', {
       url: '/fav',
@@ -99,6 +109,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         'tab-fav': {
           templateUrl: 'templates/fav-detail.html',
           controller: 'FavoriteDetailCtrl'
+        }
+      }
+    })
+      
+    .state('tab.fav-full-size', {
+      url: '/fav/:photoId/full-size',
+      views: {
+        'tab-fav': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })
@@ -122,6 +142,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
+    
+    .state('tab.photo-full-size', {
+      url: '/myPhoto/:photoId/full-size',
+      views: {
+        'tab-myPhoto': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
 
     .state('tab.purchase', {
       url: '/purchase',
@@ -139,6 +169,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         'tab-purchase': {
           templateUrl: 'templates/purchase-detail.html',
           controller: 'PurchaseDetailCtrl'
+        }
+      }
+    })
+    
+    .state('tab.purchase-full-size', {
+      url: '/purchase/:photoId/full-size',
+      views: {
+        'tab-purchase': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })

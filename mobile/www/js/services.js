@@ -34,7 +34,7 @@ angular.module('starter.services', [])
           }
           // Add the event to the list of event keys, if it's new.
           if (lastSeen == e) {
-            photoList.concat([p]);
+            photoList = photoList.concat([p]);
           } else {
             // This is a new event, so save the old list and start a new list.
             if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});

@@ -1,15 +1,18 @@
-<ion-view view-title="Photo Detail">
+<ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
-    <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
+    <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
+      <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
+    </a>
     <div>Time derived from EXIF: {{photo.time}}</div>
     <div>Posted at: {{photo.created_at}}</div>
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
-    <hr/>
+    
     <div ng-show="photo.current_user_uploaded">
       <div class="row">
         <div class="col text-center">
+          <hr/>
           You own this photo.
           <br/><br/>
           <label class="item item-input">
@@ -32,6 +35,5 @@
         </div>
       </div>
     </div>
-    <a target="_self" href="{{photo.photo_url}}" download="img.jpg">
   </ion-content>
 </ion-view>
