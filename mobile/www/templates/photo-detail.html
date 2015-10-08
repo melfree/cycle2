@@ -6,7 +6,10 @@
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
-    <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
-    <button class="button button-assertive" ng-show="deleting" ng-click="deletePhoto()">Deleting</button>
+    <div ng-show="myphoto">
+      <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
+      <button class="button button-assertive" ng-show="deleting">Deleting</button>
+    </div>
+    <a target="_self" href="{{photo.photo_url}}" download="img.jpg">
   </ion-content>
 </ion-view>
