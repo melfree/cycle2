@@ -21,14 +21,10 @@ class Upload < ActiveRecord::Base
   
   def self.sort_by(opt)
     opt = opt.downcase.strip
-    if ["tags","event"].include?(opt)
-      order("created_at desc")
-    elsif opt == "most_favorited"
+    if opt == "most_favorited"
       joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id)")
     elsif opt == "most_purchased"
       joins("LEFT JOIN purchases ON upload_id = uploads.id").group("uploads.id").order("count(purchases.id)")
-    elsif self.column_names.include?(opt)
-      order("#{opt} desc")
     else # opt == "created_at"
       order("created_at desc")
     end

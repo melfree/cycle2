@@ -78,21 +78,41 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Helper,$window,Auth,$ionicScrollDelegate) {
+.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Event,Helper,$window,Auth,$ionicScrollDelegate) {
   $scope.title = 'myPhoto';
   
-  $scope.upload = {photos: [], copyright: true};
   $scope.flow = {};
-  $scope.locations = [];
   $scope.current_locations = [];
-  $scope.loading = false;
+  $scope.current_events = [];
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
+  var reset = function () {
+      // [Re]set the form data.
+      $scope.custom = {event: '', location: ''};  
+      $scope.showCustomEvent = true;
+      $scope.showCustomLocation = true;
+      // 'Custom' will be a reserved keyword for event and location, meaning 'custom input'.
+      $scope.upload = {event: 'Custom', location: 'Custom', photos: [], copyright: true};
+      $scope.locations = $scope.current_locations;
+      // Reset the spinning icon.
+      $scope.loading = false;
+  };
+  reset();  
+
+  $scope.showCustomLocationChange = function () {
+    $scope.showCustomLocation = ($scope.upload.location == "Custom");
+  }
+  $scope.showCustomEventChange = function () {
+    $scope.showCustomEvent = ($scope.upload.event == "Custom");
+  }
   
   $scope.change = function () {
       myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
+      });
+      Event.query(Auth, function(data){
+        $scope.current_events = data;
       });
       $ionicScrollDelegate.resize();
   };
@@ -100,6 +120,7 @@ angular.module('starter.controllers', [])
       $scope.change();
   })
   
+  // Get current location and add the foursquare places to the list of locations.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position){
       $scope.$apply(function(){
@@ -131,14 +152,7 @@ angular.module('starter.controllers', [])
               console.log("EXIF coordinates found.");
               Foursquare.get({'foursquare[lat]': lat,
                               'foursquare[long]': long}, function(e) {
-                  // Limit the locations list to size 30
-                  if ($scope.locations.length > 30) {
-                    $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
-                    // Set default location.
-                    if (!$scope.upload.location) {
-                      $scope.upload.location = $scope.locations[0]
-                    };
-                  }
+                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
                 });
             }
         });
@@ -149,17 +163,23 @@ angular.module('starter.controllers', [])
   // Upload the photos array.
   $scope.saveUpload = function () { 
     $scope.loading = true;
+    // Set custom event/location if needed.
+    if ($scope.custom.event == "Custom") {
+      $scope.upload.event = '';
+    } else if ($scope.upload.event == "Custom") {
+      $scope.upload.event = $scope.custom.event;
+    }
+    if ($scope.custom.location == "Custom") {
+      $scope.upload.location = '';
+    } else if ($scope.upload.location == "Custom") {
+      $scope.upload.location = $scope.custom.location;
+    }
     var mergedObject = angular.extend({upload: $scope.upload}, Auth);
-    
     Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date, as if reloading the page.
       $scope.events = Helper.groupPhotosByEvent(data);
-      // Reset the form data.
-      $scope.upload = {photos: [], copyright: true};
-      $scope.locations = $scope.current_locations;
+      reset();
       $scope.flow.flow.cancel();
-      // Reset the spinning icon.
-      $scope.loading = false;
     });
   }
 })
@@ -263,7 +283,6 @@ angular.module('starter.controllers', [])
       $scope.deleting=true;
       Upload.delete(mergedObject, function(data) {
         $ionicHistory.goBack();
-        $scope.deleting=false;
       });
     }
 })
