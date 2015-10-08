@@ -225,9 +225,17 @@ angular.module('starter.controllers', [])
 .controller('MyPhotoDetailCtrl', function($scope, $location, $window, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
     $scope.deleting=false;
-    $scope.myphoto=false;
+    $scope.location
     
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+    
+    $scope.change = function (){
+      Upload.update(angular.extend(mergedObject,
+                                   {upload: {location: $scope.photo.location,
+                                             event: $scope.photo.event,
+                                             copyright: $scope.photo.copyright}
+                                    }));
+    }
     
     $scope.$on('$ionicView.enter', function() {
       // Get the object

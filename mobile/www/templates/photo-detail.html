@@ -6,9 +6,31 @@
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
+    <hr/>
     <div ng-show="photo.current_user_uploaded">
-      <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
-      <button class="button button-assertive" ng-show="deleting">Deleting</button>
+      <div class="row">
+        <div class="col text-center">
+          You own this photo.
+          <br/><br/>
+          <label class="item item-input">
+            <div class="input-label">
+                Edit Event
+            </div>
+            <input type="text" ng-model="photo.event" ng-change="change()">
+          </label>
+          <label class="item item-input">
+            <div class="input-label">
+                Edit Location
+            </div>
+            <input type="text" ng-model="photo.location" ng-change="change()">
+          </label>
+            <ion-toggle ng-model="photo.copyright" ng-change="change()" toggle-class="toggle-calm">
+              Retain Copyright
+            </ion-toggle>
+          <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
+          <button class="button button-assertive" ng-show="deleting">Deleting</button>
+        </div>
+      </div>
     </div>
     <a target="_self" href="{{photo.photo_url}}" download="img.jpg">
   </ion-content>
