@@ -12,8 +12,6 @@ angular.module('starter.controllers', [])
     if (email) {
         $location.path('/tab/explore');
     } else {
-      //Reload all controllers
-      $window.location.reload();
       $location.path('/login');
     }
 })
@@ -26,9 +24,6 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage['userToken'] = data.user_token;
         $window.localStorage['userEmail'] = data.user_email;
-        
-        //Reload all controllers
-        $window.location.reload();
         $location.path('/tab/explore');
       },
       function(err){
@@ -284,6 +279,9 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage.removeItem('userToken');
         $window.localStorage.removeItem('userEmail');
+        
+        //Reload all controllers
+        $window.location.reload();  
         $location.path('/login');
       },
       function(err){
