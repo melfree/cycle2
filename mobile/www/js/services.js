@@ -17,27 +17,35 @@ angular.module('starter.services', [])
        } else { return null; }
    };
   
-  var groupPhotosByEvent = function (data, event_keys, events) {
-      event_keys = [];
-      events = {};
+  var groupPhotosByEvent = function (data) {
+      var events = [];
+      var lastSeen = null;
+      var photoList = [];
+      var lastSeenWithTime = null;
+      
       for (var i in data) {
+        var a; var e;
         var p = data[i];
-        if (p.event) {
-          // Add the event to the list of event keys.
-          event_keys.push(p.event);
-          var a;
-          // Add the photo object to the event hash.
-          if (events[p.event]) {
-            a = events[p.event].concat([p]);
+        if (p.id) {
+          if (p.event) {
+            e = p.event;
           } else {
-            a = [p];
+            e = "N/A";
           }
-          events[p.event] = a;
+          // Add the event to the list of event keys, if it's new.
+          if (lastSeen == e) {
+            photoList.concat([p]);
+          } else {
+            // This is a new event, so save the old list and start a new list.
+            if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
+            lastSeen = e;
+            lastSeenWithTime = e + " - " + p.created_at;
+            photoList = [p];
           }
+        }
       }
-      // Remove duplicates from the event keys array.
-      event_keys = arrayUnique(event_keys);
-      return {event_keys: event_keys, events: events}
+      events.push({name: lastSeenWithTime, photos: photoList});
+      return events;
     }
   
   //Helper function to group photos by a common event.

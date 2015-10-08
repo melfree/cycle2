@@ -6,6 +6,18 @@ class UploadSerializer < ActiveModel::Serializer
   MISSING = "MISSING PHOTO URL"
   MISSING_THUMB = "MISSING THUMB PHOTO URL"
   
+  def created_at
+    object.created_at.strftime("%a, %d/%m/%y %I:%M %p")
+  end
+  
+  def updated_at
+    object.updated_at.strftime("%a, %d/%m/%y %I:%M %p")
+  end
+  
+  def time
+    object.time.strftime("%a, %d/%m/%y %I:%M %p")
+  end
+  
   # 'event' is overwritten so that 'event' = 'tags'
   def event
     object.tags

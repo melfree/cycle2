@@ -68,17 +68,17 @@ angular.module('starter.controllers', [])
 
 .controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window) {
   $scope.title = 'explore';
- 
-  $scope.event_keys = [];
+  
+  $scope.searchParams = {search: '', copyright: '', sort: ''};
   $scope.events = {};
   
-  $scope.$on('$ionicView.enter', function() {
-      // Initialize myPhotos in 'events,' where each event has many photos.
-      Upload.query(Auth, function(data) {
-        var groupEvent = Helper.groupPhotosByEvent(data);
-        $scope.events = groupEvent.events;
-        $scope.event_keys = groupEvent.event_keys;
+  $scope.change = function () {
+      Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
+        $scope.events = Helper.groupPhotosByEvent(data);
       });
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
   })
 })
 
@@ -90,8 +90,18 @@ angular.module('starter.controllers', [])
   $scope.locations = [];
   $scope.current_locations = [];
   $scope.loading = false;
-  $scope.event_keys = [];
+  
+  $scope.searchParams = {search: '', copyright: '', sort: ''};
   $scope.events = {};
+  
+  $scope.change = function () {
+      myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
+        $scope.events = Helper.groupPhotosByEvent(data);
+      });
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
+  })
   
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position){
@@ -107,15 +117,6 @@ angular.module('starter.controllers', [])
       });
     });
   }
-
-  // Initialize myPhotos in 'events,' where each event has many photos.
-  $scope.$on('$ionicView.enter', function() {
-    myPhoto.query(Auth, function(data) {
-                    var groupEvent = Helper.groupPhotosByEvent(data);
-                    $scope.events = groupEvent.events;
-                    $scope.event_keys = groupEvent.event_keys;        
-                  });
-  })
   
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
@@ -155,9 +156,7 @@ angular.module('starter.controllers', [])
     
     Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date, as if reloading the page.
-      var groupEvent = Helper.groupPhotosByEvent(data);
-      $scope.events = groupEvent.events;
-      $scope.event_keys = groupEvent.event_keys;    
+      $scope.events = Helper.groupPhotosByEvent(data);
       // Reset the form data.
       $scope.upload = {photos: [], copyright: true};
       $scope.locations = $scope.current_locations;
@@ -172,16 +171,16 @@ angular.module('starter.controllers', [])
 .controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth) {
   $scope.title = 'purchase';
   
+  $scope.searchParams = {search: '', copyright: '', sort: ''};
   $scope.events = {};
-  $scope.event_keys = [];
   
-  $scope.$on('$ionicView.enter', function() {
-    // Initialize myPhotos in 'events,' where each event has many photos.
-    Purchase.query(Auth, function(data) {
-      var groupEvent = Helper.groupPhotosByEvent(data);
-      $scope.events = groupEvent.events;
-      $scope.event_keys = groupEvent.event_keys;
-                  });
+  $scope.change = function () {
+      Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
+        $scope.events = Helper.groupPhotosByEvent(data);
+      });
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
   })
 })
 
@@ -199,17 +198,17 @@ angular.module('starter.controllers', [])
 .controller('FavCtrl', function($scope,Helper,Favorites,Auth) {
   $scope.title = 'fav';
  
-  $scope.event_keys = [];
+  $scope.searchParams = {search: '', copyright: '', sort: ''};
   $scope.events = {};
   
-  $scope.$on('$ionicView.enter', function() {
-  // Initialize myPhotos in 'events,' where each event has many photos.
-  Favorites.query(Auth, function(data) {
-    var groupEvent = Helper.groupPhotosByEvent(data);
-    $scope.events = groupEvent.events;
-    $scope.event_keys = groupEvent.event_keys;
-                });
-   });
+  $scope.change = function () {
+      Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
+        $scope.events = Helper.groupPhotosByEvent(data);
+      });
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
+  })
 })
 
 .controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
@@ -229,6 +228,7 @@ angular.module('starter.controllers', [])
     $scope.myphoto=false;
     
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+    
     $scope.$on('$ionicView.enter', function() {
       // Get the object
       Upload.get(mergedObject, function(data) {

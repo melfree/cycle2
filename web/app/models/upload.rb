@@ -14,22 +14,23 @@ class Upload < ActiveRecord::Base
   validates_presence_of :photo
   
   scope :match_copyright, ->(copyright) { where(copyright: copyright) }
-  scope :match_tags, ->(tags) { where("? ILIKE tags", "%#{tags}%") }
-  scope :match_location, ->(location) { where("? ILIKE location", "%#{location}%") }
+  scope :match_string, ->(s) { where("tags ILIKE ? OR location ILIKE ?", "%#{s}%","%#{s}%") }
   
   scope :after, ->(date) { where("time > ?", date) }
   scope :before, ->(date) { where("time < ?", date) }
+  
   def self.sort_by(opt)
     opt = opt.downcase.strip
-    opt = "tags" if opt == "event"
-    if opt == "most_favorited"
+    if ["tags","event"].include?(opt)
+      order("created_at desc")
+    elsif opt == "most_favorited"
       joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id)")
     elsif opt == "most_purchased"
       joins("LEFT JOIN purchases ON upload_id = uploads.id").group("uploads.id").order("count(purchases.id)")
     elsif self.column_names.include?(opt)
       order("#{opt} desc")
     else # opt == "created_at"
-      order("time desc")
+      order("created_at desc")
     end
   end
   

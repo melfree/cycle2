@@ -1,18 +1,17 @@
+<!--search box-->
 <label class="item item-input">
   <i class="icon ion-search placeholder-icon"></i>
-  <input type="text" placeholder="Search">
+  <input type="text" ng-model="searchParams.search" ng-change="change()" placeholder="Search">
 </label>
-
 <div class="row">
   <div class="col">
     <label class="item item-input item-select">
     <div class="input-label">
-      Time
+      Price
     </div>
-    <select>
-      <option>Today</option>
-      <option selected>This Week</option>
-      <option>This Month</option>
+    <select ng-change="change()" ng-model="searchParams.copyright">
+      <option value="1">Pay-to-own</option>
+      <option value="0">Free-to-own</option>
     </select>
   </label>
   </div>
@@ -21,19 +20,22 @@
       <div class="input-label">
         Sort
       </div>
-      <select>
-        <option>Newst</option>
-        <option selected>Oldest</option>
+      <select ng-model="searchParams.sort" ng-change="change()">
+        <option value="created_at">Most Recent</option>
+        <option value="most_purchased">Most Purchased</option>
+        <option value="most_favorited">Most Popular</option>
       </select>
     </label>
   </div>
 </div>
+
+<!--list of results-->
 <ion-scroll direction="y">
   <div class="list card" style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
-    <div ng-repeat="event in event_keys">
-      <h5 class="item item-divider" ng-model="event">{{event}}</h5>
+    <div ng-repeat="event in events">
+      <h5 class="item item-divider" ng-model="event.name">{{event.name}}</h5>
       <div class="item item-body">
-        <span ng-repeat="photo in events[event]">
+        <span ng-repeat="photo in event.photos">
           <a ng-href="#/tab/{{title}}/{{photo.id}}">
             <img width="97px" ng-src="{{photo.thumb_url}}"/>
           </a>
