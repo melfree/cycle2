@@ -6,7 +6,7 @@
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
-    <div ng-show="myphoto">
+    <div ng-show="photo.current_user_uploaded">
       <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
       <button class="button button-assertive" ng-show="deleting">Deleting</button>
     </div>

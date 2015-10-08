@@ -233,8 +233,6 @@ angular.module('starter.controllers', [])
       // Get the object
       Upload.get(mergedObject, function(data) {
                     $scope.photo=data;
-                    console.log(data);
-                    $scope.myphoto=data.current_user_uploaded;
        });
     });
         
