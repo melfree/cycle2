@@ -66,10 +66,12 @@ angular.module('starter.controllers', [])
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
+  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
+        $scope.eventsEmpty = ($scope.events.length == 0);
       });
       $ionicScrollDelegate.resize();
   };
@@ -87,6 +89,8 @@ angular.module('starter.controllers', [])
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
+  $scope.eventsEmpty = false;
+  
   var reset = function () {
       // [Re]set the form data.
       $scope.custom = {event: '', location: ''};  
@@ -110,6 +114,7 @@ angular.module('starter.controllers', [])
   $scope.change = function () {
       myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
+        $scope.eventsEmpty = ($scope.events.length == 0);
       });
       Event.query(Auth, function(data){
         $scope.current_events = data;
@@ -178,6 +183,7 @@ angular.module('starter.controllers', [])
     Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date, as if reloading the page.
       $scope.events = Helper.groupPhotosByEvent(data);
+      $scope.eventsEmpty = ($scope.events.length == 0);
       reset();
       $scope.flow.flow.cancel();
     });
@@ -190,10 +196,12 @@ angular.module('starter.controllers', [])
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
+  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
+        $scope.eventsEmpty = ($scope.events.length == 0);
       });
       $ionicScrollDelegate.resize();
   };
@@ -218,10 +226,12 @@ angular.module('starter.controllers', [])
  
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
+  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
         $scope.events = Helper.groupPhotosByEvent(data);
+        $scope.eventsEmpty = ($scope.events.length == 0);
       });
       $ionicScrollDelegate.resize();
   };
@@ -260,10 +270,7 @@ angular.module('starter.controllers', [])
         break;
     }
     
-    // Other views must click and download the high-res image manually.
-    
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-    
     $scope.change = function (){
       Upload.update(angular.extend(mergedObject,
                                    {upload: {location: $scope.photo.location,
@@ -302,7 +309,6 @@ angular.module('starter.controllers', [])
       function(data){
         $window.localStorage.removeItem('userToken');
         $window.localStorage.removeItem('userEmail');
-        
         //Reload all controllers
         $window.location.reload();  
         $location.path('/login');

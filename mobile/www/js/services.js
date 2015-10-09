@@ -44,7 +44,7 @@ angular.module('starter.services', [])
           }
         }
       }
-      events.push({name: lastSeenWithTime, photos: photoList});
+      if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
       return events;
     }
   
