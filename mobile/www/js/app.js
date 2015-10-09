@@ -108,7 +108,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-fav': {
           templateUrl: 'templates/fav-detail.html',
-          controller: 'FavoriteDetailCtrl'
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })
@@ -168,7 +168,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-purchase': {
           templateUrl: 'templates/purchase-detail.html',
-          controller: 'PurchaseDetailCtrl'
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })

@@ -201,17 +201,17 @@ angular.module('starter.controllers', [])
       $scope.change();
   })
 })
-
-.controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {
-    $scope.photo={};
-    Purchase.query(Auth, function(data) {
-        for(var i=0;i<data.length;i++){
-          if(data[i].id==$stateParams.photoId){
-                       $scope.photo=data[i];
-            }
-        }
-    });
-})
+//
+//.controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {
+//    $scope.photo={};
+//    Purchase.query(Auth, function(data) {
+//        for(var i=0;i<data.length;i++){
+//          if(data[i].id==$stateParams.photoId){
+//                       $scope.photo=data[i];
+//            }
+//        }
+//    });
+//})
 
 .controller('FavCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
   $scope.title = 'fav';
@@ -230,16 +230,16 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
-    $scope.photo={};
-    Favorites.query(Auth, function(data) {
-        for(var i=0;i<data.length;i++){
-          if(data[i].id==$stateParams.photoId){
-                       $scope.photo=data[i];
-            }
-        }
-    });
-})
+//.controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
+//    $scope.photo={};
+//    Favorites.query(Auth, function(data) {
+//        for(var i=0;i<data.length;i++){
+//          if(data[i].id==$stateParams.photoId){
+//                       $scope.photo=data[i];
+//            }
+//        }
+//    });
+//})
 
 .controller('MyPhotoDetailCtrl', function($scope, $location, $window, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
