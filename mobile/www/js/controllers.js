@@ -102,7 +102,7 @@ angular.module('starter.controllers', [])
       // Reset the spinning icon.
       $scope.loading = false;
   };
-  reset();  
+  reset();
 
   $scope.showCustomLocationChange = function () {
     $scope.showCustomLocation = ($scope.upload.location == "Custom");
@@ -145,14 +145,12 @@ angular.module('starter.controllers', [])
   $scope.processFiles = function(files){
     angular.forEach(files, function(flowFile, i){
         var fileReader = new FileReader();
-        fileReader.onload = function (event) {
-          $scope.upload.photos[i] = event.target.result;
-        };
+        fileReader.onload = function (event) {$scope.upload.photos[i] = event.target.result;};
         fileReader.readAsDataURL(flowFile.file);        
         // Get Location data from EXIF GPS points. All EXIF processing happens here.
         EXIF.getData(flowFile.file, function(){
-            var lat = Helper.toDecimal(EXIF.getTag(this, 'GPSLatitude'));
-            var long = Helper.toDecimal(EXIF.getTag(this, 'GPSLongitude'));
+            var lat = Helper.toDecimal(EXIF.getTag(this,'GPSLatitude'));
+            var long = Helper.toDecimal(EXIF.getTag(this,'GPSLongitude'));
             if (lat) {// Get the locations that match the EXIF GPS coordinates.
               console.log("EXIF coordinates found.");
               Foursquare.get({'foursquare[lat]': lat,
@@ -169,16 +167,17 @@ angular.module('starter.controllers', [])
   $scope.saveUpload = function () { 
     $scope.loading = true;
     // Set custom event/location if needed.
-    if ($scope.custom.event == "Custom") {
+    if ($scope.custom.event == "Custom") { //Don't allow an event to be named "Custom"
       $scope.upload.event = '';
     } else if ($scope.upload.event == "Custom") {
       $scope.upload.event = $scope.custom.event;
     }
-    if ($scope.custom.location == "Custom") {
+    if ($scope.custom.location == "Custom") { //Same thing with location.
       $scope.upload.location = '';
     } else if ($scope.upload.location == "Custom") {
       $scope.upload.location = $scope.custom.location;
     }
+    
     var mergedObject = angular.extend({upload: $scope.upload}, Auth);
     Upload.save(mergedObject, function(data) {
       // Repopulate "my photos" to be up to date, as if reloading the page.
@@ -299,7 +298,6 @@ angular.module('starter.controllers', [])
   $scope.$on('$ionicView.enter', function () {
     Account.get(Auth, function(data) {
       $scope.account = data;
-      console.log(data);
     });
   })
   
