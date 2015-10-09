@@ -34,7 +34,7 @@
 
 <hr/>
 <!--list of results-->
-<ion-scroll direction="y" style="margin: 8px; height: 500px">
+<ion-scroll direction="y" class="crowdpicScroll">
   <div data-ng-show="eventsEmpty">
     <div class="row">
       <div class="col text-center">
@@ -48,7 +48,7 @@
       <div class="item item-body">
         <span ng-repeat="photo in event.photos">
           <a ng-href="#/tab/{{title}}/{{photo.id}}">
-            <img width="49%" ng-src="{{photo.photo_url}}"/>
+            <img class="crowdpicListImg" ng-src="{{photo.photo_url}}"/>
           </a>
         </span>
       </div>

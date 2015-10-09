@@ -1,7 +1,7 @@
 <ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
     <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
-      <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
+      <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
     </a>
     <div>Time derived from EXIF: {{photo.time}}</div>
     <div>Posted at: {{photo.created_at}}</div>

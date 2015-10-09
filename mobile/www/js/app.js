@@ -23,9 +23,10 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
   });
 })
 .config(function($ionicConfigProvider) {
+  $ionicConfigProvider.views.swipeBackEnabled(true);
   $ionicConfigProvider.platform.android.tabs.position("bottom");
  })
-
+  
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   $httpProvider.defaults.withCredentials = true;
@@ -107,7 +108,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       url: '/fav/:photoId',
       views: {
         'tab-fav': {
-          templateUrl: 'templates/fav-detail.html',
+          templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
@@ -167,7 +168,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       url: '/purchase/:photoId',
       views: {
         'tab-purchase': {
-          templateUrl: 'templates/purchase-detail.html',
+          templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
