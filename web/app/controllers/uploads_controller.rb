@@ -32,6 +32,12 @@ class UploadsController < ApplicationController
       format.json { render json: @upload }
     end
   end
+  
+  def account
+    respond_to do |format|
+      format.json { render json: current_user }
+    end
+  end
 
   # GET /myphotos.json
   # GET /myphotos

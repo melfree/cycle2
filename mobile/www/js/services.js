@@ -95,6 +95,10 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/events.json");
 })
 
+.factory('Account', function ($resource) {
+  return $resource("http://localhost:3000/account.json");
+})
+
 .factory('Upload', function ($resource) {
   return $resource("http://localhost:3000/uploads/:id.json", {id: '@id'}, {
       // All other CRUD operations are available to factories by default

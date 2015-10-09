@@ -287,10 +287,14 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope ) {
+  $scope.account = {};
+  $scope.$on('$ionicView.enter', function () {
+    Account.get(Auth, function(data) {
+      $scope.account = data;
+      console.log(data);
+    });
+  })
   
   $scope.logout = function() {
     // This database call might not be necessary, if all that's needed is to removeItems...

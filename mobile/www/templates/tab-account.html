@@ -1,10 +1,37 @@
 <ion-view view-title="Account">
   <ion-content>
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
+      <ion-item> Favorites
+         <span class="badge badge-stable">{{account.favorites}}</span>
+      </ion-item>
+      <ion-item> Favorited by Others
+         <span class="badge badge-stable">{{account.favorites}}</span>
+      </ion-item>
+      <ion-item> Purchases
+         <span class="badge badge-calm">{{account.purchases}}</span>
+      </ion-item>
+      <ion-item> Purchased by Others
+         <span class="badge badge-calm">{{account.purchased}}</span>
+      </ion-item>
+      <ion-item> Purchasing Balance
+         <span class="badge badge-positive">{{account.balance}}</span>
+      </ion-item>
     </ion-list>
+      
+    <ion-list>
+      <ion-item> Most Recent Sign-in
+         <span class="badge badge-stable">{{account.last_sign_in_at}}</span>
+      </ion-item>
+       <ion-item> User Since
+         <span class="badge badge-stable">{{account.created_at}}</span>
+      </ion-item>  
+  </ion-list>
+    <br/><br/>
+  <ion-list>
+    <ion-toggle  ng-model="account.wifi">
+        Use Cellular Data
+    </ion-toggle>  
+  </ion-list>
     <div class="padding">
       <button class="button button-block button-calm" ng-click="logout()">Logout</button>
     </div>
