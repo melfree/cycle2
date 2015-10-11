@@ -88,7 +88,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-fav': {
           templateUrl: 'templates/fav-detail.html',
-          controller: 'FavoriteDetailCtrl'
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })
