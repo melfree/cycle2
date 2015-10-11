@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get 'foursquare/:id' => 'four_square#show'
   
   get 'home' => 'home#index', as: :home
+  get 'account' => 'uploads#account'
   
   get 'explore' => 'uploads#explore'
   get 'locations' =>  'uploads#locations'

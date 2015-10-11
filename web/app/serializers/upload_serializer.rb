@@ -1,10 +1,22 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :id, :user_id,  :thumb_url, :photo_url, :height, :width, :location, :copyright, :event, :lat, :long, :time, :num_purchases, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
+  attributes :id, :user_id,  :thumb_url, :photo_url, :height, :width, :location, :copyright, :event, :lat, :long, :time, :num_purchases, :current_user_uploaded, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
   has_one :user
   
   BASE_URL = 'http://localhost:3000'
   MISSING = "MISSING PHOTO URL"
   MISSING_THUMB = "MISSING THUMB PHOTO URL"
+  
+  def created_at
+    object.created_at.strftime("%a, %d/%m/%y %I:%M %p")
+  end
+  
+  def updated_at
+    object.updated_at.strftime("%a, %d/%m/%y %I:%M %p")
+  end
+  
+  def time
+    object.time.strftime("%a, %d/%m/%y %I:%M %p")
+  end
   
   # 'event' is overwritten so that 'event' = 'tags'
   def event
@@ -14,10 +26,18 @@ class UploadSerializer < ActiveModel::Serializer
   def current_user_purchased
     if scope
       o = Purchase.where(user_id: scope.id, upload_id: object.id).take
-      return o.created_at if o
+      return true if o
     end
-    nil
+    return false
   end
+  
+  def current_user_uploaded
+    if scope
+      return scope.id == object.user_id
+    end
+    return false
+  end
+  
   
   def num_purchases
     object.purchases.size
@@ -29,9 +49,9 @@ class UploadSerializer < ActiveModel::Serializer
   def current_user_favorited
     if scope
       o = Favorite.where(user_id: scope.id, upload_id: object.id).take
-      return o.created_at if o
+      return true if o
     end
-    nil
+    false
   end
   
   # Regular photo url.

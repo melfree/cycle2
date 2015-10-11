@@ -11,28 +11,16 @@ class UploadsController < ApplicationController
   ## JSON routes
   ##############
   
-  def explore
-    events = Upload.pluck(:tags).uniq
-    data = Hash.new
-    events.each do |o|
-      @uploads = Upload.where(tags: o)
-      filter_uploads
-      data[o] = @uploads
-    end
-    respond_to do |format|
-      format.json { render json: {num_of_events: events.size, events: data} }
-    end
-  end
   def events
     events = Upload.pluck(:tags).uniq
     respond_to do |format|
-      format.json { render json: {num_of_events: events.size, events: events} }
+      format.json { render json: events }
     end
   end
   def locations
     locations = Upload.pluck(:location).uniq
     respond_to do |format|
-      format.json { render json: {num_of_locations: locations.size, locations: locations} }
+      format.json { render json: locations }
     end
   end
   
@@ -42,6 +30,12 @@ class UploadsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @upload }
+    end
+  end
+  
+  def account
+    respond_to do |format|
+      format.json { render json: current_user }
     end
   end
 
@@ -111,8 +105,10 @@ class UploadsController < ApplicationController
       end
       if success
         notice = 'Upload was successfully saved.'
+        @uploads = current_user.uploads
+        filter_uploads
         format.html { redirect_to uploads_url, notice: notice }
-        format.json { render json: current_user.uploads, status: :created }
+        format.json { render json: @uploads, status: :created }
       else
         format.html { render :new }
         format.json { render json: {errors: @upload.errors}, status: :unprocessable_entity }

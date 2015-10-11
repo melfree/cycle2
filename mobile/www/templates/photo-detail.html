@@ -1,11 +1,39 @@
-<ion-view view-title="Photo Detail">
+<ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
-    <img ng-src="{{photo.photo_url}}" style="width: 300px; height: 300px">
-    
+    <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
+      <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
+    </a>
     <div>Time derived from EXIF: {{photo.time}}</div>
     <div>Posted at: {{photo.created_at}}</div>
     <div>Copyright status: {{photo.copyright}}</div>
     <div>Location:  {{photo.location}}</div>
     <div>Event:  {{photo.event}}</div>
+    
+    <div ng-show="photo.current_user_uploaded">
+      <div class="row">
+        <div class="col text-center">
+          <hr/>
+          You own this photo.
+          <br/><br/>
+          <label class="item item-input">
+            <div class="input-label">
+                Edit Event
+            </div>
+            <input type="text" ng-model="photo.event" ng-change="change()">
+          </label>
+          <label class="item item-input">
+            <div class="input-label">
+                Edit Location
+            </div>
+            <input type="text" ng-model="photo.location" ng-change="change()">
+          </label>
+            <ion-toggle ng-model="photo.copyright" ng-change="change()" toggle-class="toggle-calm">
+              Retain Copyright
+            </ion-toggle>
+          <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
+          <button class="button button-assertive" ng-show="deleting">Deleting</button>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

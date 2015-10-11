@@ -1,12 +1,5 @@
 <ion-view view-title="Purchase">
-<ion-content class="has-header">
-      <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
-        <span ng-repeat="purchase in purchases">
-            <a ng-href="#/tab/purchase/{{purchase.id}}">
-              <img width="180px" ng-src="{{purchase.thumb_url}}"/>
-            </a>
-        </span>
-      </div>
-
+  <ion-content class="has-header">
+    <photos-list></photos-list>
   </ion-content>
 </ion-view>

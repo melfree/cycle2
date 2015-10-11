@@ -23,9 +23,10 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
   });
 })
 .config(function($ionicConfigProvider) {
+  $ionicConfigProvider.views.swipeBackEnabled(true);
   $ionicConfigProvider.platform.android.tabs.position("bottom");
  })
-
+  
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   $httpProvider.defaults.withCredentials = true;
@@ -72,6 +73,26 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     }
   })
+  
+  .state('tab.explore-detail', {
+    url: '/explore/:photoId',
+    views: {
+      'tab-explore': {
+        templateUrl: 'templates/photo-detail.html',
+        controller: 'MyPhotoDetailCtrl'
+      }
+    }
+  })
+  
+  .state('tab.explore-full-size', {
+      url: '/explore/:photoId/full-size',
+      views: {
+        'tab-explore': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+  })
 
   .state('tab.fav', {
       url: '/fav',
@@ -87,7 +108,17 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       url: '/fav/:photoId',
       views: {
         'tab-fav': {
-          templateUrl: 'templates/fav-detail.html',
+          templateUrl: 'templates/photo-detail.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
+      
+    .state('tab.fav-full-size', {
+      url: '/fav/:photoId/full-size',
+      views: {
+        'tab-fav': {
+          templateUrl: 'templates/photo-full.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
@@ -112,6 +143,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
+    
+    .state('tab.photo-full-size', {
+      url: '/myPhoto/:photoId/full-size',
+      views: {
+        'tab-myPhoto': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
 
     .state('tab.purchase', {
       url: '/purchase',
@@ -127,8 +168,18 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       url: '/purchase/:photoId',
       views: {
         'tab-purchase': {
-          templateUrl: 'templates/purchase-detail.html',
-          controller: 'PurchaseDetailCtrl'
+          templateUrl: 'templates/photo-detail.html',
+          controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
+    
+    .state('tab.purchase-full-size', {
+      url: '/purchase/:photoId/full-size',
+      views: {
+        'tab-purchase': {
+          templateUrl: 'templates/photo-full.html',
+          controller: 'MyPhotoDetailCtrl'
         }
       }
     })
