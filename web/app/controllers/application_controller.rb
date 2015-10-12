@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       @uploads = @uploads.match_copyright(c) if c and !c.blank?
       
       s = params[:sort]
-      @uploads = @uploads.sort_by(s)
+      @uploads = @uploads.sort_by(s) if s and !s.blank?
       b = params[:before]
       @uploads = @uploads.before(b) if b and !b.blank?
       a = params[:after]

@@ -20,6 +20,7 @@ class Upload < ActiveRecord::Base
   scope :before, ->(date) { where("time < ?", date) }
   
   def self.sort_by(opt)
+    return order("created_at desc") if opt.nil?
     opt = opt.downcase.strip
     if opt == "most_favorited"
       joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id)")
