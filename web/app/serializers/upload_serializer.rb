@@ -15,7 +15,11 @@ class UploadSerializer < ActiveModel::Serializer
   end
   
   def time
-    object.time.strftime("%a, %d/%m/%y %I:%M %p")
+    if object.time
+      object.time.strftime("%a, %d/%m/%y %I:%M %p")
+    else
+      nil
+    end
   end
   
   # 'event' is overwritten so that 'event' = 'tags'
