@@ -32,6 +32,9 @@
             </ion-toggle>
           <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
           <button class="button button-assertive" ng-show="deleting">Deleting</button>
+          <button class="button button-calm" ng-hide="purchased" ng-click="purchasePhoto()">Purchase</button>
+          <button class="button button-calm" ng-hide="faved" ng-click="favPhoto()">Favorite</button>
+          <button class="button button-assertive" ng-show="faved" ng-click="unfavPhoto()">Unfavorite</button>
         </div>
       </div>
     </div>

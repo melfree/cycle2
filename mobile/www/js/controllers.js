@@ -250,7 +250,7 @@ angular.module('starter.controllers', [])
 //    });
 //})
 
-.controller('MyPhotoDetailCtrl', function($scope, $location, $window, $ionicHistory, $stateParams, Upload, Auth) {
+.controller('MyPhotoDetailCtrl', function($scope, $location, $window, PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
     $scope.deleting=false;
     // The download button leaves the app and thus is only usable for web views.
@@ -268,7 +268,8 @@ angular.module('starter.controllers', [])
         $scope.backTitle = "myPhoto";
         break;
     }
-    
+
+
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
     $scope.change = function (){
       Upload.update(angular.extend(mergedObject,
@@ -282,6 +283,9 @@ angular.module('starter.controllers', [])
       // Get the object
       Upload.get(mergedObject, function(data) {
                     $scope.photo=data;
+                    $scope.faved=data.current_user_favorited;
+                    $scope.purchased=data.current_user_purchased;
+
        });
     });
         
@@ -291,6 +295,25 @@ angular.module('starter.controllers', [])
         $ionicHistory.goBack();
       });
     }
+
+    $scope.purchasePhoto = function () {
+      $scope.purchased=true;
+      PurchaseAct.save(mergedObject);
+    }
+
+    $scope.favPhoto = function () {
+      $scope.faved=true;
+      FavoriteAct.save(mergedObject);
+    }
+
+    $scope.unfavPhoto = function () {
+      $scope.faved=false;
+      FavoriteAct.delete(mergedObject,function(data) {
+        $ionicHistory.goBack();
+      });
+    }
+
+
 })
 
 .controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope ) {
