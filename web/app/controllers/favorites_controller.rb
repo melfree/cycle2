@@ -3,7 +3,7 @@ class FavoritesController < ApplicationController
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
   
-  before_action :set_favorite, only: [:show, :destroy]
+  before_action :set_favorite, only: [:show]
   
   ## JSON routes
   ##############
@@ -51,6 +51,7 @@ class FavoritesController < ApplicationController
   # DELETE /favorites/1
   # DELETE /favorites/1.json
   def destroy
+    @favorite = Favorite.find_by upload_id: params[:id]
     @favorite.destroy
     respond_to do |format|
       notice = 'Photo successfully removed from favorites.'
