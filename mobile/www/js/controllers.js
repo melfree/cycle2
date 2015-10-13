@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('RedirectCtrl', function($scope, $location, $window) {
     var email = $window.localStorage['userEmail'];
@@ -9,7 +9,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('LoginCtrl', function($scope, $location, $window, Login, $ionicPopup, $rootScope) {
+.controller('LoginCtrl', function($scope, $location, $window, Login, $ionicPopup, $rootScope, ngFB) {
   $scope.data = {};
 
   $scope.login = function() {
@@ -27,6 +27,18 @@ angular.module('starter.controllers', [])
       }
     );
   }
+
+  $scope.fbLogin = function () {
+    ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+            } else {
+                alert('Facebook login failed');
+            }
+        });
+  };
 })
 
 .controller('RegisterCtrl', function($scope, $location, $window, Register, $ionicPopup, $rootScope) {
