@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(version: 20150927140155) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "avatar"
     t.string   "authentication_token"
   end
 

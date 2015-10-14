@@ -11,7 +11,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    ngFB.init({appId: '910441832364648'});
+    ngFB.init({appId: '879210492165233'});
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);

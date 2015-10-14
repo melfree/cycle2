@@ -29,7 +29,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   }
 
   $scope.fbLogin = function () {
-    ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
+    ngFB.login({scope: 'public_profile, user_friends'}).then(
         function (response) {
             if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
@@ -38,7 +38,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
                 alert('Facebook login failed');
             }
         });
-  };
+  }
 })
 
 .controller('RegisterCtrl', function($scope, $location, $window, Register, $ionicPopup, $rootScope) {
