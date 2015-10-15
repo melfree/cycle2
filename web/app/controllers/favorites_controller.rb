@@ -3,10 +3,16 @@ class FavoritesController < ApplicationController
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
   
-  before_action :set_favorite, only: [:show]
+  before_action :set_favorite, only: [:show,:log]
   
   ## JSON routes
   ##############
+  
+  def log
+    respond_to do |format|
+      format.json { render json: @favorite.favorites.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%m/%d/%y %I:%M %p"), user_email: o.user.email}} }
+    end
+  end
   
   # GET /favorites/1
   # GET /favorites/1.json
@@ -51,7 +57,7 @@ class FavoritesController < ApplicationController
   # DELETE /favorites/1
   # DELETE /favorites/1.json
   def destroy
-    @favorite = Favorite.find_by upload_id: params[:id]
+    @favorite = Favorite.where(upload_id: params[:id]).where(user_id: current_user.id).take
     @favorite.destroy
     respond_to do |format|
       notice = 'Photo successfully removed from favorites.'
@@ -62,7 +68,6 @@ class FavoritesController < ApplicationController
   
  private
    def set_favorite
-     @favorite = Favorite.find_by upload_id: params[:id]
-     @favorite = @favorite.upload if @favorite
+     @favorite = Upload.find_by id: params[:id]
    end
 end

@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
       });
       $ionicScrollDelegate.resize();
   };
-  $scope.$on('$ionicView.enter', function () {
+  $scope.$on('$ionicView.beforeEnter', function () {
       $scope.change();
   })
 })
@@ -101,7 +101,38 @@ angular.module('starter.controllers', [])
       });
       $ionicScrollDelegate.resize();
   };
-  $scope.$on('$ionicView.enter', function () {
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
+})
+
+.controller('FavoritesLogCtrl', function($scope,Auth,$stateParams,FavoriteLog,$window,$ionicScrollDelegate) {
+  $scope.title = 'Favorites History';
+  $scope.logs = {};
+  var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+  $scope.change = function () {
+      FavoriteLog.query(mergedObject, function(data) {
+        $scope.logs = data;
+        $scope.logsEmpty = ($scope.logs.length == 0);
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
+})
+.controller('PurchasesLogCtrl', function($scope,Auth,$stateParams,PurchaseLog,$window,$ionicScrollDelegate) {
+  $scope.title = 'Purchase History';
+  $scope.logs = {};
+  var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+  $scope.change = function () {
+      PurchaseLog.query(mergedObject, function(data) {
+        $scope.logs = data;
+        $scope.logsEmpty = ($scope.logs.length == 0);
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.beforeEnter', function () {
       $scope.change();
   })
 })
@@ -125,7 +156,7 @@ angular.module('starter.controllers', [])
       });
       $scope.done = false;
   };
-  $scope.$on('$ionicView.enter', function () {
+  $scope.$on('$ionicView.beforeEnter', function () {
       $scope.change();
   })
   
@@ -226,7 +257,7 @@ angular.module('starter.controllers', [])
       });
       $ionicScrollDelegate.resize();
   };
-  $scope.$on('$ionicView.enter', function () {
+  $scope.$on('$ionicView.beforeEnter', function () {
       $scope.change();
   })
 })
@@ -256,7 +287,7 @@ angular.module('starter.controllers', [])
       });
       $ionicScrollDelegate.resize();
   };
-  $scope.$on('$ionicView.enter', function () {
+  $scope.$on('$ionicView.beforeEnter', function () {
       $scope.change();
   })
 })
@@ -288,14 +319,15 @@ angular.module('starter.controllers', [])
                                     }));
     }
     
-    $scope.$on('$ionicView.enter', function() {
-      // Get the object
+    $scope.change = function () {
       Upload.get(mergedObject, function(data) {
                     $scope.photo=data;
-                    $scope.faved=data.current_user_favorited;
-                    $scope.purchased=data.current_user_purchased;
-
        });
+    }
+    
+    $scope.$on('$ionicView.beforeEnter', function() {
+      // Get the object
+      $scope.change();
     });
         
     $scope.deletePhoto = function () {
@@ -306,20 +338,22 @@ angular.module('starter.controllers', [])
     }
 
     $scope.purchasePhoto = function () {
-      $scope.purchased=true;
+      $scope.photo.current_user_purchased = true;
       PurchaseAct.save(mergedObject);
+      $scope.change();
     }
 
     $scope.favPhoto = function () {
-      $scope.faved=true;
+      $scope.photo.current_user_favorited = true;
       FavoriteAct.save(mergedObject);
+      $scope.change();
+      
     }
 
     $scope.unfavPhoto = function () {
-      $scope.faved=false;
-      FavoriteAct.delete(mergedObject,function(data) {
-        $ionicHistory.goBack();
-      });
+      $scope.photo.current_user_favorited = false;
+      FavoriteAct.delete(mergedObject);
+      $scope.change();
     }
 
 

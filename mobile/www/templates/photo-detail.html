@@ -16,10 +16,20 @@
       <ion-item> {{photo.copyright_string}}
       </ion-item>
       <ion-item> Purchases
-         <span class="badge badge-calm">{{photo.num_purchases}}</span>
+          <a href="#/tab/{{backTitle}}/{{photo.id}}/purchases-log">
+            <span class="badge badge-balanced">
+              {{photo.num_purchases}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
       <ion-item> Favorites
-         <span class="badge badge-positive">{{photo.num_favorites}}</span>
+         <a href="#/tab/{{backTitle}}/{{photo.id}}/favorites-log">
+            <span class="badge badge-energized">
+              {{photo.num_favorites}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
     </ion-list>
 
@@ -28,12 +38,12 @@
       <div class="row">
         <div class="col text-center">
           <br/>
-          <button class="button button-energized" ng-hide="faved" ng-click="favPhoto()">Favorite</button>
-          <button class="button button-assertive" ng-show="faved" ng-click="unfavPhoto()">Unfavorite</button>
+          <button class="button button-energized" ng-hide="photo.current_user_favorited" ng-click="favPhoto()">Favorite</button>
+          <button class="button button-assertive" ng-show="photo.current_user_favorited" ng-click="unfavPhoto()">Unfavorite</button>
           &nbsp;
           <span data-ng-show="photo.copyright">
-            <button class="button button-balanced" ng-hide="purchased" ng-click="purchasePhoto()">Purchase License</button>
-            <button class="button button-balanced" disabled="disabled" ng-show="purchased">Purchased</button>
+            <button class="button button-balanced" ng-hide="photo.current_user_purchased" ng-click="purchasePhoto()">Purchase License</button>
+            <button class="button button-balanced" disabled="disabled" ng-show="photo.current_user_purchased">Purchased</button>
           </span>
         </div>
       </div>

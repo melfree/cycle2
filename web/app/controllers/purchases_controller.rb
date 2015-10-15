@@ -3,10 +3,15 @@ class PurchasesController < ApplicationController
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
   
-  before_action :set_purchase, only: [:show]
+  before_action :set_purchase, only: [:show,:log]
   
   ## JSON routes
   ##############
+  def log
+    respond_to do |format|
+      format.json { render json: @purchase.purchases.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%d/%m/%y %I:%M %p"), user_email: o.user.email}} }
+    end
+  end
   
   # GET /purchases/1
   # GET /purchases/1.json
@@ -50,7 +55,6 @@ class PurchasesController < ApplicationController
   
  private
    def set_purchase
-      @purchase = Purchase.find_by upload_id: params[:id]
-      @purchase = @purchase.upload if @purchase
+      @purchase = Upload.find_by id: params[:id]
    end
 end

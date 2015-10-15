@@ -84,6 +84,26 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
     }
   })
   
+  
+    .state('tab.explore-purchases-log', {
+      url: '/explore/:photoId/purchases-log',
+      views: {
+        'tab-explore': {
+          templateUrl: 'templates/log.html',
+          controller: 'PurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.explore-favorites-log', {
+      url: '/explore/:photoId/favorites-log',
+      views: {
+        'tab-explore': {
+          templateUrl: 'templates/log.html',
+          controller: 'FavoritesLogCtrl'
+        }
+      }
+    })
+  
   .state('tab.explore-full-size', {
       url: '/explore/:photoId/full-size',
       views: {
@@ -104,12 +124,31 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
 
-      .state('tab.favorites-detail', {
+    .state('tab.favorites-detail', {
       url: '/favorites/:photoId',
       views: {
         'tab-favorites': {
           templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
+        }
+      }
+    })
+      
+    .state('tab.favorites-purchases-log', {
+      url: '/favorites/:photoId/purchases-log',
+      views: {
+        'tab-favorites': {
+          templateUrl: 'templates/log.html',
+          controller: 'PurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.favorites-favorites-log', {
+      url: '/favorites/:photoId/favorites-log',
+      views: {
+        'tab-favorites': {
+          templateUrl: 'templates/log.html',
+          controller: 'FavoritesLogCtrl'
         }
       }
     })
@@ -164,6 +203,25 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
     
+    .state('tab.photo-detail-purchases-log', {
+      url: '/myPhotos/:photoId/purchases-log',
+      views: {
+        'tab-myPhotos': {
+          templateUrl: 'templates/log.html',
+          controller: 'PurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.photo-detail-favorites-log', {
+      url: '/myPhotos/:photoId/favorites-log',
+      views: {
+        'tab-myPhotos': {
+          templateUrl: 'templates/log.html',
+          controller: 'FavoritesLogCtrl'
+        }
+      }
+    })
+    
     .state('tab.photo-full-size', {
       url: '/myPhotos/:photoId/full-size',
       views: {
@@ -204,6 +262,24 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
 
+    .state('tab.purchases-purchases-log', {
+      url: '/purchases/:photoId/purchases-log',
+      views: {
+        'tab-purchases': {
+          templateUrl: 'templates/log.html',
+          controller: 'PurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.purchases-favorites-log', {
+      url: '/purchases/:photoId/favorites-log',
+      views: {
+        'tab-purchases': {
+          templateUrl: 'templates/log.html',
+          controller: 'FavoritesLogCtrl'
+        }
+      }
+    })
 
   .state('tab.account', {
     url: '/account',

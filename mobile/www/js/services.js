@@ -87,13 +87,20 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/purchases/:id.json",{id: '@id'});
 })
 
-
 .factory('Favorites', function ($resource) {
   return $resource("http://localhost:3000/favorites.json");
 })
 
 .factory('FavoriteAct', function ($resource) {
   return $resource("http://localhost:3000/favorites/:id.json",{id: '@id'});
+})
+
+.factory('FavoriteLog', function ($resource) {
+  return $resource("http://localhost:3000/favoritelog/:id.json",{id: '@id'});
+})
+
+.factory('PurchaseLog', function ($resource) {
+  return $resource("http://localhost:3000/purchaselog/:id.json",{id: '@id'});
 })
 
 .factory('Foursquare', function ($resource) {

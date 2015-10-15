@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get 'locations' =>  'uploads#locations'
   get 'events' => 'uploads#events'
   
+  get 'favoritelog/:id' => 'favorites#log'
+  get 'purchaselog/:id' => 'purchases#log'
+  
   # You can have the root of your site routed with "root"
   root 'uploads#index'
   
