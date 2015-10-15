@@ -143,6 +143,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
+    
+     .state('tab.upload-info', {
+      url: '/upload/info',
+      views: {
+        'tab-myPhotos': {
+          templateUrl: 'templates/upload-info.html',
+          controller: 'UploadInfoCtrl'
+        }
+      }
+    })
 
     .state('tab.photo-detail', {
       url: '/myPhotos/:photoId',

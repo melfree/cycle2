@@ -107,6 +107,9 @@ angular.module('starter.controllers', [])
 })
 
 
+.controller('UploadInfoCtrl', function($scope, $location, $window,$rootScope) {  
+})
+
 .controller('UploadCtrl', function($scope,$ionicNavBarDelegate,Upload,Foursquare,Event,Helper,$window,Auth) {  
   $ionicNavBarDelegate.showBackButton(true);
   
