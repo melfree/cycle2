@@ -7,6 +7,13 @@ angular.module('starter.controllers', [])
   };
 })
 
+.directive('navButtons', function() {
+  return {
+    templateUrl: 'templates/nav-buttons.html',
+    restrict : 'E'
+  };
+})
+
 .controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
     var email = $window.localStorage['userEmail'];
     if (email) {
@@ -80,20 +87,48 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Event,Helper,$window,Auth,$ionicScrollDelegate) {
+.controller('MyPhotoCtrl', function($scope,myPhoto,Auth,Helper,$window,$ionicScrollDelegate) {
   $scope.title = 'myPhotos';
-  
-  $scope.flow = {};
-  $scope.current_locations = [];
-  $scope.current_events = [];
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
   $scope.eventsEmpty = false;
   
+  $scope.change = function () {
+      myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
+        $scope.events = Helper.groupPhotosByEvent(data);
+        $scope.eventsEmpty = ($scope.events.length == 0);
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
+  })
+})
+
+
+.controller('UploadCtrl', function($scope,$ionicNavBarDelegate,Upload,Foursquare,Event,Helper,$window,Auth) {  
+  $ionicNavBarDelegate.showBackButton(true);
+  
+  $scope.flow = {};
+  $scope.current_locations = [];
+  $scope.current_events = [];
+  
+  $scope.done = false;
+  
+  $scope.change = function () {
+      Event.query(Auth, function(data){
+        $scope.current_events = data;
+      });
+      $scope.done = false;
+  };
+  $scope.$on('$ionicView.enter', function () {
+      $scope.change();
+  })
+  
   var reset = function () {
       // [Re]set the form data.
-      $scope.custom = {event: '', location: ''};  
+      $scope.custom = {event: '', location: ''};
       $scope.showCustomEvent = true;
       $scope.showCustomLocation = true;
       // 'Custom' will be a reserved keyword for event and location, meaning 'custom input'.
@@ -110,20 +145,6 @@ angular.module('starter.controllers', [])
   $scope.showCustomEventChange = function () {
     $scope.showCustomEvent = ($scope.upload.event == "Custom");
   }
-  
-  $scope.change = function () {
-      myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
-        $scope.events = Helper.groupPhotosByEvent(data);
-        $scope.eventsEmpty = ($scope.events.length == 0);
-      });
-      Event.query(Auth, function(data){
-        $scope.current_events = data;
-      });
-      $ionicScrollDelegate.resize();
-  };
-  $scope.$on('$ionicView.enter', function () {
-      $scope.change();
-  })
   
   // Get current location and add the foursquare places to the list of locations.
   if (navigator.geolocation) {
@@ -180,9 +201,7 @@ angular.module('starter.controllers', [])
     
     var mergedObject = angular.extend({upload: $scope.upload}, Auth);
     Upload.save(mergedObject, function(data) {
-      // Repopulate "my photos" to be up to date, as if reloading the page.
-      $scope.events = Helper.groupPhotosByEvent(data);
-      $scope.eventsEmpty = ($scope.events.length == 0);
+      $scope.done = true;
       reset();
       $scope.flow.flow.cancel();
     });
