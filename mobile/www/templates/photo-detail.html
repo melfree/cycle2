@@ -36,9 +36,6 @@
             </div>
             <input type="text" ng-model="photo.location" ng-change="change()">
           </label>
-            <ion-toggle ng-model="photo.copyright" ng-change="change()" toggle-class="toggle-calm">
-              Retain Copyright
-            </ion-toggle>
           <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
           <button class="button button-assertive" ng-show="deleting">Deleting</button>
         </div>

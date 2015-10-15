@@ -81,7 +81,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,Event,Helper,$window,Auth,$ionicScrollDelegate) {
-  $scope.title = 'myPhoto';
+  $scope.title = 'myPhotos';
   
   $scope.flow = {};
   $scope.current_locations = [];
@@ -190,8 +190,8 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('PurchaseCtrl', function($scope,Helper,Purchase,Auth,$ionicScrollDelegate) {
-  $scope.title = 'purchase';
+.controller('PurchasesCtrl', function($scope,Helper,Purchase,Auth,$ionicScrollDelegate) {
+  $scope.title = 'purchases';
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
@@ -220,8 +220,8 @@ angular.module('starter.controllers', [])
 //    });
 //})
 
-.controller('FavCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
-  $scope.title = 'fav';
+.controller('FavoritesCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
+  $scope.title = 'favorites';
  
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   $scope.events = {};
@@ -255,20 +255,7 @@ angular.module('starter.controllers', [])
     $scope.deleting=false;
     // The download button leaves the app and thus is only usable for web views.
     
-    $scope.backTitle = $ionicHistory.backTitle().toLowerCase(); // i.e., 'explore'
-    // BackTitle is used in the "photos-list" directive html, to generate the url
-    // that goes to the given tab's full-view state.
-    // Explore is named 'explore', Purchase is named 'purchase',
-    // but favorite is named 'fav', and My Photos is named 'myPhoto', thus:
-    switch ($scope.backTitle) {
-      case "favorite":
-        $scope.backTitle = "fav";
-        break;
-      case "my photos":
-        $scope.backTitle = "myPhoto";
-        break;
-    }
-
+    $scope.backTitle = $ionicHistory.backTitle().toLowerCase(); // i.e., 'explore, purchases, favorites, myphotos'
 
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
     $scope.change = function (){

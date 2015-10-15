@@ -94,50 +94,50 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
   })
 
-  .state('tab.fav', {
-      url: '/fav',
+  .state('tab.favorites', {
+      url: '/favorites',
       views: {
-        'tab-fav': {
-          templateUrl: 'templates/tab-fav.html',
-          controller: 'FavCtrl'
+        'tab-favorites': {
+          templateUrl: 'templates/tab-favorites.html',
+          controller: 'FavoritesCtrl'
         }
       }
     })
 
-      .state('tab.fav-detail', {
-      url: '/fav/:photoId',
+      .state('tab.favorites-detail', {
+      url: '/favorites/:photoId',
       views: {
-        'tab-fav': {
+        'tab-favorites': {
           templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
     })
       
-    .state('tab.fav-full-size', {
-      url: '/fav/:photoId/full-size',
+    .state('tab.favorites-full-size', {
+      url: '/favorites/:photoId/full-size',
       views: {
-        'tab-fav': {
+        'tab-favorites': {
           templateUrl: 'templates/photo-full.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
     })
 
-    .state('tab.myPhoto', {
-      url: '/myPhoto',
+    .state('tab.myPhotos', {
+      url: '/myPhotos',
       views: {
-        'tab-myPhoto': {
-          templateUrl: 'templates/tab-myPhoto.html',
+        'tab-myPhotos': {
+          templateUrl: 'templates/tab-myPhotos.html',
           controller: 'MyPhotoCtrl'
         }
       }
     })
 
     .state('tab.photo-detail', {
-      url: '/myPhoto/:photoId',
+      url: '/myPhotos/:photoId',
       views: {
-        'tab-myPhoto': {
+        'tab-myPhotos': {
           templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
@@ -145,39 +145,39 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
     })
     
     .state('tab.photo-full-size', {
-      url: '/myPhoto/:photoId/full-size',
+      url: '/myPhotos/:photoId/full-size',
       views: {
-        'tab-myPhoto': {
+        'tab-myPhotos': {
           templateUrl: 'templates/photo-full.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
     })
 
-    .state('tab.purchase', {
-      url: '/purchase',
+    .state('tab.purchases', {
+      url: '/purchases',
       views: {
-        'tab-purchase': {
-          templateUrl: 'templates/tab-purchase.html',
-          controller: 'PurchaseCtrl'
+        'tab-purchases': {
+          templateUrl: 'templates/tab-purchases.html',
+          controller: 'PurchasesCtrl'
         }
       }
     })
 
-    .state('tab.purchase-detail', {
-      url: '/purchase/:photoId',
+    .state('tab.purchases-detail', {
+      url: '/purchases/:photoId',
       views: {
-        'tab-purchase': {
+        'tab-purchases': {
           templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
     })
     
-    .state('tab.purchase-full-size', {
-      url: '/purchase/:photoId/full-size',
+    .state('tab.purchases-full-size', {
+      url: '/purchases/:photoId/full-size',
       views: {
-        'tab-purchase': {
+        'tab-purchases': {
           templateUrl: 'templates/photo-full.html',
           controller: 'MyPhotoDetailCtrl'
         }
