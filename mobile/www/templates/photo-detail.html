@@ -3,21 +3,42 @@
     <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
       <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
     </a>
-    <div>Time derived from EXIF: {{photo.time}}</div>
-    <div>Posted at: {{photo.created_at}}</div>
-    <div>Copyright status: {{photo.copyright}}</div>
-    <div>Location:  {{photo.location}}</div>
-    <div>Event:  {{photo.event}}</div>
-    
+    <ion-list>
+      <ion-item> Uploaded at {{photo.created_at}}.
+      </ion-item>
+      <div ng-hide="photo.current_user_uploaded">
+        <ion-item> Owned by <b>{{photo.user.user_email}}</b>.
+        </ion-item>
+        <ion-item> From
+        <b>{{photo.event}}</b>, at <b>{{photo.location}}</b>.
+        </ion-item>
+      </div>
+      <ion-item> {{photo.copyright_string}}
+      </ion-item>
+      <ion-item> Purchases
+         <span class="badge badge-calm">{{photo.num_purchases}}</span>
+      </ion-item>
+      <ion-item> Favorites
+         <span class="badge badge-positive">{{photo.num_favorites}}</span>
+      </ion-item>
+    </ion-list>
+
+
     <div ng-hide="photo.current_user_uploaded">
       <div class="row">
-        <div class="col">
-          <button class="button button-calm" ng-hide="purchased" ng-click="purchasePhoto()">Purchase</button>
-          <button class="button button-calm" ng-hide="faved" ng-click="favPhoto()">Favorite</button>
+        <div class="col text-center">
+          <br/>
+          <button class="button button-energized" ng-hide="faved" ng-click="favPhoto()">Favorite</button>
           <button class="button button-assertive" ng-show="faved" ng-click="unfavPhoto()">Unfavorite</button>
+          &nbsp;
+          <span data-ng-show="photo.copyright">
+            <button class="button button-balanced" ng-hide="purchased" ng-click="purchasePhoto()">Purchase License</button>
+            <button class="button button-balanced" disabled="disabled" ng-show="purchased">Purchased</button>
+          </span>
         </div>
       </div>
     </div>
+    
     <div ng-show="photo.current_user_uploaded">
       <div class="row">
         <div class="col text-center">
@@ -36,7 +57,8 @@
             </div>
             <input type="text" ng-model="photo.location" ng-change="change()">
           </label>
-          <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete</button>
+          <br/>
+          <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete Photo</button>
           <button class="button button-assertive" ng-show="deleting">Deleting</button>
         </div>
       </div>

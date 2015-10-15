@@ -1,10 +1,18 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :id, :user_id,  :thumb_url, :photo_url, :height, :width, :location, :copyright, :event, :lat, :long, :time, :num_purchases, :current_user_uploaded, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
+  attributes :id, :user_id, :css_class, :thumb_url, :photo_url, :height, :width, :location, :copyright_string, :copyright, :event, :lat, :long, :time, :num_purchases, :current_user_uploaded, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
   has_one :user
   
   BASE_URL = 'http://localhost:3000'
   MISSING = "MISSING PHOTO URL"
   MISSING_THUMB = "MISSING THUMB PHOTO URL"
+  
+  def copyright_string
+    if copyright
+      "This photo is License Only."
+    else
+      "This photo is Free-to-Use."
+    end
+  end
   
   def created_at
     object.created_at.strftime("%a, %d/%m/%y %I:%M %p")
@@ -19,6 +27,18 @@ class UploadSerializer < ActiveModel::Serializer
       object.time.strftime("%a, %d/%m/%y %I:%M %p")
     else
       nil
+    end
+  end
+  
+  def css_class
+    if current_user_purchased
+      'purchased'
+    elsif current_user_favorited
+      'favorited'
+    elsif current_user_uploaded
+      'uploaded'
+    else
+      ''
     end
   end
   
