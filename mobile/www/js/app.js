@@ -292,7 +292,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
   
   // Acount logs
     .state('tab.rev-user-purchases-log', {
-      url: '/account/rev-purchases-log',
+      url: '/account/rev-user-purchases-log',
       views: {
         'tab-account': {
           templateUrl: 'templates/log.html',
@@ -301,7 +301,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
     .state('tab.rev-user-favorites-log', {
-      url: '/account/rev-favorites-log',
+      url: '/account/rev-user-favorites-log',
       views: {
         'tab-account': {
           templateUrl: 'templates/log.html',
@@ -310,7 +310,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
       .state('tab.user-purchases-log', {
-      url: '/account/purchases-log',
+      url: '/account/user-purchases-log',
       views: {
         'tab-account': {
           templateUrl: 'templates/log.html',
@@ -319,7 +319,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
     .state('tab.user-favorites-log', {
-      url: '/account/favorites-log',
+      url: '/account/user-favorites-log',
       views: {
         'tab-account': {
           templateUrl: 'templates/log.html',

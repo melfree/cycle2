@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
 
 ///////////////
 //Purchase logs
@@ -37,7 +37,7 @@ angular.module('starter.controllers', [])
   $scope.title = 'Sales History';
   $scope.logs = {};
   $scope.change = function () {
-      PurchaseLog.query(Auth, function(data) {
+      RevPurchaseLog.query(Auth, function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });
@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
   $scope.title = 'Favorites of Your Photos';
   $scope.logs = {};
   $scope.change = function () {
-      FavoriteLog.query(Auth, function(data) {
+      RevFavoriteLog.query(Auth, function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });

@@ -2,16 +2,36 @@
   <ion-content>
     <ion-list>
       <ion-item> Favorites
-         <span class="badge badge-stable">{{account.favorites}}</span>
+          <a href="#/tab/account/user-favorites-log">
+            <span class="badge badge-energized">
+              {{account.favorites}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
       <ion-item> Favorited by Others
-         <span class="badge badge-stable">{{account.favorites}}</span>
+          <a href="#/tab/account/rev-user-favorites-log">
+            <span class="badge badge-stable">
+              {{account.favorited}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
       <ion-item> Purchases
-         <span class="badge badge-calm">{{account.purchases}}</span>
+          <a href="#/tab/account/user-purchases-log">
+            <span class="badge badge-balanced">
+              {{account.purchases}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
       <ion-item> Sales
-         <span class="badge badge-calm">{{account.purchased}}</span>
+          <a href="#/tab/account/rev-user-purchases-log">
+            <span class="badge badge-calm">
+              {{account.purchased}}&nbsp;&nbsp;
+              <i class="icon-right ion-chevron-right"></i>
+            </span>
+          </a>
       </ion-item>
       <ion-item> Purchasing Balance
          <span class="badge badge-positive">{{account.balance}}</span>

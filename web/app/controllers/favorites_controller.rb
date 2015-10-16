@@ -12,7 +12,7 @@ class FavoritesController < ApplicationController
       format.json { render json: format_log(current_user.favorites) }
     end
   end
-  def revuserlog
+  def revuserlogs
     favs = Favorite.joins(:upload).where("uploads.user_id = ?", current_user.id)
     respond_to do |format|
       format.json { render json: format_log(favs) }
