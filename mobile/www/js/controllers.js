@@ -68,9 +68,9 @@ angular.module('starter.controllers', [])
   
   $scope.change = function () {
       Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
-        PhotoList.setPhotos(data);
-        $scope.events = PhotoList.getGroupedPhotos();
-        $scope.eventsEmpty = PhotoList.photosEmpty();
+        PhotoList.setPhotos('explore', data);
+        $scope.events = PhotoList.getGroupedPhotos('explore');
+        $scope.eventsEmpty = PhotoList.photosEmpty('explore');
       });
       $ionicScrollDelegate.resize();
   };
@@ -86,9 +86,9 @@ angular.module('starter.controllers', [])
   
   $scope.change = function () {
       myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
-        PhotoList.setPhotos(data);
-        $scope.events = PhotoList.getGroupedPhotos();
-        $scope.eventsEmpty = PhotoList.photosEmpty();
+        PhotoList.setPhotos('myphotos', data);
+        $scope.events = PhotoList.getGroupedPhotos('myphotos');
+        $scope.eventsEmpty = PhotoList.photosEmpty('myphotos');
       });
       $ionicScrollDelegate.resize();
   };
@@ -104,9 +104,9 @@ angular.module('starter.controllers', [])
   
   $scope.change = function () {
       Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
-        PhotoList.setPhotos(data);
-        $scope.events = PhotoList.getGroupedPhotos();
-        $scope.eventsEmpty = PhotoList.photosEmpty();
+        PhotoList.setPhotos('purchases', data);
+        $scope.events = PhotoList.getGroupedPhotos('purchases');
+        $scope.eventsEmpty = PhotoList.photosEmpty('purchases');
       });
       $ionicScrollDelegate.resize();
   };
@@ -122,9 +122,9 @@ angular.module('starter.controllers', [])
   
   $scope.change = function () {
       Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
-        PhotoList.setPhotos(data);
-        $scope.events = PhotoList.getGroupedPhotos();
-        $scope.eventsEmpty = PhotoList.photosEmpty();
+        PhotoList.setPhotos('favorites', data);
+        $scope.events = PhotoList.getGroupedPhotos('favorites');
+        $scope.eventsEmpty = PhotoList.photosEmpty('favorites');
       });
       $ionicScrollDelegate.resize();
   };
@@ -136,56 +136,60 @@ angular.module('starter.controllers', [])
 .controller('MyPhotoDetailCtrl', function($scope,$state, $location, $window,PhotoList,PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
     $scope.deleting=false;
+    
     $scope.backTitle = $ionicHistory.backTitle().toLowerCase();
-    // i.e., 'explore, purchases, favorites, myphotos'
+    // Used for dynamic urls, i.e., 'explore, purchases, favorites, myphotos'
 
-    var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
+    $scope.change = function(id) {
+      $scope.merged = angular.extend({id:id}, Auth);
+      $scope.photo = PhotoList.getPhoto($scope.backTitle, id);
+      if (!($scope.photo)) {
+        $ionicHistory.goBack();
+      }
+    };
+    
+    $scope.goTo = function(id) {
+      $scope.change(id);
+      $stateParams.photoId = id;
+    };
+    
+    $scope.$on('$ionicView.beforeEnter', function() {
+      $scope.change($stateParams.photoId);
+    });
+    
     $scope.update = function (){
-      Upload.update(angular.extend(mergedObject,
+      Upload.update(angular.extend($scope.merged,
                                    {upload: {location: $scope.photo.location,
                                              event: $scope.photo.event}
                                     }));
     }
     
-    $scope.change = function () {      
-      $scope.photo = PhotoList.getPhoto($stateParams.photoId);
-    }
-    
-    $scope.goTo = function(id) {
-      $state.go($state.current, {photoId: id}, {reload: true});
-    }
-    
-    $scope.$on('$ionicView.beforeEnter', function() {
-      // Get the object
-      $scope.change();
-      
-    });
         
     $scope.deletePhoto = function () {
       $scope.deleting=true;
-      Upload.delete(mergedObject, function(data) {
+      Upload.delete($scope.merged, function(data) {
         $ionicHistory.goBack();
       });
     }
 
     $scope.purchasePhoto = function () {
       $scope.photo.current_user_purchased = true;
-      PurchaseAct.save(mergedObject, function (data) {
-        $scope.photo.num_purchased += 1;
+      PurchaseAct.save($scope.merged, function (data) {
+        $scope.photo.num_purchases += 1;
       });
     }
 
     $scope.favPhoto = function () {
       $scope.photo.current_user_favorited = true;
-      FavoriteAct.save(mergedObject, function (data) {
-        $scope.photo.num_favorited += 1;
+      FavoriteAct.save($scope.merged, function (data) {
+        $scope.photo.num_favorites += 1;
       });
     }
 
     $scope.unfavPhoto = function () {
       $scope.photo.current_user_favorited = false;
-      FavoriteAct.delete(mergedObject, function(data) {  
-        $scope.photo.num_favorited -= 1;
+      FavoriteAct.delete($scope.merged, function(data) {  
+        $scope.photo.num_favorites -= 1;
       });
     }
 

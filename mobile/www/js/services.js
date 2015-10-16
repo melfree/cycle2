@@ -102,15 +102,16 @@ angular.module('starter.services', [])
 })
 
 .factory('PhotoList', function() {
+  var allHash = {};
+  allHash['explore'] = {};
+  allHash['myphotos'] = {};
+  allHash['favorites'] = {};
+  allHash['purchases'] = {};
   
-  var groupedPhotos = [];
-  var photos = [];
-  var idHash = {};
-  
-  var groupPhotosByEvent = function (data) {
-      var events = [];
-      var list = [];
-      var hash = {};
+  var groupPhotosByEvent = function(hash, data) {
+      hash.groupedPhotos = [];
+      hash.photos = [];
+      hash.idHash = {};
       var lastSeen = null;
       var lastSeenWithTime = null;
       
@@ -120,11 +121,12 @@ angular.module('starter.services', [])
         if (p.id) {
           // First build an array that used to keep track of ordering of photos.
           if (i != 0) {
-            p.left_id = list[i-1].id;
-            list[i-1].right_id = p.id;
+            p.left_id = hash.photos[i-1].id;
+            hash.photos[i-1].right_id = p.id;
           }
-          hash[p.id] = i;
-          list.push(p)
+          hash.idHash[p.id] = i;
+          hash.photos.push(p);
+          
           // Now build a list grouped by event
           if (p.event) {
             e = p.event;
@@ -136,32 +138,29 @@ angular.module('starter.services', [])
             photoList = photoList.concat([p]);
           } else {
             // This is a new event, so save the old list and start a new list.
-            if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
+            if (lastSeenWithTime) hash.groupedPhotos.push({name: lastSeenWithTime, photos: photoList});
             lastSeen = e;
             lastSeenWithTime = e + " - " + p.created_at;
             photoList = [p];
           }
         }
       }
-      if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
-      groupedPhotos = events;
-      photos = list;
-      idHash = hash;
+      if (lastSeenWithTime) hash.groupedPhotos.push({name: lastSeenWithTime, photos: photoList});
     };
   
   return {
-    photosEmpty: function() {
-      return groupedPhotos.length == 0;
+    photosEmpty: function(name) {
+      return allHash[name].groupedPhotos.length == 0;
     },
-    setPhotos: function(data) {
-      groupPhotosByEvent(data);
+    setPhotos: function(name, data) {
+      groupPhotosByEvent(allHash[name], data);
     },
-    getGroupedPhotos: function() {
-      return groupedPhotos;
+    getGroupedPhotos: function(name) {
+      return allHash[name].groupedPhotos;
     },
-    getPhoto: function(id) {
-      var index = idHash[id];
-      return photos[index];
+    getPhoto: function(name, id) {
+      var index = allHash[name].idHash[id];
+      return allHash[name].photos[index];
     }
   };
 })
