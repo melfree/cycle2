@@ -141,9 +141,9 @@ angular.module('starter.controllers', [])
     // Used for dynamic urls, i.e., 'explore, purchases, favorites, myphotos'
 
     $scope.change = function(id) {
-      $scope.merged = angular.extend({id:id}, Auth);
-      $scope.photo = PhotoList.getPhoto($scope.backTitle, id);
-      if (!($scope.photo)) {
+      $scope.merged = angular.extend({id:$stateParams.photoId}, Auth);
+      $scope.photo = PhotoList.getPhoto($scope.backTitle, $stateParams.photoId);
+      if (!($scope.photo)) { // this photo doesn't exist here anymore
         $ionicHistory.goBack();
       }
     };
@@ -156,19 +156,25 @@ angular.module('starter.controllers', [])
     };
     
     $scope.goTo = function(id) {
-      $scope.change(id);
+      // Change the photo in this state (without creating another state).
+      // I tried going to another state here, but this causes issues with
+      // Ionic history and the back button. (Ionic thinks each state is a child of
+      // the previous state.) So we stay in one state for navigating left and right.
+      // ... Unfortunately, this means there cant be any swipe animation.
       $stateParams.photoId = id;
+      $scope.change();
     };
     
     $scope.$on('$ionicView.beforeEnter', function() {
-      $scope.change($stateParams.photoId);
+      $scope.change();
     });
     
     $scope.update = function (){
-      Upload.update(angular.extend($scope.merged,
-                                   {upload: {location: $scope.photo.location,
-                                             event: $scope.photo.event}
-                                    }));
+      Upload.update(
+        angular.extend($scope.merged,
+                     {upload: {location: $scope.photo.location,
+                               event: $scope.photo.event}
+                      }));
     }
     
         
@@ -201,8 +207,6 @@ angular.module('starter.controllers', [])
         $scope.photo.num_favorites -= 1;
       });
     }
-
-
 })
 
 .controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope ) {
