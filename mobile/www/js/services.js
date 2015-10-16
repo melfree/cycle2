@@ -133,6 +133,29 @@ angular.module('starter.services', [])
   );
 })
 
+.factory('PhotoList', function() {
+  var photos = [];
+  return {
+    photosEmpty: function() {
+      return photos.length == 0;
+    },
+    setPhotos: function(list) {
+      photos = list;
+    },
+    getPhotos: function() {
+      return photos;
+    },
+    getPhoto: function(id) {
+      for (var i = 0; i < photos.length; i++) {
+        if (photos[i].id === parseInt(id)) {
+          return photos[i];
+        }
+      }
+      return null;
+    }
+  };
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
