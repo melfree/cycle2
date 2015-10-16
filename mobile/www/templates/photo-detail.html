@@ -15,7 +15,7 @@
       </div>
       <ion-item> {{photo.copyright_string}}
       </ion-item>
-      <ion-item> Purchases
+      <ion-item data-ng-show="photo.copyright"> Purchases
           <a href="#/tab/{{backTitle}}/{{photo.id}}/purchases-log">
             <span class="badge badge-balanced">
               {{photo.num_purchases}}&nbsp;&nbsp;
