@@ -1,102 +1,105 @@
 <ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
-    
-    <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
-      <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
-    </a>
-    
-    <div class="row">
-      <div class="col text-center">
-        <span ng-show="photo.left_id">
-          <button ng-click="goTo(photo.left_id)">
-             &nbsp;&nbsp;&nbsp;&nbsp;
-           <i style="font-size: 15px;" class="icon ion-ios-arrow-back">
-            &nbsp;&nbsp;&nbsp;&nbsp;
-           </i>
-          </button>
-        </span>
-      </div>
-      <div class="col text-center">
-        <span ng-show="photo.right_id"> 
-          <button ng-click="goTo(photo.right_id)">
-             &nbsp;&nbsp;&nbsp;&nbsp;
-            <i style="font-size: 15px;" class="icon ion-ios-arrow-forward">
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </i>
-          </button>
-        </span>
-      </div>
-    </div>
-    
-    <ion-list>
-      <ion-item> Uploaded at {{photo.created_at}}.
-      </ion-item>
-      <div ng-hide="photo.current_user_uploaded">
-        <ion-item> Owned by <b>{{photo.user.user_email}}</b>.
-        </ion-item>
-        <ion-item> From
-        <b>{{photo.event}}</b>, at <b>{{photo.location}}</b>.
-        </ion-item>
-      </div>
-      <ion-item> {{photo.copyright_string}}
-      </ion-item>
-      <ion-item data-ng-show="photo.copyright"> Purchases
-          <a href="#/tab/{{backTitle}}/{{photo.id}}/purchases-log">
-            <span class="badge badge-balanced">
-              {{photo.num_purchases}}&nbsp;&nbsp;
-              <i class="icon-right ion-chevron-right"></i>
-            </span>
-          </a>
-      </ion-item>
-      <ion-item> Favorites
-         <a href="#/tab/{{backTitle}}/{{photo.id}}/favorites-log">
-            <span class="badge badge-energized">
-              {{photo.num_favorites}}&nbsp;&nbsp;
-              <i class="icon-right ion-chevron-right"></i>
-            </span>
-          </a>
-      </ion-item>
-    </ion-list>
-
-
-    <div ng-hide="photo.current_user_uploaded">
+    <div on-swipe-right="swipeRight()" on-swipe-left="swipeLeft()">
+      
+      <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
+        <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
+      </a>
+      
       <div class="row">
         <div class="col text-center">
-          <br/>
-          <button class="button button-energized" ng-hide="photo.current_user_favorited" ng-click="favPhoto()">Favorite</button>
-          <button class="button button-assertive" ng-show="photo.current_user_favorited" ng-click="unfavPhoto()">Unfavorite</button>
-          &nbsp;
-          <span data-ng-show="photo.copyright">
-            <button class="button button-balanced" ng-hide="photo.current_user_purchased" ng-click="purchasePhoto()">Purchase License</button>
-            <button class="button button-balanced" disabled="disabled" ng-show="photo.current_user_purchased">Purchased</button>
+          <span ng-show="photo.left_id">
+            <button ng-click="swipeLeft()">
+               &nbsp;&nbsp;&nbsp;&nbsp;
+             <i style="font-size: 15px;" class="icon ion-ios-arrow-back">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+             </i>
+            </button>
+          </span>
+        </div>
+        <div class="col text-center">
+          <span ng-show="photo.right_id"> 
+            <button ng-click="swipeRight()">
+               &nbsp;&nbsp;&nbsp;&nbsp;
+              <i style="font-size: 15px;" class="icon ion-ios-arrow-forward">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </i>
+            </button>
           </span>
         </div>
       </div>
-    </div>
-    
-    <div ng-show="photo.current_user_uploaded">
-      <div class="row">
-        <div class="col text-center">
-          <hr/>
-          You own this photo.
-          <br/><br/>
-          <label class="item item-input">
-            <div class="input-label">
-                Edit Event
-            </div>
-            <input type="text" ng-model="photo.event" ng-change="update()">
-          </label>
-          <label class="item item-input">
-            <div class="input-label">
-                Edit Location
-            </div>
-            <input type="text" ng-model="photo.location" ng-change="update()">
-          </label>
-          <br/>
-          <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete Photo</button>
-          <button class="button button-assertive" ng-show="deleting">Deleting</button>
+      
+      <ion-list>
+        <ion-item> Uploaded at {{photo.created_at}}.
+        </ion-item>
+        <div ng-hide="photo.current_user_uploaded">
+          <ion-item> Owned by <b>{{photo.user.user_email}}</b>.
+          </ion-item>
+          <ion-item> From
+          <b>{{photo.event}}</b>, at <b>{{photo.location}}</b>.
+          </ion-item>
+        </div>
+        <ion-item> {{photo.copyright_string}}
+        </ion-item>
+        <ion-item data-ng-show="photo.copyright"> Purchases
+            <a href="#/tab/{{backTitle}}/{{photo.id}}/purchases-log">
+              <span class="badge badge-balanced">
+                {{photo.num_purchases}}&nbsp;&nbsp;
+                <i class="icon-right ion-chevron-right"></i>
+              </span>
+            </a>
+        </ion-item>
+        <ion-item> Favorites
+           <a href="#/tab/{{backTitle}}/{{photo.id}}/favorites-log">
+              <span class="badge badge-energized">
+                {{photo.num_favorites}}&nbsp;&nbsp;
+                <i class="icon-right ion-chevron-right"></i>
+              </span>
+            </a>
+        </ion-item>
+      </ion-list>
+  
+  
+      <div ng-hide="photo.current_user_uploaded">
+        <div class="row">
+          <div class="col text-center">
+            <br/>
+            <button class="button button-energized" ng-hide="photo.current_user_favorited" ng-click="favPhoto()">Favorite</button>
+            <button class="button button-assertive" ng-show="photo.current_user_favorited" ng-click="unfavPhoto()">Unfavorite</button>
+            &nbsp;
+            <span data-ng-show="photo.copyright">
+              <button class="button button-balanced" ng-hide="photo.current_user_purchased" ng-click="purchasePhoto()">Purchase License</button>
+              <button class="button button-balanced" disabled="disabled" ng-show="photo.current_user_purchased">Purchased</button>
+            </span>
+          </div>
         </div>
       </div>
+      
+      <div ng-show="photo.current_user_uploaded">
+        <div class="row">
+          <div class="col text-center">
+            <hr/>
+            You own this photo.
+            <br/><br/>
+            <label class="item item-input">
+              <div class="input-label">
+                  Edit Event
+              </div>
+              <input type="text" ng-model="photo.event" ng-change="update()">
+            </label>
+            <label class="item item-input">
+              <div class="input-label">
+                  Edit Location
+              </div>
+              <input type="text" ng-model="photo.location" ng-change="update()">
+            </label>
+            <br/>
+            <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete Photo</button>
+            <button class="button button-assertive" ng-show="deleting">Deleting</button>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </ion-content>
 </ion-view>

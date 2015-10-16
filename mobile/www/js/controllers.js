@@ -148,6 +148,13 @@ angular.module('starter.controllers', [])
       }
     };
     
+    $scope.swipeLeft = function () {
+      if ($scope.photo.left_id) $scope.goTo($scope.photo.left_id);
+    };
+    $scope.swipeRight = function () {
+      if ($scope.photo.right_id) $scope.goTo($scope.photo.right_id);
+    };
+    
     $scope.goTo = function(id) {
       $scope.change(id);
       $stateParams.photoId = id;
@@ -172,23 +179,25 @@ angular.module('starter.controllers', [])
       });
     }
 
+    // For these 3 actions, we do not fetch data from the backend.
+    // We could, but the changes involved are simple, so we don't need to.
     $scope.purchasePhoto = function () {
       $scope.photo.current_user_purchased = true;
-      PurchaseAct.save($scope.merged, function (data) {
+      PurchaseAct.save($scope.merged, function () {
         $scope.photo.num_purchases += 1;
       });
     }
 
     $scope.favPhoto = function () {
       $scope.photo.current_user_favorited = true;
-      FavoriteAct.save($scope.merged, function (data) {
+      FavoriteAct.save($scope.merged, function () {
         $scope.photo.num_favorites += 1;
       });
     }
 
     $scope.unfavPhoto = function () {
       $scope.photo.current_user_favorited = false;
-      FavoriteAct.delete($scope.merged, function(data) {  
+      FavoriteAct.delete($scope.merged, function() {  
         $scope.photo.num_favorites -= 1;
       });
     }
