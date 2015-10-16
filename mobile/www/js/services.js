@@ -17,41 +17,9 @@ angular.module('starter.services', [])
        } else { return null; }
    };
   
-  var groupPhotosByEvent = function (data) {
-      var events = [];
-      var lastSeen = null;
-      var photoList = [];
-      var lastSeenWithTime = null;
-      
-      for (var i in data) {
-        var a; var e;
-        var p = data[i];
-        if (p.id) {
-          if (p.event) {
-            e = p.event;
-          } else {
-            e = "N/A";
-          }
-          // Add the event to the list of event keys, if it's new.
-          if (lastSeen == e) {
-            photoList = photoList.concat([p]);
-          } else {
-            // This is a new event, so save the old list and start a new list.
-            if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
-            lastSeen = e;
-            lastSeenWithTime = e + " - " + p.created_at;
-            photoList = [p];
-          }
-        }
-      }
-      if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
-      return events;
-    }
-  
   //Helper function to group photos by a common event.
   return {
     arrayUnique: arrayUnique,
-    groupPhotosByEvent: groupPhotosByEvent,
     toDecimal: toDecimal
   }
 })
@@ -134,24 +102,66 @@ angular.module('starter.services', [])
 })
 
 .factory('PhotoList', function() {
+  
+  var groupedPhotos = [];
   var photos = [];
-  return {
-    photosEmpty: function() {
-      return photos.length == 0;
-    },
-    setPhotos: function(list) {
-      photos = list;
-    },
-    getPhotos: function() {
-      return photos;
-    },
-    getPhoto: function(id) {
-      for (var i = 0; i < photos.length; i++) {
-        if (photos[i].id === parseInt(id)) {
-          return photos[i];
+  var idHash = {};
+  
+  var groupPhotosByEvent = function (data) {
+      var events = [];
+      var list = [];
+      var hash = {};
+      var lastSeen = null;
+      var lastSeenWithTime = null;
+      
+      for (var i = 0; i < data.length; i++) {
+        var a; var e;
+        var p = data[i];
+        if (p.id) {
+          // First build an array that used to keep track of ordering of photos.
+          if (i != 0) {
+            p.left_id = list[i-1].id;
+            list[i-1].right_id = p.id;
+          }
+          hash[p.id] = i;
+          list.push(p)
+          // Now build a list grouped by event
+          if (p.event) {
+            e = p.event;
+          } else {
+            e = "N/A";
+          }
+          // Add the event to the list of event keys, if it's new.
+          if (lastSeen == e) {
+            photoList = photoList.concat([p]);
+          } else {
+            // This is a new event, so save the old list and start a new list.
+            if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
+            lastSeen = e;
+            lastSeenWithTime = e + " - " + p.created_at;
+            photoList = [p];
+          }
         }
       }
-      return null;
+      if (lastSeenWithTime) events.push({name: lastSeenWithTime, photos: photoList});
+      groupedPhotos = events;
+      photos = list;
+      idHash = hash;
+    };
+  
+  return {
+    photosEmpty: function() {
+      return groupedPhotos.length == 0;
+    },
+    setPhotos: function(data) {
+      groupPhotosByEvent(data);
+    },
+    getGroupedPhotos: function() {
+      return groupedPhotos;
+    },
+    getPhoto: function(id) {
+      var index = idHash[id];
+      return photos[index];
     }
   };
 })

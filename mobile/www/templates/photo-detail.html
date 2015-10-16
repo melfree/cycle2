@@ -1,8 +1,33 @@
 <ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
+    
     <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
       <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
     </a>
+    
+    <div class="row">
+      <div class="col text-center">
+        <span ng-show="photo.left_id">
+          <button ng-click="goTo(photo.left_id)">
+             &nbsp;&nbsp;&nbsp;&nbsp;
+           <i style="font-size: 15px;" class="icon ion-ios-arrow-back">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+           </i>
+          </button>
+        </span>
+      </div>
+      <div class="col text-center">
+        <span ng-show="photo.right_id"> 
+          <button ng-click="goTo(photo.right_id)">
+             &nbsp;&nbsp;&nbsp;&nbsp;
+            <i style="font-size: 15px;" class="icon ion-ios-arrow-forward">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </i>
+          </button>
+        </span>
+      </div>
+    </div>
+    
     <ion-list>
       <ion-item> Uploaded at {{photo.created_at}}.
       </ion-item>
@@ -59,13 +84,13 @@
             <div class="input-label">
                 Edit Event
             </div>
-            <input type="text" ng-model="photo.event" ng-change="change()">
+            <input type="text" ng-model="photo.event" ng-change="update()">
           </label>
           <label class="item item-input">
             <div class="input-label">
                 Edit Location
             </div>
-            <input type="text" ng-model="photo.location" ng-change="change()">
+            <input type="text" ng-model="photo.location" ng-change="update()">
           </label>
           <br/>
           <button class="button button-assertive" ng-hide="deleting" ng-click="deletePhoto()">Delete Photo</button>

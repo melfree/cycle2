@@ -61,17 +61,16 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Upload,Auth,Helper,$window,$ionicScrollDelegate) {
+.controller('ExploreCtrl', function($scope,Upload,Auth,PhotoList,$window,$ionicScrollDelegate) {
   $scope.title = 'explore';
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
-  $scope.events = {};
-  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
-        $scope.events = Helper.groupPhotosByEvent(data);
-        $scope.eventsEmpty = ($scope.events.length == 0);
+        PhotoList.setPhotos(data);
+        $scope.events = PhotoList.getGroupedPhotos();
+        $scope.eventsEmpty = PhotoList.photosEmpty();
       });
       $ionicScrollDelegate.resize();
   };
@@ -80,17 +79,16 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Auth,Helper,$window,$ionicScrollDelegate) {
-  $scope.title = 'myPhotos';
+.controller('MyPhotoCtrl', function($scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
+  $scope.title = 'myphotos';
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
-  $scope.events = {};
-  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
-        $scope.events = Helper.groupPhotosByEvent(data);
-        $scope.eventsEmpty = ($scope.events.length == 0);
+        PhotoList.setPhotos(data);
+        $scope.events = PhotoList.getGroupedPhotos();
+        $scope.eventsEmpty = PhotoList.photosEmpty();
       });
       $ionicScrollDelegate.resize();
   };
@@ -99,122 +97,16 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('UploadInfoCtrl', function($scope, $location, $window,$rootScope) {  
-})
-
-.controller('UploadCtrl', function($scope,$ionicNavBarDelegate,Upload,Foursquare,Event,Helper,$window,Auth) {  
-  $ionicNavBarDelegate.showBackButton(true);
-  
-  $scope.flow = {};
-  $scope.current_locations = [];
-  $scope.current_events = [];
-  
-  $scope.done = false;
-  
-  $scope.change = function () {
-      Event.query(Auth, function(data){
-        $scope.current_events = data;
-      });
-      $scope.done = false;
-  };
-  $scope.$on('$ionicView.beforeEnter', function () {
-      $scope.change();
-  })
-  
-  var reset = function () {
-      // [Re]set the form data.
-      $scope.custom = {event: '', location: ''};
-      $scope.showCustomEvent = true;
-      $scope.showCustomLocation = true;
-      // 'Custom' will be a reserved keyword for event and location, meaning 'custom input'.
-      $scope.upload = {event: 'Custom', location: 'Custom', photos: [], copyright: true};
-      $scope.locations = $scope.current_locations;
-      // Reset the spinning icon.
-      $scope.loading = false;
-  };
-  reset();
-
-  $scope.showCustomLocationChange = function () {
-    $scope.showCustomLocation = ($scope.upload.location == "Custom");
-  }
-  $scope.showCustomEventChange = function () {
-    $scope.showCustomEvent = ($scope.upload.event == "Custom");
-  }
-  
-  // Get current location and add the foursquare places to the list of locations.
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position){
-      $scope.$apply(function(){
-        lat = position.coords.latitude;
-        long = position.coords.longitude;
-                Foursquare.get({'foursquare[lat]': lat,
-                              'foursquare[long]': long}, function(e) {
-                  $scope.current_locations = e.results;
-                  $scope.locations = e.results;
-                  $scope.upload.location = $scope.locations[0]
-                });
-      });
-    });
-  }
-  
-  // Automagically convert each photo to Base64 representation for use in JSON.
-  $scope.processFiles = function(files){
-    angular.forEach(files, function(flowFile, i){
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) {$scope.upload.photos[i] = event.target.result;};
-        fileReader.readAsDataURL(flowFile.file);        
-        // Get Location data from EXIF GPS points. All EXIF processing happens here.
-        EXIF.getData(flowFile.file, function(){
-            var lat = Helper.toDecimal(EXIF.getTag(this,'GPSLatitude'));
-            var long = Helper.toDecimal(EXIF.getTag(this,'GPSLongitude'));
-            if (lat) {// Get the locations that match the EXIF GPS coordinates.
-              console.log("EXIF coordinates found.");
-              Foursquare.get({'foursquare[lat]': lat,
-                              'foursquare[long]': long}, function(e) {
-                  $scope.locations = Helper.arrayUnique($scope.locations.concat( e.results ));
-                });
-            }
-        });
-          
-    });
-  };
-  
-  // Upload the photos array.
-  $scope.saveUpload = function () { 
-    $scope.loading = true;
-    // Set custom event/location if needed.
-    if ($scope.custom.event == "Custom") { //Don't allow an event to be named "Custom"
-      $scope.upload.event = '';
-    } else if ($scope.upload.event == "Custom") {
-      $scope.upload.event = $scope.custom.event;
-    }
-    if ($scope.custom.location == "Custom") { //Same thing with location.
-      $scope.upload.location = '';
-    } else if ($scope.upload.location == "Custom") {
-      $scope.upload.location = $scope.custom.location;
-    }
-    
-    var mergedObject = angular.extend({upload: $scope.upload}, Auth);
-    Upload.save(mergedObject, function(data) {
-      $scope.done = true;
-      reset();
-      $scope.flow.flow.cancel();
-    });
-  }
-})
-
-
-.controller('PurchasesCtrl', function($scope,Helper,Purchase,Auth,$ionicScrollDelegate) {
+.controller('PurchasesCtrl', function($scope,PhotoList,Purchase,Auth,$ionicScrollDelegate) {
   $scope.title = 'purchases';
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
-  $scope.events = {};
-  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
-        $scope.events = Helper.groupPhotosByEvent(data);
-        $scope.eventsEmpty = ($scope.events.length == 0);
+        PhotoList.setPhotos(data);
+        $scope.events = PhotoList.getGroupedPhotos();
+        $scope.eventsEmpty = PhotoList.photosEmpty();
       });
       $ionicScrollDelegate.resize();
   };
@@ -223,17 +115,16 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('FavoritesCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
+.controller('FavoritesCtrl', function($scope,PhotoList,Favorites,Auth,$ionicScrollDelegate) {
   $scope.title = 'favorites';
  
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
-  $scope.events = {};
-  $scope.eventsEmpty = false;
   
   $scope.change = function () {
       Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
-        $scope.events = Helper.groupPhotosByEvent(data);
-        $scope.eventsEmpty = ($scope.events.length == 0);
+        PhotoList.setPhotos(data);
+        $scope.events = PhotoList.getGroupedPhotos();
+        $scope.eventsEmpty = PhotoList.photosEmpty();
       });
       $ionicScrollDelegate.resize();
   };
@@ -242,31 +133,32 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('MyPhotoDetailCtrl', function($scope, $location, $window, PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
+.controller('MyPhotoDetailCtrl', function($scope,$state, $location, $window,PhotoList,PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};
     $scope.deleting=false;
-    // The download button leaves the app and thus is only usable for web views.
-    
-    $scope.backTitle = $ionicHistory.backTitle().toLowerCase(); // i.e., 'explore, purchases, favorites, myphotos'
+    $scope.backTitle = $ionicHistory.backTitle().toLowerCase();
+    // i.e., 'explore, purchases, favorites, myphotos'
 
     var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-    $scope.change = function (){
+    $scope.update = function (){
       Upload.update(angular.extend(mergedObject,
                                    {upload: {location: $scope.photo.location,
-                                             event: $scope.photo.event,
-                                             copyright: $scope.photo.copyright}
+                                             event: $scope.photo.event}
                                     }));
     }
     
-    $scope.change = function () {
-      Upload.get(mergedObject, function(data) {
-                    $scope.photo=data;
-       });
+    $scope.change = function () {      
+      $scope.photo = PhotoList.getPhoto($stateParams.photoId);
+    }
+    
+    $scope.goTo = function(id) {
+      $state.go($state.current, {photoId: id}, {reload: true});
     }
     
     $scope.$on('$ionicView.beforeEnter', function() {
       // Get the object
       $scope.change();
+      
     });
         
     $scope.deletePhoto = function () {
@@ -278,21 +170,23 @@ angular.module('starter.controllers', [])
 
     $scope.purchasePhoto = function () {
       $scope.photo.current_user_purchased = true;
-      PurchaseAct.save(mergedObject);
-      $scope.change();
+      PurchaseAct.save(mergedObject, function (data) {
+        $scope.photo.num_purchased += 1;
+      });
     }
 
     $scope.favPhoto = function () {
       $scope.photo.current_user_favorited = true;
-      FavoriteAct.save(mergedObject);
-      $scope.change();
-      
+      FavoriteAct.save(mergedObject, function (data) {
+        $scope.photo.num_favorited += 1;
+      });
     }
 
     $scope.unfavPhoto = function () {
       $scope.photo.current_user_favorited = false;
-      FavoriteAct.delete(mergedObject);
-      $scope.change();
+      FavoriteAct.delete(mergedObject, function(data) {  
+        $scope.photo.num_favorited -= 1;
+      });
     }
 
 

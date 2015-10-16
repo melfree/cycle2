@@ -23,7 +23,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
   });
 })
 .config(function($ionicConfigProvider) {
-  $ionicConfigProvider.views.swipeBackEnabled(true);
+  $ionicConfigProvider.views.swipeBackEnabled(false);
   $ionicConfigProvider.platform.android.tabs.position("bottom");
  })
   
@@ -163,9 +163,9 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
     })
 
     .state('tab.myPhotos', {
-      url: '/myPhotos',
+      url: '/myphotos',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/tab-myPhotos.html',
           controller: 'MyPhotoCtrl'
         }
@@ -175,7 +175,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
     .state('tab.upload', {
       url: '/upload',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/upload.html',
           controller: 'UploadCtrl'
         }
@@ -192,39 +192,39 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
 
-    .state('tab.photo-detail', {
-      url: '/myPhotos/:photoId',
+    .state('tab.myphotos-detail', {
+      url: '/myphotos/:photoId',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/photo-detail.html',
           controller: 'MyPhotoDetailCtrl'
         }
       }
     })
     
-    .state('tab.photo-detail-purchases-log', {
-      url: '/myPhotos/:photoId/purchases-log',
+    .state('tab.myphotos-detail-purchases-log', {
+      url: '/myphotos/:photoId/purchases-log',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/log.html',
           controller: 'PurchasesLogCtrl'
         }
       }
     })
-    .state('tab.photo-detail-favorites-log', {
-      url: '/myPhotos/:photoId/favorites-log',
+    .state('tab.myphotos-detail-favorites-log', {
+      url: '/myphotos/:photoId/favorites-log',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/log.html',
           controller: 'FavoritesLogCtrl'
         }
       }
     })
     
-    .state('tab.photo-full-size', {
-      url: '/myPhotos/:photoId/full-size',
+    .state('tab.myphotos-full-size', {
+      url: '/myphotos/:photoId/full-size',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/photo-full.html',
           controller: 'MyPhotoDetailCtrl'
         }
