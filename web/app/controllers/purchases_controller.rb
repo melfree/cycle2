@@ -9,7 +9,7 @@ class PurchasesController < ApplicationController
   ##############
   def log
     respond_to do |format|
-      format.json { render json: @purchase.purchases.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%d/%m/%y %I:%M %p"), user_email: o.user.email}} }
+      format.json { render json: @purchase.purchases.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%m/%d/%y %I:%M %p"), user_email: o.user.email}} }
     end
   end
   
