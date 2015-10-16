@@ -98,9 +98,14 @@ angular.module('starter.services', [])
 .factory('FavoriteLog', function ($resource) {
   return $resource("http://localhost:3000/favoritelog/:id.json",{id: '@id'});
 })
-
 .factory('PurchaseLog', function ($resource) {
   return $resource("http://localhost:3000/purchaselog/:id.json",{id: '@id'});
+})
+.factory('RevFavoriteLog', function ($resource) {
+  return $resource("http://localhost:3000/revfavoritelog.json");
+})
+.factory('RevPurchaseLog', function ($resource) {
+  return $resource("http://localhost:3000/revpurchaselog.json");
 })
 
 .factory('Foursquare', function ($resource) {

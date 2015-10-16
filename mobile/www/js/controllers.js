@@ -7,13 +7,6 @@ angular.module('starter.controllers', [])
   };
 })
 
-.directive('navButtons', function() {
-  return {
-    templateUrl: 'templates/nav-buttons.html',
-    restrict : 'E'
-  };
-})
-
 .controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
     var email = $window.localStorage['userEmail'];
     if (email) {
@@ -105,38 +98,6 @@ angular.module('starter.controllers', [])
       $scope.change();
   })
 })
-
-.controller('FavoritesLogCtrl', function($scope,Auth,$stateParams,FavoriteLog,$window,$ionicScrollDelegate) {
-  $scope.title = 'Favorites History';
-  $scope.logs = {};
-  var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-  $scope.change = function () {
-      FavoriteLog.query(mergedObject, function(data) {
-        $scope.logs = data;
-        $scope.logsEmpty = ($scope.logs.length == 0);
-      });
-      $ionicScrollDelegate.resize();
-  };
-  $scope.$on('$ionicView.beforeEnter', function () {
-      $scope.change();
-  })
-})
-.controller('PurchasesLogCtrl', function($scope,Auth,$stateParams,PurchaseLog,$window,$ionicScrollDelegate) {
-  $scope.title = 'Purchase History';
-  $scope.logs = {};
-  var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-  $scope.change = function () {
-      PurchaseLog.query(mergedObject, function(data) {
-        $scope.logs = data;
-        $scope.logsEmpty = ($scope.logs.length == 0);
-      });
-      $ionicScrollDelegate.resize();
-  };
-  $scope.$on('$ionicView.beforeEnter', function () {
-      $scope.change();
-  })
-})
-
 
 .controller('UploadInfoCtrl', function($scope, $location, $window,$rootScope) {  
 })
@@ -261,17 +222,6 @@ angular.module('starter.controllers', [])
       $scope.change();
   })
 })
-//
-//.controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {
-//    $scope.photo={};
-//    Purchase.query(Auth, function(data) {
-//        for(var i=0;i<data.length;i++){
-//          if(data[i].id==$stateParams.photoId){
-//                       $scope.photo=data[i];
-//            }
-//        }
-//    });
-//})
 
 .controller('FavoritesCtrl', function($scope,Helper,Favorites,Auth,$ionicScrollDelegate) {
   $scope.title = 'favorites';
@@ -291,17 +241,6 @@ angular.module('starter.controllers', [])
       $scope.change();
   })
 })
-
-//.controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
-//    $scope.photo={};
-//    Favorites.query(Auth, function(data) {
-//        for(var i=0;i<data.length;i++){
-//          if(data[i].id==$stateParams.photoId){
-//                       $scope.photo=data[i];
-//            }
-//        }
-//    });
-//})
 
 .controller('MyPhotoDetailCtrl', function($scope, $location, $window, PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
     $scope.photo={};

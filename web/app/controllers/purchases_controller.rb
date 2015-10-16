@@ -7,9 +7,23 @@ class PurchasesController < ApplicationController
   
   ## JSON routes
   ##############
+  
+    ## JSON routes
+  ##############
+  def userlog
+    respond_to do |format|
+      format.json { render json: format_log(current_user.purchases) }
+    end
+  end
+  def revuserlog
+    purchases = Purchase.joins(:upload).where("uploads.user_id = ?", current_user.id)
+    respond_to do |format|
+      format.json { render json: format_log(purchases) }
+    end
+  end
   def log
     respond_to do |format|
-      format.json { render json: @purchase.purchases.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%m/%d/%y %I:%M %p"), user_email: o.user.email}} }
+      format.json { render json: format_log(@purchase.purchases) }
     end
   end
   

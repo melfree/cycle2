@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   # https://github.com/gonzalo-bulnes/simple_token_authentication
   protect_from_forgery with: :null_session#, :if => Proc.new { |c| c.request.format == 'application/json' }
   
+  def format_log(log)
+    return log.order("created_at desc").to_a.map{|o| {created_at: o.created_at.strftime("%m/%d/%y %I:%M %p"), user_email: o.user.email}}
+  end
+  
   def filter_uploads
     if @uploads
       l = params[:search]

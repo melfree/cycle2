@@ -83,8 +83,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     }
   })
-  
-  
+
     .state('tab.explore-purchases-log', {
       url: '/explore/:photoId/purchases-log',
       views: {
@@ -289,7 +288,45 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
+  
+  // Acount logs
+    .state('tab.rev-user-purchases-log', {
+      url: '/account/rev-purchases-log',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/log.html',
+          controller: 'RevUserPurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.rev-user-favorites-log', {
+      url: '/account/rev-favorites-log',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/log.html',
+          controller: 'RevUserFavoritesLogCtrl'
+        }
+      }
+    })
+      .state('tab.user-purchases-log', {
+      url: '/account/purchases-log',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/log.html',
+          controller: 'UserPurchasesLogCtrl'
+        }
+      }
+    })
+    .state('tab.user-favorites-log', {
+      url: '/account/favorites-log',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/log.html',
+          controller: 'UserFavoritesLogCtrl'
+        }
+      }
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/redirect');
