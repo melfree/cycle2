@@ -1,5 +1,51 @@
 /* Empty. Add your own CSS if you like */
+html, body, a {
+    height:100%;
+    margin:0;
+}
+
 h3{
 	    text-align: center;
 
+}
+
+@media screen and (min-width: 480px) {
+    img.crowdpicListImg {
+      width: 33%;
+    }
+    .crowdpicScroll {
+      height: 600px;  
+      margin-right: 20px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    img.crowdpicListImg {
+        width: 49%;
+    }
+    .crowdpicScroll {
+      height: 500px;
+      margin-right: 20px;
+    }
+}
+
+img.purchased, img.favorited, img.uploaded {
+  padding: 6px; 
+}
+img.purchased {
+  background-color: LimeGreen;
+}
+img.uploaded {
+  background-color: DodgerBlue;
+}
+img.favorited {
+  background-color: GoldenRod;
+}
+ 
+img.crowdpicDetailImg {
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:90%;
+  box-shadow: 3px 3px grey; 
 }

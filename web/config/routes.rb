@@ -15,10 +15,24 @@ Rails.application.routes.draw do
   get 'foursquare/:id' => 'four_square#show'
   
   get 'home' => 'home#index', as: :home
+  get 'account' => 'uploads#account'
   
   get 'explore' => 'uploads#explore'
   get 'locations' =>  'uploads#locations'
   get 'events' => 'uploads#events'
+  
+  # Get the favorite/purchase history of a particular upload
+  get 'favoritelog/:id' => 'favorites#log'
+  get 'purchaselog/:id' => 'purchases#log'
+  
+  # Get the logs of this user's purchases
+  get 'favoritelog' => 'favorites#userlog'
+  get 'purchaselog' => 'purchases#userlog'
+  
+  # The reverse; get the log of purchases others have made of this user
+  get 'revfavoritelog' => 'favorites#revuserlog'
+  get 'revpurchaselog' => 'purchases#revuserlog'
+  
   
   # You can have the root of your site routed with "root"
   root 'uploads#index'

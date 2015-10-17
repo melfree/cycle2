@@ -3,10 +3,29 @@ class PurchasesController < ApplicationController
   acts_as_token_authentication_handler_for User, if: lambda { |c| c.request.format.json? }, fallback: :exception
   before_filter :authenticate_user!, unless: lambda { |c| c.request.format.json? }
   
-  before_action :set_purchase, only: [:show]
+  before_action :set_purchase, only: [:show,:log]
   
   ## JSON routes
   ##############
+  
+    ## JSON routes
+  ##############
+  def userlog
+    respond_to do |format|
+      format.json { render json: format_log(current_user.purchases) }
+    end
+  end
+  def revuserlog
+    purchases = Purchase.joins(:upload).where("uploads.user_id = ?", current_user.id)
+    respond_to do |format|
+      format.json { render json: format_log(purchases) }
+    end
+  end
+  def log
+    respond_to do |format|
+      format.json { render json: format_log(@purchase.purchases) }
+    end
+  end
   
   # GET /purchases/1
   # GET /purchases/1.json
@@ -50,7 +69,6 @@ class PurchasesController < ApplicationController
   
  private
    def set_purchase
-      @purchase = Purchase.find_by upload_id: params[:id]
-      @purchase = @purchase.upload if @purchase
+      @purchase = Upload.find_by id: params[:id]
    end
 end

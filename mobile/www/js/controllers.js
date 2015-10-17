@@ -1,6 +1,13 @@
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('RedirectCtrl', function($scope, $location, $window) {
+.directive('photosList', function() {
+  return {
+    templateUrl: 'templates/photos-list.html',
+    restrict : 'E'
+  };
+})
+
+.controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
     var email = $window.localStorage['userEmail'];
     if (email) {
         $location.path('/tab/explore');
@@ -29,11 +36,36 @@ angular.module('starter.controllers', ['ngOpenFB'])
   }
 
   $scope.fbLogin = function () {
-    ngFB.login({scope: 'public_profile, user_friends'}).then(
+    ngFB.login({scope: 'public_profile, user_friends, email'}).then(
         function (response) {
             if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
-                console.log(response );
+                ngFB.api({
+                    path: '/me',
+                    params: {fields: 'id,name,email'}
+                }).then(
+                    function (user) {
+                        console.log(user.name);
+                        // console.log(user.location);
+                        console.log(user.email);
+                        console.log(response);
+                        console.log(response.authResponse.accessToken);
+
+                        //if user does not already exist, regsiter as new user
+                        var userData = {}; // create an empty array
+                        userData.email = user.email
+                        userData.password = "password"
+                        userData.password_confirmation = "password"
+                        Register.save({user: userData},
+                        function(data){
+                          $window.localStorage['userToken'] = data.user_token;
+                          $window.localStorage['userEmail'] = data.user_email;
+                          $location.path('/tab/explore');
+                        };
+                    },
+                    function (error) {
+                        alert('Facebook error: ' + error.error_description);
+                });
                 $location.path('/tab/explore');
             } else {
                 alert('Facebook login failed');
@@ -48,8 +80,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.register = function() {
     Register.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userId'] = data.id;
-        $window.localStorage['userName'] = data.name;
+        $window.localStorage['userToken'] = data.user_token;
+        $window.localStorage['userEmail'] = data.user_email;
         $location.path('/tab/explore');
       },
       function(err){
@@ -67,174 +99,172 @@ angular.module('starter.controllers', ['ngOpenFB'])
   }
 })
 
-.controller('ExploreCtrl', function($scope,Chats) {
-    $scope.title=' ';
-
-/*  BlogEntry.query().$promise.then(function(response){
-    $scope.blog_entries = response;
-  });*/
+.controller('ExploreCtrl', function($scope,Upload,Auth,PhotoList,$window,$ionicScrollDelegate) {
+  $scope.title = 'explore';
+  
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
+  
+  $scope.change = function () {
+      Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
+        PhotoList.setPhotos('explore', data);
+        $scope.events = PhotoList.getGroupedPhotos('explore');
+        $scope.eventsEmpty = PhotoList.photosEmpty('explore');
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Upload,Foursquare,$window,Auth) {
-  $scope.upload = {photos: [], copyright: true};
-  $scope.flow = {};
-  $scope.locations = [];
-  $scope.loading = false;
-  $scope.event_keys = [];
-  $scope.events = {};
+.controller('MyPhotoCtrl', function($scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
+  $scope.title = 'myphotos';
   
-  //Helper Function to get unique values from an array.
-  var arrayUnique = function(a) {
-    return a.reduce(function(p, c) {
-        if (p.indexOf(c) < 0) p.push(c);
-        return p;
-    }, []);
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
+  
+  $scope.change = function () {
+      myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
+        PhotoList.setPhotos('myphotos', data);
+        $scope.events = PhotoList.getGroupedPhotos('myphotos');
+        $scope.eventsEmpty = PhotoList.photosEmpty('myphotos');
+      });
+      $ionicScrollDelegate.resize();
   };
-  //Helper function to group photos by a common event.
-  var groupPhotosByEvent = function (data) {
-    $scope.event_keys = [];
-    $scope.events = {};
-    for (var i in data) {
-      var p = data[i];
-      if (p.event) {
-        // Add the event to the list of event keys.
-        $scope.event_keys.push(p.event);
-        var a;
-        // Add the photo object to the event hash.
-        if ($scope.events[p.event]) {
-          a = $scope.events[p.event].concat([p]);
-        } else {
-          a = [p];
-        }
-        $scope.events[p.event] = a;
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
+})
+
+.controller('PurchasesCtrl', function($scope,PhotoList,Purchase,Auth,$ionicScrollDelegate) {
+  $scope.title = 'purchases';
+  
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
+  
+  $scope.change = function () {
+      Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
+        PhotoList.setPhotos('purchases', data);
+        $scope.events = PhotoList.getGroupedPhotos('purchases');
+        $scope.eventsEmpty = PhotoList.photosEmpty('purchases');
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
+})
+
+.controller('FavoritesCtrl', function($scope,PhotoList,Favorites,Auth,$ionicScrollDelegate) {
+  $scope.title = 'favorites';
+ 
+  $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
+  
+  $scope.change = function () {
+      Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
+        PhotoList.setPhotos('favorites', data);
+        $scope.events = PhotoList.getGroupedPhotos('favorites');
+        $scope.eventsEmpty = PhotoList.photosEmpty('favorites');
+      });
+      $ionicScrollDelegate.resize();
+  };
+  $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.change();
+  })
+})
+
+.controller('MyPhotoDetailCtrl', function($scope,$state, $location, $window,PhotoList,PurchaseAct,FavoriteAct, $ionicHistory, $stateParams, Upload, Auth) {
+    $scope.photo={};
+    $scope.deleting=false;
+    
+    $scope.backTitle = $ionicHistory.backTitle().toLowerCase();
+    // Used for dynamic urls, i.e., 'explore, purchases, favorites, myphotos'
+
+    $scope.change = function(id) {
+      $scope.merged = angular.extend({id:$stateParams.photoId}, Auth);
+      $scope.photo = PhotoList.getPhoto($scope.backTitle, $stateParams.photoId);
+      if (!($scope.photo)) { // this photo doesn't exist here anymore
+        $ionicHistory.goBack();
       }
+    };
+    
+    $scope.swipeLeft = function () {
+      if ($scope.photo.left_id) $scope.goTo($scope.photo.left_id);
+    };
+    $scope.swipeRight = function () {
+      if ($scope.photo.right_id) $scope.goTo($scope.photo.right_id);
+    };
+    
+    $scope.goTo = function(id) {
+      // Change the photo in this state (without creating another state).
+      // I tried going to another state here, but this causes issues with
+      // Ionic history and the back button. (Ionic thinks each state is a child of
+      // the previous state.) So we stay in one state for navigating left and right.
+      // ... Unfortunately, this means there cant be any swipe animation.
+      $stateParams.photoId = id;
+      $scope.change();
+    };
+    
+    $scope.$on('$ionicView.beforeEnter', function() {
+      $scope.change();
+    });
+    
+    $scope.update = function (){
+      Upload.update(
+        angular.extend($scope.merged,
+                     {upload: {location: $scope.photo.location,
+                               event: $scope.photo.event}
+                      }));
     }
-    // Remove duplicates from the event keys array.
-    $scope.event_keys = arrayUnique($scope.event_keys);
-  }
-  // Helper converter function for GPS coordinates, which are stored as arrays
-  // and must be converted to decimals.
-  var toDecimal = function (n) {
-       if (n) { return n[0].numerator + n[1].numerator /
-           (60 * n[1].denominator) + n[2].numerator / (3600 * n[2].denominator);
-       } else { return null; }
-   };
-  
-  // Initialize myPhotos in 'events,' where each event has many photos.
-  myPhoto.query(Auth, function(data) {
-                  groupPhotosByEvent(data);         
-                });
-  
-  // Automagically convert each photo to Base64 representation for use in JSON.
-  $scope.processFiles = function(files){
-    angular.forEach(files, function(flowFile, i){
-        // Convert images file to json.
-        var fileReader = new FileReader();
-        fileReader.onload = function (event) {
-          $scope.upload.photos[i] = event.target.result;
-        };
-        fileReader.readAsDataURL(flowFile.file);        
-        // Get Location data from EXIF GPS points. All EXIF processing happens here.
-        EXIF.getData(flowFile.file, function(){
-            var lat = toDecimal(EXIF.getTag(this, 'GPSLatitude'));
-            var long = toDecimal(EXIF.getTag(this, 'GPSLongitude'));
-            if (lat) {// Get the locations that match the EXIF GPS coordinates.
-              console.log("EXIF coordinates found.");
-              Foursquare.get({'foursquare[lat]': lat,
-                              'foursquare[long]': long}, function(e) {
-                  // Any uniqueness filter should be applied here...
-                  $scope.locations = arrayUnique($scope.locations.concat( e.results ));
-                  // Set default location.
-                  if (!$scope.upload.location) {
-                    $scope.upload.location = $scope.locations[0]
-                  };
-                });
-            } else { console.log("EXIF coordinates NOT found."); }
-        });
-          
-    });
-  };
-  
-  // Upload the photos array.
-  $scope.saveUpload = function () { 
-    $scope.loading = true;
     
-    var mergedObject = angular.extend({upload: $scope.upload}, Auth);
-    
-    Upload.save(mergedObject, function(data) {
-      // Repopulate "my photos" to be up to date
-      groupPhotosByEvent(data);
-      // Reset form data
-      $scope.upload = {photos: [], copyright: true};
-      $scope.locations = [];
-      $scope.flow.flow.cancel();   
-      $scope.loading = false;
+        
+    $scope.deletePhoto = function () {
+      $scope.deleting=true;
+      Upload.delete($scope.merged, function(data) {
+        $ionicHistory.goBack();
+      });
+    }
+
+    // For these 3 actions, we do not fetch data from the backend.
+    // We could, but the changes involved are simple, so we don't need to.
+    $scope.purchasePhoto = function () {
+      $scope.photo.current_user_purchased = true;
+      PurchaseAct.save($scope.merged, function () {
+        $scope.photo.num_purchases += 1;
+      });
+    }
+
+    $scope.favPhoto = function () {
+      $scope.photo.current_user_favorited = true;
+      FavoriteAct.save($scope.merged, function () {
+        $scope.photo.num_favorites += 1;
+      });
+    }
+
+    $scope.unfavPhoto = function () {
+      $scope.photo.current_user_favorited = false;
+      FavoriteAct.delete($scope.merged, function() {  
+        $scope.photo.num_favorites -= 1;
+      });
+    }
+})
+     
+.controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope, ngFB) {
+  $scope.account = {};
+  $scope.$on('$ionicView.enter', function () {
+    Account.get(Auth, function(data) {
+      $scope.account = data;
     });
-  }
-})
+  });
 
-
-.controller('PurchaseCtrl', function($scope,Purchase,Auth) {
-    //$scope.purchases=;
-    Purchase.query(Auth, function(data) {
-        $scope.purchases = data;
-    });
-})
-
-.controller('PurchaseDetailCtrl', function($scope, $window, $stateParams, Purchase, Auth) {
-    $scope.photo={};
-    Purchase.query(Auth, function(data) {
-        for(var i=0;i<data.length;i++){
-          if(data[i].id==$stateParams.photoId){
-                       $scope.photo=data[i];
-            }
-        }
-    });
-})
-
-.controller('FavCtrl', function($scope, Favorites,Auth) {
-    Favorites.query(Auth, function(data) {
-        $scope.favs = data;
-    });
-})
-
-.controller('FavoriteDetailCtrl', function($scope, $window, $stateParams, Favorites, Auth) {
-    $scope.photo={};
-    Favorites.query(Auth, function(data) {
-        for(var i=0;i<data.length;i++){
-          if(data[i].id==$stateParams.photoId){
-                       $scope.photo=data[i];
-            }
-        }
-    });
-})
-
-.controller('MyPhotoDetailCtrl', function($scope, $window, $stateParams, Upload, Auth) {
-    $scope.photo={};
-    
-    var mergedObject = angular.extend({id:$stateParams.photoId}, Auth);
-    
-    Upload.get(mergedObject, function(data) {
-                  $scope.photo=data;
-     });
-})
-
-.controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope, ngFB) {
-  $scope.settings = {
-    enableFriends: true
-  };
-
-  // For facebook profile information on the Account page
   ngFB.api({
-        path: '/me',
-        params: {fields: 'id,name'}
-    }).then(
-        function (user) {
-            $scope.user = user;
-        },
-        function (error) {
-            alert('Facebook error: ' + error.error_description);
-  });      
+      path: '/me',
+      params: {fields: 'id,name'}
+  }).then(
+      function (user) {
+          $scope.user = user;
+      },
+      function (error) {
+          alert('Facebook error: ' + error.error_description);
+  });
   
   $scope.logout = function() {
     // This database call might not be necessary, if all that's needed is to removeItems...
@@ -242,6 +272,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
       function(data){
         $window.localStorage.removeItem('userToken');
         $window.localStorage.removeItem('userEmail');
+        //Reload all controllers
+        $window.location.reload();  
         $location.path('/login');
       },
       function(err){

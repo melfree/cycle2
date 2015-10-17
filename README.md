@@ -48,16 +48,9 @@ For example:
 
 All endpoints are summarized briefly below.
 
-#### Explore
-
-1. (**Searchable**) Get event-grouped uploads: `GET /explore`
-2. Get list of all unique locations in use: `GET /locations`
-3. Get list of all unique events in use: `GET /events`
-
 **Searchable**: This means that this route can also take optional data:
 `{search: {location: 'SOME VALUE', copyright: '0', event: 'SOME VALUE', before: '2015-09-30', after: '2015-09-29', sort: 'time'}}` to filter output.
 `sort` takes as input `most_favorited`, `most_purchased`, or any attribute name of Upload (like `time` or `created_at`).
-For `/explore`, `sort` is a secondary sort within the event grouping. 
 
 #### Foursquare
 
