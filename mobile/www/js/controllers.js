@@ -7,20 +7,28 @@ angular.module('starter.controllers', [])
   };
 })
 
-.directive('uploadButton', function() {
-  return {
-    templateUrl: 'templates/upload-button.html',
-    restrict : 'E'
-  };
+.controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+      var email = $window.localStorage['userEmail'];
+      if (email) {
+          $location.path('/tab/explore');
+      } else {
+        $location.path('/login');
+      }
+    });
 })
 
-.controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
-    var email = $window.localStorage['userEmail'];
-    if (email) {
-        $location.path('/tab/explore');
-    } else {
-      $location.path('/login');
-    }
+.controller('UploadRedirectCtrl', function($scope, $state,$location, $window,$rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+      // Cheat on getting to the 'upload page'.
+      // We use a global variable to remember that we want to go straight to upload page,
+      // so then we go straight to upload page when we hit myPhotos.
+      // This ensures that Ionic's MyPhotos history remains accurate, since we just from
+      // one tab's master view to another tab's child view.
+      // (For some reason, such nested view handling does not exist in Ionic yet.)
+      $rootScope.upload_cheat = true;
+      $location.path('/tab/myphotos');
+    });
 })
 
 .controller('LoginCtrl', function($scope, $location, $window, Login, $ionicPopup, $rootScope) {
@@ -86,7 +94,7 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('MyPhotoCtrl', function($scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
+.controller('MyPhotoCtrl', function($rootScope,$state,$scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
   $scope.title = 'myphotos';
   
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
@@ -100,7 +108,13 @@ angular.module('starter.controllers', [])
       $ionicScrollDelegate.resize();
   };
   $scope.$on('$ionicView.beforeEnter', function () {
+    if ($rootScope.upload_cheat) {
+      $rootScope.upload_cheat = false;
+      $state.go('tab.upload');
+    }
+    else {
       $scope.change();
+    }
   })
 })
 

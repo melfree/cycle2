@@ -39,7 +39,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
 
   .state('redirect', {
     url: '/redirect',
-    templateUrl: 'templates/login.html',
+    templateUrl: 'templates/redirect.html',
     controller: 'RedirectCtrl'
   })
   
@@ -182,20 +182,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
     
-    .state('tab.upload-cheat', {
+    .state('upload-cheat', {
       url: '/upload-cheat',
-      views: {
-        'tab-myphotos': {
-          templateUrl: 'templates/upload.html',
-          controller: 'UploadCtrl'
-        }
-      }
+      templateUrl: 'templates/redirect.html',
+      controller: 'UploadRedirectCtrl'
     })
     
      .state('tab.upload-info', {
       url: '/upload/info',
       views: {
-        'tab-myPhotos': {
+        'tab-myphotos': {
           templateUrl: 'templates/upload-info.html',
           controller: 'UploadInfoCtrl'
         }
