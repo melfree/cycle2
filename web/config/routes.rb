@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   get 'revfavoritelog' => 'favorites#revuserlog'
   get 'revpurchaselog' => 'purchases#revuserlog'
   
+  # Check exists user
+  get 'existsuser' => 'home#existsuser'
+  
   
   # You can have the root of your site routed with "root"
   root 'uploads#index'

@@ -28,6 +28,10 @@ angular.module('starter.services', [])
   return $resource("http://localhost:3000/users/sign_in.json");
 })
 
+.factory('UserExists', function($resource) {
+  return $resource("http://localhost:3000/existsuser.json");
+})
+
 .factory('Auth',function($window){
   var auth={};
   auth.user_token=$window.localStorage['userToken'];
