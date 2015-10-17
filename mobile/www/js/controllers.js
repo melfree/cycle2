@@ -33,7 +33,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
         function (response) {
             if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
-                $scope.closeLogin();
+                console.log(response );
+                $location.path('/tab/explore');
             } else {
                 alert('Facebook login failed');
             }
