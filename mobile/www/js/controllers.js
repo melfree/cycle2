@@ -218,10 +218,22 @@ angular.module('starter.controllers', ['ngOpenFB'])
      });
 })
 
-.controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope ) {
+.controller('AccountCtrl', function($scope, Logout,$window, $location, $ionicPopup, $rootScope, ngFB) {
   $scope.settings = {
     enableFriends: true
   };
+
+  // For facebook profile information on the Account page
+  ngFB.api({
+        path: '/me',
+        params: {fields: 'id,name'}
+    }).then(
+        function (user) {
+            $scope.user = user;
+        },
+        function (error) {
+            alert('Facebook error: ' + error.error_description);
+  });      
   
   $scope.logout = function() {
     // This database call might not be necessary, if all that's needed is to removeItems...
@@ -240,4 +252,5 @@ angular.module('starter.controllers', ['ngOpenFB'])
       }
     );
   }
+
 });
