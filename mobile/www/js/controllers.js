@@ -7,6 +7,13 @@ angular.module('starter.controllers', [])
   };
 })
 
+.directive('uploadButton', function() {
+  return {
+    templateUrl: 'templates/upload-button.html',
+    restrict : 'E'
+  };
+})
+
 .controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
     var email = $window.localStorage['userEmail'];
     if (email) {

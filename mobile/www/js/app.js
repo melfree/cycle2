@@ -182,6 +182,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       }
     })
     
+    .state('tab.upload-cheat', {
+      url: '/upload-cheat',
+      views: {
+        'tab-myphotos': {
+          templateUrl: 'templates/upload.html',
+          controller: 'UploadCtrl'
+        }
+      }
+    })
+    
      .state('tab.upload-info', {
       url: '/upload/info',
       views: {
