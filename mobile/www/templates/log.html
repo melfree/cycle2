@@ -1,7 +1,7 @@
 <ion-view view-title="{{title}}">
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="log in logs">
+      <ion-item class = "item-text-wrap" ng-repeat="log in logs">
         <b>{{$index+1}}.<b/> {{log.user_email}}, {{log.created_at}}.
       </ion-item>
       <ion-item ng-show="logsEmpty">

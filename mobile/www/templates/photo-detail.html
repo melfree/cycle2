@@ -1,10 +1,13 @@
 <ion-view view-title="{{photo.event}}">
   <ion-content class="padding">
     <div on-swipe-right="swipeRight()" on-swipe-left="swipeLeft()">
-      
-      <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
-        <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
-      </a>
+      <div class="row">
+        <div class="col text-center">
+        <a href="#/tab/{{backTitle}}/{{photo.id}}/full-size">
+          <img ng-src="{{photo.photo_url}}" class="crowdpicDetailImg">
+        </a>
+        </div>
+      </div>
       
       <div class="row">
         <div class="col text-center">
@@ -30,12 +33,15 @@
       </div>
       
       <ion-list>
-        <ion-item> Uploaded at {{photo.created_at}}.
+        <ion-item> Uploaded at <b>{{photo.created_at}}</b>.
         </ion-item>
-        <div ng-hide="photo.current_user_uploaded">
-          <ion-item> Owned by <b>{{photo.user.user_email}}</b>.
+        <div ng-show="photo.time">
+          <ion-item> Originally taken at <b>{{photo.time}}</b>.
           </ion-item>
-          <ion-item> From
+        </div>
+        <div ng-hide="photo.current_user_uploaded">
+          <ion-item class = "item-text-wrap">
+            Owned by <b>{{photo.user.user_email}}</b>. Taken at 
           <b>{{photo.event}}</b>, at <b>{{photo.location}}</b>.
           </ion-item>
         </div>
