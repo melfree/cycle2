@@ -5,27 +5,23 @@ html, body, a {
 }
 
 h3{
-	    text-align: center;
-
+	text-align: center;
 }
 
-@media screen and (min-width: 480px) {
-    img.crowdpicListImg {
-      width: 33%;
-    }
-    .crowdpicScroll {
-      height: 600px;  
-      margin-right: 20px;
-    }
+img.crowdpicListImg {
+  width: 48%;
 }
 
-@media screen and (max-width: 479px) {
+@media (min-width: 700px) {
+  img.crowdpicListImg {
+    width: 32%;
+  }
+}
+
+
+@media (min-width: 1000px) {
     img.crowdpicListImg {
-        width: 49%;
-    }
-    .crowdpicScroll {
-      height: 500px;
-      margin-right: 20px;
+      width: 24%;
     }
 }
 
