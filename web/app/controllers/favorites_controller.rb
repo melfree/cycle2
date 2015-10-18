@@ -9,18 +9,18 @@ class FavoritesController < ApplicationController
   ##############
   def userlog
     respond_to do |format|
-      format.json { render json: format_log(current_user.favorites) }
+      format.json { render json: upload_format_log(current_user.favorites) }
     end
   end
   def revuserlogs
     favs = Favorite.joins(:upload).where("uploads.user_id = ?", current_user.id)
     respond_to do |format|
-      format.json { render json: format_log(favs) }
+      format.json { render json: upload_format_log(favs) }
     end
   end
   def log
     respond_to do |format|
-      format.json { render json: format_log(@favorite.favorites) }
+      format.json { render json: user_format_log(@favorite.favorites) }
     end
   end
   

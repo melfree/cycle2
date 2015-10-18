@@ -1,5 +1,5 @@
 class UploadsController < ApplicationController
-  guest_array = [:locations,:events,:index,:show,:explore]
+  guest_array = [:locations,:events]
   
   skip_before_filter :verify_authenticity_token, except: guest_array, if: lambda { |c| c.request.format.json? }
   acts_as_token_authentication_handler_for User, except: guest_array, if: lambda { |c| c.request.format.json? }, fallback: :exception

@@ -12,18 +12,18 @@ class PurchasesController < ApplicationController
   ##############
   def userlog
     respond_to do |format|
-      format.json { render json: format_log(current_user.purchases) }
+      format.json { render json: upload_format_log(current_user.purchases) }
     end
   end
   def revuserlog
     purchases = Purchase.joins(:upload).where("uploads.user_id = ?", current_user.id)
     respond_to do |format|
-      format.json { render json: format_log(purchases) }
+      format.json { render json: upload_format_log(purchases) }
     end
   end
   def log
     respond_to do |format|
-      format.json { render json: format_log(@purchase.purchases) }
+      format.json { render json: user_format_log(@purchase.purchases) }
     end
   end
   
