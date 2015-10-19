@@ -59,23 +59,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
                     params: {fields: 'id,name,email'}
                 }).then(
                     function (user) {
-                        console.log(user.name);
-                        // console.log(user.location);
-                        console.log(user.email);
-                        console.log(response);
-                        console.log(response.authResponse.accessToken);
-
                         var token;
-
                         //if user does not already exist, regsiter as new user
                         UserExists.get({email: user.email}, function(data) {
-                          console.log(data);
                           token = data.user_token;
                           $rootScope.facebook = true;
-                          console.log('token =' + token);
                         if (!token) {
-                          console.log("register action");
-                          console.log('token =' + token);
                           var userData = {}; // create an empty array
                           userData.email = user.email
                           userData.password = "password"
@@ -86,8 +75,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
                               $location.path('/tab/explore');
                             });
                         } else {
-                          console.log("no register action");
-                          console.log('token =' + token);
                           Auth.set(data);
                           $location.path('/tab/explore');
                         }
@@ -321,6 +308,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
         $window.localStorage.removeItem('userToken');
         $window.localStorage.removeItem('userEmail');
         //Reload all controllers
+        $rootScope.facebook = false;
         $window.location.reload();  
         $location.path('/login');
       },
