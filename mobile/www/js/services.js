@@ -33,10 +33,16 @@ angular.module('starter.services', [])
 })
 
 .factory('Auth',function($window){
-  var auth={};
-  auth.user_token=$window.localStorage['userToken'];
-  auth.user_email=$window.localStorage['userEmail'];
-  return auth;
+  return {
+    set: function(data) {
+      $window.localStorage['userToken'] = data.user_token;
+      $window.localStorage['userEmail'] = data.user_email;
+    },
+    get: function() {
+      return { user_email: $window.localStorage['userEmail'],
+               user_token: $window.localStorage['userToken']}
+    }
+  }
 })
 
 .factory('Register', function ($resource) {

@@ -1,6 +1,18 @@
 <ion-view view-title="Account">
   <ion-content>
+
+
     <ion-list>
+     <ion-item ng-show="facebook">
+        <div class=" item-avatar item-icon-right contact-item" type="item-text-wrap">
+          <img ng-src="http://graph.facebook.com/{{user.id}}/picture?width=50&height=50">
+          <h2>{{user.name}}</h2>
+          <p><strong>5:09PM</strong> &nbsp; Pittsburgh, USA</p>
+          <div class="item-button-right ">
+            <button class="logoutButton button button-calm" ng-click="logout()">Logout</button>
+          </div>             
+        </div>
+      </ion-item>
       <ion-item> Favorites
           <a href="#/tab/account/user-favorites-log">
             <span class="badge badge-energized">
@@ -55,23 +67,6 @@
     <div class="padding">
       <button class="button button-block button-calm" ng-click="logout()">Logout</button>
     </div>
-      <div class="list card">
-<!--            <div class="item">
-              <h2>{{user.name}}</h2>
-              <h2>{{user.first_ name}}</h2>
-              <p>{{user.email}} p>
-          </div> -->
-     <!--      <div class="item item-body">
-              <img src="http://graph.facebook.com/{{user.id}}/picture?width=70&height=70"/>
-           </div> -->
-            <ul class="list">
-              <li class="item item-avatar item-icon-right contact-item" type="item-text-wrap">
-                <img ng-src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270">
-                <h2>{{user.name}}</h2>
-                <p><strong>5:09PM</strong> &nbsp; Pittsburgh, USA</p>
-               <i class="icon ion-record icon-account" ></i>
-              </li>
-            </ul>
-      </div>
+      
   </ion-content>
 </ion-view>

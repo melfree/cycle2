@@ -31,14 +31,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
     });
 })
 
-.controller('LoginCtrl', function($scope, $location, $window, Login, $ionicPopup, $rootScope, ngFB) {
+.controller('LoginCtrl', function($scope, $location, Auth, $window, Login, $ionicPopup, $rootScope, ngFB, UserExists, Register) {
   $scope.data = {};
 
   $scope.login = function() {
     Login.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userToken'] = data.user_token;
-        $window.localStorage['userEmail'] = data.user_email;
+        Auth.set(data);
         $location.path('/tab/explore');
       },
       function(err){
@@ -66,17 +65,34 @@ angular.module('starter.controllers', ['ngOpenFB'])
                         console.log(response);
                         console.log(response.authResponse.accessToken);
 
+                        var token;
+
                         //if user does not already exist, regsiter as new user
-                        var userData = {}; // create an empty array
-                        userData.email = user.email
-                        userData.password = "password"
-                        userData.password_confirmation = "password"
-                        Register.save({user: userData},
-                        function(data){
-                          $window.localStorage['userToken'] = data.user_token;
-                          $window.localStorage['userEmail'] = data.user_email;
+                        UserExists.get({email: user.email}, function(data) {
+                          console.log(data);
+                          token = data.user_token;
+                          $rootScope.facebook = true;
+                          console.log('token =' + token);
+                        if (!token) {
+                          console.log("register action");
+                          console.log('token =' + token);
+                          var userData = {}; // create an empty array
+                          userData.email = user.email
+                          userData.password = "password"
+                          userData.password_confirmation = "password"
+                          Register.save({user: userData},
+                            function(data){
+                              Auth.set(data);
+                              $location.path('/tab/explore');
+                            });
+                        } else {
+                          console.log("no register action");
+                          console.log('token =' + token);
+                          Auth.set(data);
                           $location.path('/tab/explore');
-                        };
+                        }
+
+                        });
                     },
                     function (error) {
                         alert('Facebook error: ' + error.error_description);
@@ -89,14 +105,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
   }
 })
 
-.controller('RegisterCtrl', function($scope, $location, $window, Register, $ionicPopup, $rootScope) {
+.controller('RegisterCtrl', function($scope, $location, Auth, $window, Register, $ionicPopup, $rootScope) {
   $scope.data = {};
 
   $scope.register = function() {
     Register.save({user: $scope.data.user},
       function(data){
-        $window.localStorage['userToken'] = data.user_token;
-        $window.localStorage['userEmail'] = data.user_email;
+        Auth.set({user_token: data.user_token,
+                  user_email: data.user_email});
         $location.path('/tab/explore');
       },
       function(err){
@@ -120,7 +136,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   
   $scope.change = function () {
-      Upload.query(angular.extend($scope.searchParams, Auth), function(data) {
+      Upload.query(angular.extend($scope.searchParams, Auth.get()), function(data) {
         PhotoList.setPhotos('explore', data);
         $scope.events = PhotoList.getGroupedPhotos('explore');
         $scope.eventsEmpty = PhotoList.photosEmpty('explore');
@@ -138,7 +154,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   
   $scope.change = function () {
-      myPhoto.query(angular.extend($scope.searchParams, Auth), function(data) {
+      myPhoto.query(angular.extend($scope.searchParams, Auth.get()), function(data) {
         PhotoList.setPhotos('myphotos', data);
         $scope.events = PhotoList.getGroupedPhotos('myphotos');
         $scope.eventsEmpty = PhotoList.photosEmpty('myphotos');
@@ -162,7 +178,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   
   $scope.change = function () {
-      Purchase.query(angular.extend($scope.searchParams, Auth), function(data) {
+      Purchase.query(angular.extend($scope.searchParams, Auth.get()), function(data) {
         PhotoList.setPhotos('purchases', data);
         $scope.events = PhotoList.getGroupedPhotos('purchases');
         $scope.eventsEmpty = PhotoList.photosEmpty('purchases');
@@ -180,7 +196,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.searchParams = {search: '', copyright: '', sort: 'created_at'};
   
   $scope.change = function () {
-      Favorites.query(angular.extend($scope.searchParams, Auth), function(data) {
+      Favorites.query(angular.extend($scope.searchParams, Auth.get()), function(data) {
         PhotoList.setPhotos('favorites', data);
         $scope.events = PhotoList.getGroupedPhotos('favorites');
         $scope.eventsEmpty = PhotoList.photosEmpty('favorites');
@@ -200,7 +216,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     // Used for dynamic urls, i.e., 'explore, purchases, favorites, myphotos'
 
     $scope.change = function(id) {
-      $scope.merged = angular.extend({id:$stateParams.photoId}, Auth);
+      $scope.merged = angular.extend({id:$stateParams.photoId}, Auth.get());
       $scope.photo = PhotoList.getPhoto($scope.backTitle, $stateParams.photoId);
       if (!($scope.photo)) { // this photo doesn't exist here anymore
         $ionicHistory.goBack();
@@ -270,22 +286,29 @@ angular.module('starter.controllers', ['ngOpenFB'])
      
 .controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope, ngFB) {
   $scope.account = {};
-  $scope.$on('$ionicView.enter', function () {
-    Account.get(Auth, function(data) {
+  $scope.$on('$ionicView.beforeEnter', function () {
+    Account.get(Auth.get(), function(data) {
       $scope.account = data;
-    });
+      $scope.facebook = $rootScope.facebook;
+      // getFacebookInfo();
+    })  // $scope.getFacebookInfo = function () {
+      if ($scope.facebook) {
+      ngFB.api({
+          path: '/me',
+          params: {fields: 'id,name'}
+      }).then(
+          function (user) {
+              $scope.user = user;
+          },
+          function (error) {
+              alert('Facebook error: ' + error.error_description);
+      });
+    };
   });
 
-  ngFB.api({
-      path: '/me',
-      params: {fields: 'id,name'}
-  }).then(
-      function (user) {
-          $scope.user = user;
-      },
-      function (error) {
-          alert('Facebook error: ' + error.error_description);
-  });
+  // add location and email 
+
+  // }
   
   $scope.logout = function() {
     // This database call might not be necessary, if all that's needed is to removeItems...
