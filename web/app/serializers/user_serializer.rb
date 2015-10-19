@@ -36,12 +36,9 @@ class UserSerializer < ActiveModel::Serializer
   end
   
   def user_token
-    if scope and scope.id == object.id
-      object.authentication_token
-    else
-      "FILTERED"
-    end
+    object.authentication_token
   end
+
   def created_at
     object.created_at.strftime("%d/%m/%y %I:%M %p")
   end

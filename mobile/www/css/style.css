@@ -45,3 +45,7 @@ img.crowdpicDetailImg {
   max-height:90%;
   box-shadow: 3px 3px grey; 
 }
+
+button.logoutButton{
+  margin-bottom: 10%;
+}

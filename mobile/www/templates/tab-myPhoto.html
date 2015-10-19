@@ -1,0 +1,104 @@
+<ion-view view-title="My Photos">
+  <ion-content class="has-header">
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search">
+      </label>
+  
+      <div class="row">
+        <div class="col">
+          <label class="item item-input item-select">
+          <div class="input-label">
+            Time
+          </div>
+          <select>
+            <option>Today</option>
+            <option selected>This Week</option>
+            <option>This Month</option>
+          </select>
+        </label>
+        </div>
+        <div class="col">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Sort
+            </div>
+            <select>
+              <option>Newst</option>
+              <option selected>Oldest</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    
+      <div style="-webkit-flex-wrap: wrap; flex-wrap: wrap;">
+        <div ng-repeat="event in event_keys">
+          <h5 ng-model="event">{{event}}</h5>
+          <span ng-repeat="photo in events[event]">
+            <a ng-href="#/tab/myPhoto/{{photo.id}}">
+              <img width="110px" ng-src="{{photo.thumb_url}}"/>
+            </a>
+          </span>
+        </div>
+      </div>
+            
+      <hr/>
+      
+      <div class="col text-center">
+        <div flow-init flow-image-resize flow-name="flow.flow" flow-files-added="processFiles($files)">
+          {{$flow.files.length}} photo(s) selected to upload
+          
+          <div style="padding: 10px;">
+            <span ng-repeat="file in $flow.files">
+              <img my-flow-img="file"/><!-- <li>{{file.size}}</li>-->
+            </span>
+          </div>
+        
+          <span class="button" flow-btn>Select photos to upload</span>
+  
+          <div class="row">
+            <div class="col">
+              <label class="item item-input">
+              <div class="input-label">
+                Event
+              </div>
+              <input required="required" ng-model="upload.event">
+            </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="item item-input item-select">
+              <div class="input-label">
+                Location
+              </div>
+              <select ng-model="upload.location">
+                <option ng-repeat="location in locations track by $index" value="{{location}}">{{location}}</option>
+              </select>
+            </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <ion-toggle ng-model="upload.copyright" toggle-class="toggle-calm">
+                Retain Copyright
+              </ion-toggle>
+            </div>
+          </div>
+          
+          <button class="button-calm button" ng-click="saveUpload()">
+              <span data-ng-hide="loading">
+              Upload 
+              </span>
+              
+              <span data-ng-show="loading">
+              Uploading
+              <i class="fa fa-spinner fa-spin"></i>
+              </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
