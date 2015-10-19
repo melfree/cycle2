@@ -22,7 +22,7 @@ angular.module('starter.controllers')
   $scope.title = 'Purchase History';
   $scope.logs = {};
   $scope.change = function () {
-      PurchaseLog.query(Auth, function(data) {
+      PurchaseLog.query(Auth.get(), function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });
@@ -37,7 +37,7 @@ angular.module('starter.controllers')
   $scope.title = 'Sales History';
   $scope.logs = {};
   $scope.change = function () {
-      RevPurchaseLog.query(Auth, function(data) {
+      RevPurchaseLog.query(Auth.get(), function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });
@@ -54,7 +54,7 @@ angular.module('starter.controllers')
   $scope.title = 'Favorites History';
   $scope.logs = {};
   $scope.change = function () {
-      FavoriteLog.query(Auth, function(data) {
+      FavoriteLog.query(Auth.get(), function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });
@@ -85,7 +85,7 @@ angular.module('starter.controllers')
   $scope.title = 'Favorites of Your Photos';
   $scope.logs = {};
   $scope.change = function () {
-      RevFavoriteLog.query(Auth, function(data) {
+      RevFavoriteLog.query(Auth.get(), function(data) {
         $scope.logs = data;
         $scope.logsEmpty = ($scope.logs.length == 0);
       });

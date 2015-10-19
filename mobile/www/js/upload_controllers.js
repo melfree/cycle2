@@ -11,7 +11,7 @@ angular.module('starter.controllers')
   $scope.done = false;
   
   $scope.change = function () {
-      Event.query(Auth, function(data){
+      Event.query(Auth.get(), function(data){
         $scope.current_events = data;
       });
       $scope.done = false;
@@ -94,7 +94,7 @@ angular.module('starter.controllers')
       $scope.upload.location = $scope.custom.location;
     }
     
-    var mergedObject = angular.extend({upload: $scope.upload}, Auth);
+    var mergedObject = angular.extend({upload: $scope.upload}, Auth.get());
     Upload.save(mergedObject, function(data) {
       $scope.done = true;
       reset();
