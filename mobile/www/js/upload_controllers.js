@@ -58,6 +58,7 @@ angular.module('starter.controllers')
   
   // Automagically convert each photo to Base64 representation for use in JSON.
   $scope.processFiles = function(files){
+    $scope.done = false;
     angular.forEach(files, function(flowFile, i){
         var fileReader = new FileReader();
         fileReader.onload = function (event) {$scope.upload.photos[i] = event.target.result;};
