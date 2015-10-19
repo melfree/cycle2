@@ -316,6 +316,16 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
         }
       }
     })
+
+    .state('tab.rev-user-payment', {
+      url: '/account/rev-user-payment',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/payment.html',
+          controller: 'PaymentCtrl'
+        }
+      }
+    })
       .state('tab.user-purchases-log', {
       url: '/account/user-purchases-log',
       views: {

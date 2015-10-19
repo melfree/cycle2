@@ -49,3 +49,12 @@ img.crowdpicDetailImg {
 button.logoutButton{
   margin-bottom: 10%;
 }
+
+.larger{
+  font-size: 36px;
+}
+
+#card{
+  padding-top: 13px;
+  font-size: 24px;
+}

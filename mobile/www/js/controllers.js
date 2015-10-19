@@ -274,6 +274,21 @@ angular.module('starter.controllers', ['ngOpenFB'])
       });
     }
 })
+
+.controller('PaymentCtrl', function($scope,PhotoList,$ionicPopup,Auth,$ionicScrollDelegate) {
+  $scope.card=false;
+  $scope.cardNumber="";
+ $scope.showAlert = function() {
+   var alertPopup = $ionicPopup.alert({
+     title: 'Creit Card Added',
+     template: 'We received yout credit card information. You can purchase photo now.'
+   });
+   alertPopup.then(function(res) {
+    $scope.card=true;
+     console.log('Thank you for not eating my delicious ice cream cone');
+   });
+ };
+  })
      
 .controller('AccountCtrl', function($scope, Logout,$window,Account, Auth,$location, $ionicPopup, $rootScope, ngFB) {
   $scope.account = {};
@@ -296,6 +311,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
       });
     };
   });
+
+
 
   // add location and email 
 
