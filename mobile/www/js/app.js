@@ -109,7 +109,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-explore': {
           templateUrl: 'templates/photo-full.html',
-          controller: 'MyPhotoDetailCtrl'
+          controller: 'FullSizeCtrl'
         }
       }
   })
@@ -158,7 +158,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-favorites': {
           templateUrl: 'templates/photo-full.html',
-          controller: 'MyPhotoDetailCtrl'
+          controller: 'FullSizeCtrl'
         }
       }
     })
@@ -233,7 +233,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-myphotos': {
           templateUrl: 'templates/photo-full.html',
-          controller: 'MyPhotoDetailCtrl'
+          controller: 'FullSizeCtrl'
         }
       }
     })
@@ -263,7 +263,7 @@ var app = angular.module('starter', ['flow', 'ionic', 'starter.controllers', 'st
       views: {
         'tab-purchases': {
           templateUrl: 'templates/photo-full.html',
-          controller: 'MyPhotoDetailCtrl'
+          controller: 'FullSizeCtrl'
         }
       }
     })

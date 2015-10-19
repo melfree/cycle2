@@ -23,9 +23,9 @@ class Upload < ActiveRecord::Base
     return order("created_at desc") if opt.nil?
     opt = opt.downcase.strip
     if opt == "most_favorited"
-      joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id)")
+      joins("LEFT JOIN favorites ON upload_id = uploads.id").group("uploads.id").order("count(favorites.id) desc")
     elsif opt == "most_purchased"
-      joins("LEFT JOIN purchases ON upload_id = uploads.id").group("uploads.id").order("count(purchases.id)")
+      joins("LEFT JOIN purchases ON upload_id = uploads.id").group("uploads.id").order("count(purchases.id) desc")
     else # opt == "created_at"
       order("created_at desc")
     end

@@ -148,6 +148,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
   })
 })
 
+.controller('FullSizeCtrl', function($scope,Upload,$window,$stateParams) {
+  Upload.get({id:$stateParams.photoId}, function(data) {$scope.photo = data;});
+})
+
 .controller('MyPhotoCtrl', function($rootScope,$state,$scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
   $scope.title = 'myphotos';
   

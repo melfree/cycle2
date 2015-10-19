@@ -1,5 +1,5 @@
 class UploadSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :css_class, :thumb_url, :photo_url, :height, :width, :location, :copyright_string, :copyright, :event, :lat, :long, :num_purchases, :current_user_uploaded, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
+  attributes :id, :user_id, :time, :css_class, :thumb_url, :photo_url, :height, :width, :location, :copyright_string, :copyright, :event, :lat, :long, :num_purchases, :current_user_uploaded, :current_user_purchased, :num_favorites, :current_user_favorited, :updated_at, :created_at
   has_one :user
   
   BASE_URL = 'http://localhost:3000'
@@ -16,6 +16,12 @@ class UploadSerializer < ActiveModel::Serializer
   
   def created_at
     object.created_at.strftime("%a %m/%d/%y %I:%M %p")
+  end
+  
+  def time
+    if object.time
+      object.time.strftime("%a %m/%d/%y %I:%M %p")
+    end
   end
   
   def updated_at
