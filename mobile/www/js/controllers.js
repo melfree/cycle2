@@ -7,13 +7,16 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };
 })
 
-.controller('RedirectCtrl', function($scope, $location, $window,$rootScope) {
-    $scope.$on('$ionicView.enter', function () {
+.controller('RedirectCtrl', function($ionicHistory, $scope, $location, $window,$rootScope) {
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $scope.$on('$ionicView.enter', function () {
       var email = $window.localStorage['userEmail'];
       if (email) {
           $location.path('/tab/explore');
       } else {
-        $location.path('/login');
+          $location.path('/login');
       }
     });
 })
@@ -135,8 +138,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
   })
 })
 
-.controller('FullSizeCtrl', function($scope,Upload,$window,$stateParams) {
-  Upload.get({id:$stateParams.photoId}, function(data) {$scope.photo = data;});
+.controller('FullSizeCtrl', function($scope,Auth,Upload,$window,$stateParams) {
+  Upload.get(angular.extend({id:$stateParams.photoId}, Auth.get()), function(data) {$scope.photo = data;});
 })
 
 .controller('MyPhotoCtrl', function($rootScope,$state,$scope,myPhoto,Auth,PhotoList,$window,$ionicScrollDelegate) {
